@@ -20,20 +20,14 @@ use yii\captcha\Captcha;
 
     <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true])->label('No. KP (Tanpa "-")') ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'password_ulang')->passwordInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'jabatan')->dropdownList(ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'), ['prompt' => '- Sila Pilih -', 'onchange' => '$.get("'.Url::to(['pengguna/unit-list']).'", {id: this.value}, function(data){$("#pengguna-unit").html(data);});']); ?>
-
-    <?= $form->field($model, 'unit')->dropdownList([], []) ?>
+    <?= $form->field($model, 'id_jabatan')->dropdownList(ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'), ['prompt' => '- Sila Pilih -', 'onchange' => '$.get("'.Url::to(['pengguna/unit-list']).'", {id: this.value}, function(data){$("#pengguna-id_unit").html(data); $("#pengguna-id_unit").val('.$model->id_unit.').change();});']); ?>
+    
+    <?= $form->field($model, 'id_unit')->dropdownList([], []) ?>
 
     <?= $form->field($model, 'emel')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'captcha')->widget(Captcha::className()) ?>
-
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Simpan'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
@@ -46,4 +40,10 @@ use yii\captcha\Captcha;
            
         }
     ', static::POS_END);
+?>
+
+<?php 
+     $this->registerJs('
+        $("#pengguna-id_jabatan").trigger("change");
+        ', \yii\web\View::POS_END);
 ?>

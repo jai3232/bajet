@@ -41,7 +41,9 @@ class UnitSearch extends Unit
      */
     public function search($params)
     {
-        $query = Unit::find();
+        //if(isset($params['id']))
+
+        $query = isset($params['id']) ? Unit::find()->where(['id_jabatan' => $params['id']]) : Unit::find();
 
         // add conditions that should always apply here
 

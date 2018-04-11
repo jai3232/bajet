@@ -14,8 +14,8 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $nama;
     public $login;
     public $no_kp;
-    public $jabatan;
-    public $unit;
+    public $id_jabatan;
+    public $id_unit;
     public $emel;
     public $level;
     public $jenis;

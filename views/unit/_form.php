@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+use app\models\Jabatan;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Unit */
@@ -12,7 +14,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'jabatan')->textInput() ?>
+    <?= $form->field($model, 'id_jabatan')->dropDownList(ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'), ['options' => [ Yii::$app->request->get('id') => ['selected' => true]]])->label("Jabatan") ?>
 
     <?= $form->field($model, 'unit')->textInput(['maxlength' => true]) ?>
 

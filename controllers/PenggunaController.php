@@ -109,6 +109,8 @@ class PenggunaController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+        if(count($model->getErrors()))
+            return print_r($model->getErrors());
 
         return $this->render('update', [
             'model' => $model,
@@ -117,7 +119,7 @@ class PenggunaController extends Controller
 
     public function actionUnitList($id) 
     {
-        $units = Unit::find()->where(['jabatan' => $id])->all();
+        $units = Unit::find()->where(['id_jabatan' => $id])->all();
 
         $list = '<option value>- Sila Pilih -</option>';
         foreach ($units as $key => $value) {

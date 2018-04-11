@@ -8,10 +8,10 @@ use Yii;
  * This is the model class for table "unit".
  *
  * @property int $id
- * @property int $jabatan
+ * @property int $id_jabatan
  * @property string $unit
  *
- * @property Jabatan $jabatan0
+ * @property Jabatan $jabatan
  */
 class Unit extends \yii\db\ActiveRecord
 {
@@ -29,11 +29,11 @@ class Unit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['jabatan', 'unit'], 'required'],
-            [['jabatan'], 'integer'],
+            [['id_jabatan', 'unit'], 'required'],
+            [['id_jabatan'], 'integer'],
             [['unit'], 'string', 'max' => 30],
             [['unit'], 'unique'],
-            [['jabatan'], 'exist', 'skipOnError' => true, 'targetClass' => Jabatan::className(), 'targetAttribute' => ['jabatan' => 'id']],
+            [['id_jabatan'], 'exist', 'skipOnError' => true, 'targetClass' => Jabatan::className(), 'targetAttribute' => ['id_jabatan' => 'id']],
         ];
     }
 
@@ -43,17 +43,17 @@ class Unit extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'jabatan' => 'Jabatan',
-            'unit' => 'Unit',
+            'id' => Yii::t('app', 'ID'),
+            'id_jabatan' => Yii::t('app', 'Id Jabatan'),
+            'unit' => Yii::t('app', 'Unit'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getJabatan0()
+    public function getJabatan()
     {
-        return $this->hasOne(Jabatan::className(), ['id' => 'jabatan']);
+        return $this->hasOne(Jabatan::className(), ['id' => 'id_jabatan']);
     }
 }

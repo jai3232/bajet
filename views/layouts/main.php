@@ -40,6 +40,7 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Admin', 'items' => [
+                    ['label' => 'Pengguna', 'url' => ['/pengguna/index']],
                     ['label' => 'Jabatan', 'url' => ['/jabatan/index']],
                 ]
             ],

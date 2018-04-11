@@ -19,7 +19,7 @@ class PenggunaSearch extends Pengguna
     {
         return [
             [['id'], 'integer'],
-            [['nama', 'login', 'no_kp', 'password', 'jabatan', 'unit', 'emel', 'level', 'jenis', 'aktif', 'date'], 'safe'],
+            [['nama', 'no_kp', 'password', 'id_jabatan', 'id_unit', 'emel', 'level', 'jenis', 'aktif', 'date'], 'safe'],
         ];
     }
 
@@ -64,15 +64,14 @@ class PenggunaSearch extends Pengguna
         ]);
 
         $query->andFilterWhere(['like', 'nama', $this->nama])
-            ->andFilterWhere(['like', 'login', $this->login])
             ->andFilterWhere(['like', 'no_kp', $this->no_kp])
             ->andFilterWhere(['like', 'password', $this->password])
-            ->andFilterWhere(['like', 'jabatan', $this->jabatan])
-            ->andFilterWhere(['like', 'unit', $this->unit])
+            ->andFilterWhere(['like', 'id_jabatan', $this->id_jabatan])
+            ->andFilterWhere(['like', 'id_unit', $this->id_unit])
             ->andFilterWhere(['like', 'emel', $this->emel])
             ->andFilterWhere(['like', 'level', $this->level])
-            ->andFilterWhere(['like', 'jenis', $this->jenis])
             ->andFilterWhere(['like', 'aktif', $this->aktif]);
+        $query->orderby(['id' => SORT_DESC]);
 
         return $dataProvider;
     }

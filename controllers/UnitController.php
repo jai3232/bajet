@@ -69,6 +69,8 @@ class UnitController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+        if(count($model->getErrors()))
+            return print_r($model->getErrors());
 
         return $this->render('create', [
             'model' => $model,

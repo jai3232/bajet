@@ -1,13 +1,15 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\models\KumpulanPengguna;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PenggunaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Penggunas');
+$this->title = Yii::t('app', 'Pengguna');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="pengguna-index">
@@ -17,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Pengguna'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Tambah Pengguna'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -26,17 +28,32 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             'nama',
-            'login',
             'no_kp',
-            'password',
-            //'jabatan',
-            //'unit',
-            //'emel',
-            //'level',
+            //'password',
+            'jabatan.jabatan',
+            'unit.unit',
+            'emel',
+            [
+                'label' => 'Level',
+                'attribute' => 'level',
+                'format' => 'raw',
+                'value' => function($model) {
+                        return Html::dropDownList('level', $model->level, ArrayHelper::map(KumpulanPengguna::find()->all(), 'id', 'nama'), ['class' => 'form-control']);
+                },
+                'filter' => ArrayHelper::map(KumpulanPengguna::find()->all(), 'id', 'nama'),
+            ],
             //'jenis',
-            //'aktif',
+            [
+                'label' => 'Aktif',
+                'attribute' => 'aktif',
+                'format' => 'raw',
+                'value' => function($model) {
+                    return Html::checkbox('aktif', !$model->aktif ? false : true, ['class' => 'form-control']);
+                },
+                'filter' => ['Tidak', 'Aktif']
+            ],
             //'date',
 
             ['class' => 'yii\grid\ActionColumn'],

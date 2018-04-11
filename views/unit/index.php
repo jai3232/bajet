@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Tambah Unit'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Tambah Unit'), ['create', 'id' => Yii::$app->request->get('id')], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -27,10 +27,27 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             //'id',
-            'jabatan0.jabatan',
+            'jabatan.jabatan',
             'unit',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            //['class' => 'yii\grid\ActionColumn'], 
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'header' => 'Tindakan',
+                'contentOptions' => ['class' => 'text-center'],
+                'template' => '{update} {delete}',
+                'buttons' => [
+                    'delete' => function($url, $model){
+                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
+                            'class' => '',
+                            'data' => [
+                                'confirm' => 'Padam rekod ini?',
+                                'method' => 'post',
+                            ],
+                        ]);
+                    }
+                ]
+            ],
         ],
     ]); ?>
 </div>
