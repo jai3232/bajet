@@ -122,14 +122,28 @@ class SiteController extends Controller
         $model = new Register();
 
         if ($model->load(Yii::$app->request->post())) {
-            if(!$model->save())
-                return print_r($model->getErrors());
-            return $this->redirect(['pengguna/index']);
+            $model->password = md5(Yii::$app->request->post('Register')['password']);
+            $model->password_ulang = $model->password;
+
+            if(!$model->save()) {
+                $err = $model->getErrors();
+                //print_r($model->getErrors());
+                foreach ($err as $key => $value) {
+                    if($key == 'emel')
+                        return $this->render('error', ['message' => 'Emel telah wujud', 'name' => 'Error']);
+                }
+            }
+            return $this->redirect(['site/success']);
         }
 
         return $this->render('register', [
             'model' => $model,
         ]);
+    }
+
+    public function actionSuccess()
+    {
+        return $this->render('success');
     }
 
     /**

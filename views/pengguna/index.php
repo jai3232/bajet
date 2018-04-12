@@ -2,9 +2,11 @@
 
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\models\KumpulanPengguna;
+use app\models\Jabatan;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PenggunaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -32,8 +34,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'nama',
             'no_kp',
             //'password',
-            'jabatan.jabatan',
-            'unit.unit',
+            [
+                'label' => 'Jabatan',
+                'attribute' => 'id_jabatan',
+                'value' => 'jabatan.jabatan',
+                //'filter' => ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'),
+                'filter' => Html::textInput('PenggunaSearch[jabatan]', null, ['class' => 'form-control']),
+            ],
+            [
+                'label' => 'Unit',
+                'attribute' => 'id_unit',
+                'value' => 'unit.unit',
+                'filter' => Html::textInput('PenggunaSearch[unit]', null, ['class' => 'form-control']),
+            ],
             'emel',
             [
                 'label' => 'Level',
@@ -48,9 +61,14 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Aktif',
                 'attribute' => 'aktif',
+                'contentOptions' => ['class' => 'text-center'],
                 'format' => 'raw',
                 'value' => function($model) {
-                    return Html::checkbox('aktif', !$model->aktif ? false : true, ['class' => 'form-control']);
+                    return Html::checkbox('aktif'.$model->id, 
+                                          !$model->aktif ? false : true, 
+                                          ['class' => 'activate-user', 
+                                          'id' => 'aktif'.$model->id, 
+                                          'dir' => Url::to(['pengguna/activate', 'id' => $model->id])]);
                 },
                 'filter' => ['Tidak', 'Aktif']
             ],
@@ -61,3 +79,23 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
     <?php Pjax::end(); ?>
 </div>
+
+<?php
+    
+$this->registerJs('
+    $(document).on("pjax:success", function() {
+        $(".activate-user").on("click", function(){
+            alert("y");
+        });
+    });
+
+    $(".activate-user").on("click", function(){
+        if(confirm("Set pengguna ini?")) {
+            $.get($(this).attr("dir"), function(data){
+            })
+        }
+        else
+             $(this).prop("checked", !$(this).prop("checked")); 
+    });
+');
+?>

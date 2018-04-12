@@ -67,7 +67,8 @@ class UnitController extends Controller
         $model = new Unit();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            //return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'id' => Yii::$app->request->getQueryParam('id')]);
         }
         if(count($model->getErrors()))
             return print_r($model->getErrors());

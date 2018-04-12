@@ -128,6 +128,13 @@ class PenggunaController extends Controller
         return $list;
     }
 
+    public function actionActivate($id)
+    {
+        $model = $this->findModel($id);
+        $model->aktif = !$model->aktif ? 1: 0;
+        $model->save();
+    }
+
     /**
      * Deletes an existing Pengguna model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
