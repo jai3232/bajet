@@ -39,19 +39,19 @@ class Register extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nama', 'password', 'password_ulang', 'jabatan', 'emel', 'no_kp', 'captcha'], 'required'],
+            [['nama', 'password', 'password_ulang', 'id_jabatan', 'emel', 'no_kp', 'captcha'], 'required'],
+            [['id_jabatan', 'id_unit', 'level', 'aktif'], 'integer'],
             [['date'], 'safe'],
             [['nama'], 'string', 'max' => 100],
             [['no_kp'], 'string', 'max' => 12],
             [['password'], 'string', 'min' => 6, 'max' => 32],
             [['password_ulang'], 'compare', 'compareAttribute'=>'password', 'skipOnEmpty' => false, 'message'=>"Katalaluan tidak sama"],
-
-            [['jabatan'], 'string', 'max' => 5],
-            [['unit', 'emel'], 'string', 'max' => 50],
+            [['emel'], 'string', 'max' => 50],
             [['level'], 'string', 'max' => 3],
             [['aktif'], 'string', 'max' => 1],
             [['emel'], 'email'],  
             ['captcha', 'captcha'],
+            [['no_kp', 'emel'], 'unique'],
         ];
     }
 
@@ -66,8 +66,8 @@ class Register extends \yii\db\ActiveRecord
             'no_kp' => 'No Kp',
             'password' => 'Password',
             'password_ulang' => 'Ulang Password',
-            'jabatan' => 'Jabatan',
-            'unit' => 'Unit',
+            'id_jabatan' => 'Jabatan',
+            'id_unit' => 'Unit',
             'emel' => 'Emel',
             'aktif' => 'Aktif',
             'date' => 'Date',

@@ -15,11 +15,14 @@ class PenggunaSearch extends Pengguna
     /**
      * @inheritdoc
      */
+    public $jabatan, $unit;
+
     public function rules()
     {
         return [
             [['id'], 'integer'],
             [['nama', 'no_kp', 'password', 'id_jabatan', 'id_unit', 'emel', 'level', 'jenis', 'aktif', 'date'], 'safe'],
+            [['jabatan', 'unit'], 'safe'],
         ];
     }
 
@@ -41,13 +44,23 @@ class PenggunaSearch extends Pengguna
      */
     public function search($params)
     {
-        $query = Pengguna::find();
+        $query = Pengguna::find()->joinWith(['jabatan', 'unit']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $dataProvider->sort->attributes['id_jabatan'] = [
+            'asc' => ['jabatan.jabatan' => SORT_ASC],
+            'desc' => ['jabatan.jabatan' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['id_unit'] = [
+            'asc' => ['unit.unit' => SORT_ASC],
+            'desc' => ['unit.unit' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -66,12 +79,16 @@ class PenggunaSearch extends Pengguna
         $query->andFilterWhere(['like', 'nama', $this->nama])
             ->andFilterWhere(['like', 'no_kp', $this->no_kp])
             ->andFilterWhere(['like', 'password', $this->password])
-            ->andFilterWhere(['like', 'id_jabatan', $this->id_jabatan])
-            ->andFilterWhere(['like', 'id_unit', $this->id_unit])
+            //->andFilterWhere(['like', 'id_jabatan', $this->id_jabatan])
+            ->andFilterWhere(['like', 'jabatan.jabatan', $this->jabatan])
+            //->andFilterWhere(['like', 'id_unit', $this->id_unit])
+            ->andFilterWhere(['like', 'unit.unit', $this->unit])
             ->andFilterWhere(['like', 'emel', $this->emel])
             ->andFilterWhere(['like', 'level', $this->level])
             ->andFilterWhere(['like', 'aktif', $this->aktif]);
-        $query->orderby(['id' => SORT_DESC]);
+
+        if(!isset($params['sort']))
+            $query->orderby(['id' => SORT_DESC]);
 
         return $dataProvider;
     }

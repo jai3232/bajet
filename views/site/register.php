@@ -28,9 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model, 'password_ulang')->passwordInput(['maxlength' => true])->label('Ulang Katalaluan') ?>
 
-    <?= $form->field($model, 'jabatan')->dropdownList(ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'), ['prompt' => '- Sila Pilih -', 'onchange' => '$.get("'.Url::to(['pengguna/unit-list']).'", {id: this.value}, function(data){$("#pengguna-unit").html(data);});']); ?>
+    <?= $form->field($model, 'id_jabatan')->dropdownList(ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'), 
+                                            ['prompt' => '- Sila Pilih -', 
+                                            'onchange' => '$.get("'.Url::to(['pengguna/unit-list']).'", {id: this.value}, function(data){$("#register-id_unit").html(data);});'])->label('Jabatan'); ?>
 
-    <?= $form->field($model, 'unit')->dropdownList([], []) ?>
+    <?= $form->field($model, 'id_unit')->dropdownList([], [])->label('Unit') ?>
 
     <?= $form->field($model, 'emel')->textInput(['maxlength' => true]) ?>
 

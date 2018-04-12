@@ -38,9 +38,10 @@ class Pengguna extends \yii\db\ActiveRecord
             [['id_jabatan', 'id_unit', 'level', 'aktif'], 'integer'],
             [['date'], 'safe'],
             [['nama'], 'string', 'max' => 100],
-            [['no_kp'], 'string', 'max' => 14],
+            [['no_kp'], 'string', 'max' => 12],
             [['password'], 'string', 'max' => 32],
             [['emel'], 'string', 'max' => 50],
+            [['no_kp', 'emel'], 'unique'],
         ];
     }
 
@@ -54,8 +55,8 @@ class Pengguna extends \yii\db\ActiveRecord
             'nama' => Yii::t('app', 'Nama'),
             'no_kp' => Yii::t('app', 'No Kp'),
             'password' => Yii::t('app', 'Password'),
-            'id_jabatan' => Yii::t('app', 'Jabatan'),
-            'id_unit' => Yii::t('app', 'Unit'),
+            'id_jabatan' => Yii::t('app', 'Id Jabatan'),
+            'id_unit' => Yii::t('app', 'Id Unit'),
             'emel' => Yii::t('app', 'Emel'),
             'level' => Yii::t('app', 'Level'),
             'aktif' => Yii::t('app', 'Aktif'),

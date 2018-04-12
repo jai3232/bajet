@@ -20,9 +20,9 @@ use yii\captcha\Captcha;
 
     <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true])->label('No. KP (Tanpa "-")') ?>
 
-    <?= $form->field($model, 'id_jabatan')->dropdownList(ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'), ['prompt' => '- Sila Pilih -', 'onchange' => '$.get("'.Url::to(['pengguna/unit-list']).'", {id: this.value}, function(data){$("#pengguna-id_unit").html(data); $("#pengguna-id_unit").val('.$model->id_unit.').change();});']); ?>
-    
-    <?= $form->field($model, 'id_unit')->dropdownList([], []) ?>
+    <?= $form->field($model, 'id_jabatan')->dropdownList(ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'), ['prompt' => '- Sila Pilih -', 'onchange' => '$.get("'.Url::to(['pengguna/unit-list']).'", {id: this.value}, function(data){$("#pengguna-id_unit").html(data); $("#pengguna-id_unit").val('.$model->id_unit.').change();});'])->label('Jabatan'); ?>
+
+    <?= $form->field($model, 'id_unit')->dropdownList([], [])->label('Unit') ?>
 
     <?= $form->field($model, 'emel')->textInput(['maxlength' => true]) ?>
 
