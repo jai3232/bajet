@@ -5,13 +5,22 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use app\models\Jabatan;
+use app\models\Os;
+use app\models\Unjuran;
+use app\controllers\UnjuranController;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Unjuran */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <?php
-$currentYear = date("Y");
+
+$currentYear = date("Y"); 
+$yearList = [];
+for($i = $currentYear; $i < $currentYear + 5; $i++) {
+    $yearList[$i] = $i; 
+}
+
 ?>
 <div class="unjuran-form">
 
@@ -19,7 +28,7 @@ $currentYear = date("Y");
 
     <?php //= $form->field($model, 'kod_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'os')->textInput(['maxlength' => true])->label('OS') ?>
+    <?= $form->field($model, 'os')->dropdownList(ArrayHelper::map(Os::find()->all(), 'os', 'os'), ['prompt' => '- Sila Pilih -'])->label('OS') ?>
 
     <?= $form->field($model, 'ol')->textInput(['maxlength' => true])->label('OL') ?>
 
@@ -27,44 +36,47 @@ $currentYear = date("Y");
 
     <?= $form->field($model, 'id_unit')->dropdownList([''])->label('Unit') ?>
 
-    <?= $form->field($model, 'butiran')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'butiran')->textarea(['rows' => 2]) ?>
 
     <?= $form->field($model, 'kuantiti')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'kod')->dropdownList(['' => '- Sila Pilih -', 'B' => 'B', 'C' => 'C', 'D' => 'D']) ?>
+    <?= $form->field($model, 'kod')->dropdownList(['' => '- Sila Pilih -', 'B' => 'B (Wajib)', 'C' => 'C (Utama)', 'D' => 'D (Kurang Utama)']) ?>
 
     <?= $form->field($model, 'jumlah_unjuran')->textInput(['type' => 'number']) ?>
 
     <?php //= $form->field($model, 'kongsi')->textInput(['maxlength' => true]) ?>
 
     <?php //= $form->field($model, 'public')->textInput() ?>
-    <?php
-        $yearList = [];
-        for($i = $currentYear; $i < $currentYear + 5; $i++) {
-            $yearList[$i] = $i; 
-        }
-    ?>
+
     <?= $form->field($model, 'tahun')->dropdownList($yearList,  
-                                                    ['prompt' => '- Sila Pilih -'],
-                                                    ['options' => ['2020' => ['selected' => true]]]
+                                                    [
+                                                        'prompt' => '- Sila Pilih -', 
+                                                        'options' => [ $model->isNewRecord ? ($currentYear+1) : $model->tahun => ['selected' => true]]
+                                                    ]                                                     
                                                     ) ?>
 
-    <?= $form->field($model, 'catatan')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'catatan')->textarea(['rows' => 2]) ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
+    <?php //= $form->field($model, 'status')->textInput() ?>
 
-    <?= $form->field($model, 'sah')->textInput() ?>
+    <?php //= $form->field($model, 'sah')->textInput() ?>
 
-    <?= $form->field($model, 'tarikh_jadi')->textInput() ?>
+    <?php //= $form->field($model, 'tarikh_jadi')->textInput() ?>
 
-    <?= $form->field($model, 'tarikh_kemaskini')->textInput() ?>
+    <?php //= $form->field($model, 'tarikh_kemaskini')->textInput() ?>
 
-    <?= $form->field($model, 'user')->textInput() ?>
+    <?php //= $form->field($model, 'user')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Simpan', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php 
+     $this->registerJs('
+        $("#unjuran-id_jabatan").trigger("change");
+        ', \yii\web\View::POS_READY);
+?>

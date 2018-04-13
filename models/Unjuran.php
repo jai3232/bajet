@@ -43,7 +43,7 @@ class Unjuran extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['kod_id', 'os', 'id_jabatan', 'butiran', 'kod', 'jumlah_unjuran', 'tahun', 'status'], 'required'],
+            [['os', 'id_jabatan', 'butiran', 'kod', 'jumlah_unjuran', 'tahun'], 'required'],
             [['id_jabatan', 'id_unit', 'kuantiti', 'public', 'status', 'sah', 'user'], 'integer'],
             [['butiran', 'catatan'], 'string'],
             [['jumlah_unjuran'], 'number'],

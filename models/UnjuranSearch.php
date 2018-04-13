@@ -46,6 +46,8 @@ class UnjuranSearch extends Unjuran
 
         // add conditions that should always apply here
 
+        $this->tahun = isset($params['tahun']) ? $this->tahun : date("Y");
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

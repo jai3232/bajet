@@ -5,10 +5,9 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Unjuran */
 
-$this->title = 'Update Unjuran: {nameAttribute}';
-$this->params['breadcrumbs'][] = ['label' => 'Unjurans', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Kemaskini Unjuran: '.$model->kod_id;
+$this->params['breadcrumbs'][] = ['label' => 'Unjuran', 'url' => ['index']];
+$this->params['breadcrumbs'][] = 'Kemaskini';
 ?>
 <div class="unjuran-update">
 

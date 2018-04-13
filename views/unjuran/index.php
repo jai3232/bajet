@@ -3,12 +3,23 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\models\Jabatan;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UnjuranSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Unjuran';
+$this->title = 'Unjuran ' . (isset($_GET['id']) ? Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan : 'Jabatan');
 $this->params['breadcrumbs'][] = $this->title;
+?>
+<?php
+
+$currentYear = date("Y"); 
+$yearList = ['' => ''];
+for($i = $currentYear - 5; $i < $currentYear + 5; $i++) {
+    $yearList[$i] = $i; 
+}
+$kodList = ['@' => '', '' => 'ABCD', 'A' => 'A', 'B' => 'B', 'C' => 'C', 'D' => 'D'];
+
 ?>
 <div class="unjuran-index">
 
@@ -42,12 +53,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'id_unit',
             ],
             'butiran:ntext',
-            'kuantiti',
-            'kod',
-            'jumlah_unjuran',
+            //'kuantiti',
+            [
+                'attribute' => 'kod',
+                'filter' => Html::dropDownList('UnjuranSearch[kod]', null , $kodList, ['class' => 'form-control'])
+            ],
+            [
+                'attribute' => 'jumlah_unjuran',
+                'contentOptions' => ['class' => 'text-right'],
+                'value' => function($model) {
+                    return number_format($model->jumlah_unjuran);  
+                } 
+            ],
             //'kongsi',
             'public',
-            'tahun',
+            [
+                'attribute' => 'tahun',
+                'filter' => Html::dropDownList('UnjuranSearch[tahun]', null , $yearList, ['class' => 'form-control'])
+            ],
             'catatan:ntext',
             //'status',
             'sah',

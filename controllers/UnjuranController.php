@@ -66,8 +66,12 @@ class UnjuranController extends Controller
     {
         $model = new Unjuran();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->kod_id = self::generateCode('U', empty(Unjuran::find()->max('id')) ? 1 : Unjuran::find()->max('id') + 1);
+            if($model->save())
+                return $this->redirect(['view', 'id' => $model->id]);
+            else
+                return print_r($model->getErrors());
         }
 
         return $this->render('create', [
@@ -107,6 +111,15 @@ class UnjuranController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    static function generateCode($c, $data) {
+        $dLength = strlen($data);
+        $str = $c;
+        $sLength = strlen($c);
+        for($i = 0; $i < (10 - $dLength - $sLength); $i++)
+            $str .= "0";
+        return ($str.$data);
     }
 
     /**
