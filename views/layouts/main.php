@@ -38,12 +38,19 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'Laman Utama', 'url' => ['/site/index']],
             ['label' => 'Admin', 'items' => [
                     ['label' => 'Pengguna', 'url' => ['/pengguna/index']],
                     ['label' => 'Jabatan', 'url' => ['/jabatan/index']],
-                ]
+                ],
+                'visible' => !Yii::$app->user->isGuest,
             ],
+            ['label' => 'Daftar', 'url' => ['/site/register'], 'visible' => Yii::$app->user->isGuest],
+            ['label' => 'Unjuran', 'items' => [
+                                                ['label' => 'Unjuran Program', 'url' => ['/unjuran/index', 'id' => Yii::$app->user->identity->id_jabatan]],
+                                                ['label' => 'Unjuran Semua', 'url' => ['/unjuran/index']],
+                                              ], 
+                                              'visible' => !Yii::$app->user->isGuest],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
@@ -66,6 +73,7 @@ AppAsset::register($this);
     <div class="container">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            'homeLink' => ['label' => 'Laman Utama', 'url' => Yii::$app->homeUrl],
         ]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>

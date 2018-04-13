@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
+use yii\helpers\Url;    
 use app\models\Jabatan;
 use yii\captcha\Captcha;
 
@@ -35,15 +35,7 @@ use yii\captcha\Captcha;
 </div>
 
 <?php 
-    $this->registerJs('
-        function getUnit(val) {
-           
-        }
-    ', static::POS_END);
-?>
-
-<?php 
      $this->registerJs('
         $("#pengguna-id_jabatan").trigger("change");
-        ', \yii\web\View::POS_END);
+        ', \yii\web\View::POS_READY);
 ?>

@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true])->label('No. KP (Tanpa "-")') ?>
+    <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true, 'type' => 'number'])->label('No. KP Baru (Tanpa "-")') ?>
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true])->label('Katalaluan') ?>
 

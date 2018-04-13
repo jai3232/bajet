@@ -85,14 +85,18 @@ $this->params['breadcrumbs'][] = $this->title;
 $this->registerJs('
     $(document).on("pjax:success", function() {
         $(".activate-user").on("click", function(){
-            alert("y");
+            if(confirm("Set pengguna ini?")) {
+                $.get($(this).attr("dir"), function(data){});
+            }
+            else
+                 $(this).prop("checked", !$(this).prop("checked"));
+
         });
     });
 
     $(".activate-user").on("click", function(){
         if(confirm("Set pengguna ini?")) {
-            $.get($(this).attr("dir"), function(data){
-            })
+            $.get($(this).attr("dir"), function(data){});
         }
         else
              $(this).prop("checked", !$(this).prop("checked")); 

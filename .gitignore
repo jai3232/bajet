@@ -5,7 +5,3 @@ protected/runtime/*
 protected/data/*.db
 themes/classic/views/
 config/db.php
-<<<<<<< HEAD
-*.php
-=======
->>>>>>> 9f1ccfd17f27b4d430d205568fc3494bcec902de
