@@ -24,14 +24,17 @@ class PenggunaController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['activate', 'set-level'],
+                'only' => ['index', 'activate', 'set-level'],
                 'rules' => [
                     [
-                        'actions' => ['activate', 'set-level'],
-                        'allow' => true,
+                        'actions' => ['index', 'activate', 'set-level'],
+                        'allow' => Yii::$app->user->isGuest ? false : Yii::$app->user->identity->accessLevel([1]),
                         'roles' => ['@'],
                     ],
                 ],
+                'denyCallback' => function() {
+                    return $this->redirect(['site/unauthorized']);
+                }
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),

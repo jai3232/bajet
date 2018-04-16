@@ -22,7 +22,7 @@ else
 
 //print_r(Yii::$app->request->get('UnjuranSearch')['tahun']);
 
-$this->title = 'Unjuran Jabatan/Bahagian ' . (isset($_GET['id']) ? Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan : 'Jabatan') 
+$this->title = 'Unjuran Jabatan/Bahagian ' . (isset($_GET['id']) ? Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan : '') 
                           . ' '.$selectedYear;;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -100,8 +100,24 @@ $this->params['breadcrumbs'][] = $this->title;
             //'tarikh_jadi',
             //'tarikh_kemaskini',
             //'user',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            //['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'header' => 'Tindakan',
+                'contentOptions' => ['class' => 'text-center'],
+                'template' => '{update} {delete}',
+                'buttons' => [
+                    'delete' => function($url, $model){
+                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
+                            'class' => '',
+                            'data' => [
+                                'confirm' => 'Padam rekod ini?',
+                                'method' => 'post',
+                            ],
+                        ]);
+                    }
+                ]
+            ],
         ],
     ]); ?>
     <?php //Pjax::end(); ?>

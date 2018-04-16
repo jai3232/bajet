@@ -25,7 +25,7 @@
         "suggest": {
             "symfony/yaml": "If you want to parse features, represented in YAML files"
         },
-        "time": "2017-08-30T11:04:43+00:00",
+        "time": "2017-08-30 11:04:43",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -262,7 +262,7 @@
             "facebook/xhprof": "*@dev",
             "phpunit/phpunit": "4.1.*"
         },
-        "time": "2017-07-16T21:13:23+00:00",
+        "time": "2017-07-16 21:13:23",
         "bin": [
             "bin/markdown"
         ],
@@ -355,7 +355,7 @@
             "stecman/symfony-console-completion": "For BASH autocompletion",
             "symfony/phpunit-bridge": "For phpunit-bridge support"
         },
-        "time": "2018-02-27T00:17:07+00:00",
+        "time": "2018-02-27 00:17:07",
         "bin": [
             "codecept"
         ],
@@ -412,7 +412,7 @@
             "sebastian/comparator": ">1.1 <3.0",
             "sebastian/diff": ">=1.4 <4.0"
         },
-        "time": "2018-02-19T13:24:40+00:00",
+        "time": "2018-02-19 13:24:40",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -454,7 +454,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.0"
         },
-        "time": "2016-10-21T09:42:00+00:00",
+        "time": "2016-10-21 09:42:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -495,7 +495,7 @@
         "require-dev": {
             "phpunit/phpunit": ">=4.8 <8.0"
         },
-        "time": "2018-02-18T13:56:56+00:00",
+        "time": "2018-02-18 13:56:56",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -527,7 +527,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.0"
         },
-        "time": "2017-01-09T10:58:51+00:00",
+        "time": "2017-01-09 10:58:51",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -572,7 +572,7 @@
             "phpunit/phpunit": "~4.0",
             "squizlabs/php_codesniffer": "~2.0"
         },
-        "time": "2015-06-14T21:17:01+00:00",
+        "time": "2015-06-14 21:17:01",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -624,7 +624,7 @@
         "require-dev": {
             "simpletest/simpletest": "^1.1"
         },
-        "time": "2018-02-23T01:58:20+00:00",
+        "time": "2018-02-23 01:58:20",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -675,7 +675,7 @@
             "phpunit/phpunit": "^4.0 || ^5.0",
             "squizlabs/php_codesniffer": "^1.5"
         },
-        "time": "2017-08-15T16:48:10+00:00",
+        "time": "2017-08-15 16:48:10",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -729,7 +729,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.0"
         },
-        "time": "2017-03-20T17:10:46+00:00",
+        "time": "2017-03-20 17:10:46",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -790,7 +790,7 @@
             "bower-asset/bootstrap3-dialog": "~1.34",
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2017-11-06T16:04:54+00:00",
+        "time": "2017-11-06 16:04:54",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -826,61 +826,6 @@
         ]
     },
     {
-        "name": "kartik-v/yii2-grid",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/kartik-v/yii2-grid.git",
-            "reference": "4c1ba3e2051a0ba0688c2c842a2a55198df14992"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/kartik-v/yii2-grid/zipball/4c1ba3e2051a0ba0688c2c842a2a55198df14992",
-            "reference": "4c1ba3e2051a0ba0688c2c842a2a55198df14992",
-            "shasum": ""
-        },
-        "require": {
-            "kartik-v/yii2-dialog": "~1.0",
-            "kartik-v/yii2-krajee-base": "~1.7"
-        },
-        "suggest": {
-            "kartik-v/yii2-mpdf": "For exporting grids to PDF"
-        },
-        "time": "2018-04-09T16:17:08+00:00",
-        "type": "yii2-extension",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.1.x-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-4": {
-                "kartik\\grid\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Kartik Visweswaran",
-                "email": "kartikv2@gmail.com",
-                "homepage": "http://www.krajee.com/"
-            }
-        ],
-        "description": "Yii 2 GridView on steroids. Various enhancements and utilities for the Yii 2.0 GridView widget.",
-        "homepage": "https://github.com/kartik-v/yii2-grid",
-        "keywords": [
-            "extension",
-            "grid",
-            "widget",
-            "yii2"
-        ]
-    },
-    {
         "name": "kartik-v/yii2-krajee-base",
         "version": "v1.8.9",
         "version_normalized": "1.8.9.0",
@@ -898,7 +843,7 @@
         "require": {
             "yiisoft/yii2-bootstrap": "@dev"
         },
-        "time": "2017-09-29T06:18:14+00:00",
+        "time": "2017-09-29 06:18:14",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -951,7 +896,7 @@
         "require": {
             "mpdf/mpdf": "<7.0"
         },
-        "time": "2017-01-14T11:51:12+00:00",
+        "time": "2017-01-14 11:51:12",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -988,61 +933,6 @@
         ]
     },
     {
-        "name": "kartik-v/yii2-widget-select2",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/kartik-v/yii2-widget-select2.git",
-            "reference": "d08a5b302fe04216bd04290f0e99e26386801a37"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/kartik-v/yii2-widget-select2/zipball/d08a5b302fe04216bd04290f0e99e26386801a37",
-            "reference": "d08a5b302fe04216bd04290f0e99e26386801a37",
-            "shasum": ""
-        },
-        "require": {
-            "kartik-v/yii2-krajee-base": "~1.7"
-        },
-        "time": "2018-02-24T05:28:25+00:00",
-        "type": "yii2-extension",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.1.x-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-4": {
-                "kartik\\select2\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Kartik Visweswaran",
-                "email": "kartikv2@gmail.com",
-                "homepage": "http://www.krajee.com/"
-            }
-        ],
-        "description": "Enhanced Yii2 wrapper for the Select2 jQuery plugin (sub repo split from yii2-widgets).",
-        "homepage": "https://github.com/kartik-v/yii2-widget-select2",
-        "keywords": [
-            "dropdown",
-            "extension",
-            "form",
-            "jquery",
-            "plugin",
-            "select2",
-            "widget",
-            "yii2"
-        ]
-    },
-    {
         "name": "miloschuman/yii2-highcharts-widget",
         "version": "v6.0",
         "version_normalized": "6.0.0.0",
@@ -1064,7 +954,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.4"
         },
-        "time": "2017-10-27T13:56:43+00:00",
+        "time": "2017-10-27 13:56:43",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1119,7 +1009,7 @@
         "suggest": {
             "ext-zlib": "Needed for compression of embedded resources, such as fonts"
         },
-        "time": "2017-07-09T16:46:12+00:00",
+        "time": "2017-07-09 16:46:12",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1168,7 +1058,7 @@
             "doctrine/collections": "1.*",
             "phpunit/phpunit": "~4.1"
         },
-        "time": "2017-04-12T18:52:22+00:00",
+        "time": "2017-04-12 18:52:22",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1211,7 +1101,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.6"
         },
-        "time": "2017-09-11T18:02:19+00:00",
+        "time": "2017-09-11 18:02:19",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1271,7 +1161,7 @@
             "mockery/mockery": "^0.9.4",
             "phpunit/phpunit": "^4.4"
         },
-        "time": "2017-08-08T06:39:58+00:00",
+        "time": "2017-08-08 06:39:58",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1316,7 +1206,7 @@
             "mockery/mockery": "^0.9.4",
             "phpunit/phpunit": "^5.2||^4.8.24"
         },
-        "time": "2017-06-03T08:32:36+00:00",
+        "time": "2017-06-03 08:32:36",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1357,7 +1247,7 @@
             "reference": "0464787bfa7cd13576c5a1e318709768798bec6a",
             "shasum": ""
         },
-        "time": "2016-04-07T12:29:16+00:00",
+        "time": "2016-04-07 12:29:16",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1408,7 +1298,7 @@
             "phpspec/phpspec": "^2.5|^3.2",
             "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.5"
         },
-        "time": "2018-02-19T10:16:54+00:00",
+        "time": "2018-02-19 10:16:54",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1479,7 +1369,7 @@
             "ext-xdebug": ">=2.2.1",
             "ext-xmlwriter": "*"
         },
-        "time": "2015-10-06T15:47:00+00:00",
+        "time": "2015-10-06 15:47:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1529,7 +1419,7 @@
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-11-27T13:52:08+00:00",
+        "time": "2017-11-27 13:52:08",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1578,7 +1468,7 @@
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2015-06-21T13:50:34+00:00",
+        "time": "2015-06-21 13:50:34",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1624,7 +1514,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
         },
-        "time": "2017-02-26T11:10:40+00:00",
+        "time": "2017-02-26 11:10:40",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1676,7 +1566,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.2"
         },
-        "time": "2017-12-04T08:55:13+00:00",
+        "time": "2017-12-04 08:55:13",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1744,7 +1634,7 @@
         "suggest": {
             "phpunit/php-invoker": "~1.1"
         },
-        "time": "2017-06-21T08:07:12+00:00",
+        "time": "2017-06-21 08:07:12",
         "bin": [
             "phpunit"
         ],
@@ -1806,7 +1696,7 @@
         "suggest": {
             "ext-soap": "*"
         },
-        "time": "2015-10-02T06:51:40+00:00",
+        "time": "2015-10-02 06:51:40",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1855,7 +1745,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-08-06T14:39:51+00:00",
+        "time": "2016-08-06 14:39:51",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1907,7 +1797,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-10-10T12:19:37+00:00",
+        "time": "2016-10-10 12:19:37",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1961,7 +1851,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.4"
         },
-        "time": "2017-01-29T09:50:25+00:00",
+        "time": "2017-01-29 09:50:25",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2025,7 +1915,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
         },
-        "time": "2017-05-22T07:24:03+00:00",
+        "time": "2017-05-22 07:24:03",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2079,7 +1969,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8 || ^5.0"
         },
-        "time": "2016-08-18T05:49:44+00:00",
+        "time": "2016-08-18 05:49:44",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2133,7 +2023,7 @@
             "ext-mbstring": "*",
             "phpunit/phpunit": "~4.4"
         },
-        "time": "2016-06-17T09:04:28+00:00",
+        "time": "2016-06-17 09:04:28",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2203,7 +2093,7 @@
         "suggest": {
             "ext-uopz": "*"
         },
-        "time": "2015-10-12T03:26:01+00:00",
+        "time": "2015-10-12 03:26:01",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2253,7 +2143,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.4"
         },
-        "time": "2016-10-03T07:41:43+00:00",
+        "time": "2016-10-03 07:41:43",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2302,7 +2192,7 @@
             "reference": "58b3a85e7999757d6ad81c787a1fbf5ff6c628c6",
             "shasum": ""
         },
-        "time": "2015-06-21T13:59:46+00:00",
+        "time": "2015-06-21 13:59:46",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2344,7 +2234,7 @@
             "setasign/fpdi-fpdf": "Use this package to automatically evaluate dependencies to FPDF.",
             "setasign/fpdi-tcpdf": "Use this package to automatically evaluate dependencies to TCPDF."
         },
-        "time": "2017-05-11T14:25:49+00:00",
+        "time": "2017-05-11 14:25:49",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2397,7 +2287,7 @@
             "mockery/mockery": "~0.9.1",
             "symfony/phpunit-bridge": "~3.2"
         },
-        "time": "2018-01-23T07:37:21+00:00",
+        "time": "2018-01-23 07:37:21",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2457,7 +2347,7 @@
         "suggest": {
             "symfony/process": ""
         },
-        "time": "2018-01-03T07:37:34+00:00",
+        "time": "2018-01-03 07:37:34",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2528,7 +2418,7 @@
             "symfony/lock": "",
             "symfony/process": ""
         },
-        "time": "2018-02-26T15:46:28+00:00",
+        "time": "2018-02-26 15:46:28",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2579,7 +2469,7 @@
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2018-02-03T14:55:07+00:00",
+        "time": "2018-02-03 14:55:07",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2641,7 +2531,7 @@
         "require-dev": {
             "symfony/http-kernel": "~2.8|~3.0|~4.0"
         },
-        "time": "2018-02-28T21:49:22+00:00",
+        "time": "2018-02-28 21:49:22",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2699,7 +2589,7 @@
         "suggest": {
             "symfony/css-selector": ""
         },
-        "time": "2018-02-22T10:48:49+00:00",
+        "time": "2018-02-22 10:48:49",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2764,7 +2654,7 @@
             "symfony/dependency-injection": "",
             "symfony/http-kernel": ""
         },
-        "time": "2018-02-14T10:03:57+00:00",
+        "time": "2018-02-14 10:03:57",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2815,7 +2705,7 @@
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2018-03-05T18:28:11+00:00",
+        "time": "2018-03-05 18:28:11",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2869,7 +2759,7 @@
         "suggest": {
             "ext-mbstring": "For best performance"
         },
-        "time": "2018-01-30T19:27:44+00:00",
+        "time": "2018-01-30 19:27:44",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2936,7 +2826,7 @@
         "suggest": {
             "symfony/console": "For validating YAML files using the lint command"
         },
-        "time": "2018-02-16T09:50:28+00:00",
+        "time": "2018-02-16 09:50:28",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2991,7 +2881,7 @@
             "phpunit/phpunit": "^4.6",
             "sebastian/version": "^1.0.1"
         },
-        "time": "2018-01-29T19:49:41+00:00",
+        "time": "2018-01-29 19:49:41",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3049,7 +2939,7 @@
             "php": ">=5.4.0",
             "yiisoft/yii2-composer": "~2.0.4"
         },
-        "time": "2018-02-24T20:23:06+00:00",
+        "time": "2018-02-24 20:23:06",
         "bin": [
             "yii"
         ],
@@ -3142,7 +3032,7 @@
             "bower-asset/bootstrap": "3.3.* | 3.2.* | 3.1.*",
             "yiisoft/yii2": "~2.0.6"
         },
-        "time": "2018-02-16T10:41:52+00:00",
+        "time": "2018-02-16 10:41:52",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -3206,7 +3096,7 @@
         "require-dev": {
             "composer/composer": "^1.0"
         },
-        "time": "2016-12-20T13:26:02+00:00",
+        "time": "2016-12-20 13:26:02",
         "type": "composer-plugin",
         "extra": {
             "class": "yii\\composer\\Plugin",
@@ -3256,7 +3146,7 @@
             "yiisoft/yii2": "~2.0.13",
             "yiisoft/yii2-bootstrap": "~2.0.0"
         },
-        "time": "2017-12-05T07:36:23+00:00",
+        "time": "2017-12-05 07:36:23",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -3305,7 +3195,7 @@
             "fzaninotto/faker": "~1.4",
             "yiisoft/yii2": "~2.0.0"
         },
-        "time": "2018-02-19T20:27:10+00:00",
+        "time": "2018-02-19 20:27:10",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -3356,7 +3246,7 @@
             "yiisoft/yii2": "~2.0.13",
             "yiisoft/yii2-bootstrap": "~2.0.0"
         },
-        "time": "2017-12-22T23:53:06+00:00",
+        "time": "2017-12-22 23:53:06",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -3409,7 +3299,7 @@
             "swiftmailer/swiftmailer": "~5.0",
             "yiisoft/yii2": "~2.0.4"
         },
-        "time": "2017-05-01T08:29:00+00:00",
+        "time": "2017-05-01 08:29:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -3439,6 +3329,116 @@
             "mailer",
             "swift",
             "swiftmailer",
+            "yii2"
+        ]
+    },
+    {
+        "name": "kartik-v/yii2-grid",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/kartik-v/yii2-grid.git",
+            "reference": "99305cae59eabc465d7c84159d2e00725899f15b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/kartik-v/yii2-grid/zipball/99305cae59eabc465d7c84159d2e00725899f15b",
+            "reference": "99305cae59eabc465d7c84159d2e00725899f15b",
+            "shasum": ""
+        },
+        "require": {
+            "kartik-v/yii2-dialog": "~1.0",
+            "kartik-v/yii2-krajee-base": "~1.7"
+        },
+        "suggest": {
+            "kartik-v/yii2-mpdf": "For exporting grids to PDF"
+        },
+        "time": "2018-04-15 12:53:43",
+        "type": "yii2-extension",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "kartik\\grid\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Kartik Visweswaran",
+                "email": "kartikv2@gmail.com",
+                "homepage": "http://www.krajee.com/"
+            }
+        ],
+        "description": "Yii 2 GridView on steroids. Various enhancements and utilities for the Yii 2.0 GridView widget.",
+        "homepage": "https://github.com/kartik-v/yii2-grid",
+        "keywords": [
+            "extension",
+            "grid",
+            "widget",
+            "yii2"
+        ]
+    },
+    {
+        "name": "kartik-v/yii2-widget-select2",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/kartik-v/yii2-widget-select2.git",
+            "reference": "d08a5b302fe04216bd04290f0e99e26386801a37"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/kartik-v/yii2-widget-select2/zipball/d08a5b302fe04216bd04290f0e99e26386801a37",
+            "reference": "d08a5b302fe04216bd04290f0e99e26386801a37",
+            "shasum": ""
+        },
+        "require": {
+            "kartik-v/yii2-krajee-base": "~1.7"
+        },
+        "time": "2018-02-24 05:28:25",
+        "type": "yii2-extension",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "kartik\\select2\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Kartik Visweswaran",
+                "email": "kartikv2@gmail.com",
+                "homepage": "http://www.krajee.com/"
+            }
+        ],
+        "description": "Enhanced Yii2 wrapper for the Select2 jQuery plugin (sub repo split from yii2-widgets).",
+        "homepage": "https://github.com/kartik-v/yii2-widget-select2",
+        "keywords": [
+            "dropdown",
+            "extension",
+            "form",
+            "jquery",
+            "plugin",
+            "select2",
+            "widget",
             "yii2"
         ]
     }
