@@ -125,4 +125,14 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     {
         return $this->password === md5($password);
     }
+
+    // This function to limit the access level of logged in user
+    public static function accessLevel($accessArray)
+    {   if(!isset(\Yii::$app->user->isGuest))
+            return Yii::$app->getController()->redirect(['site/logout']);
+        $access_level = explode(',', \Yii::$app->user->identity->level);
+        if(count(array_intersect($access_level, $accessArray)) > 0)
+            return true;
+        return false;
+    }
 }

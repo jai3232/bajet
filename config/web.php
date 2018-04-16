@@ -52,6 +52,16 @@ $config = [
         ],
         */
     ],
+    'container' => [
+        'definitions' => [
+            yii\grid\GridView::class => [
+                'tableOptions' => [
+                    'class' => 'table table-condensed table-striped table-bordered table-hover',
+                ],
+                'headerRowOptions' => ['class'=>'thead-dark',]
+            ],
+        ],
+    ],
     'params' => $params,
 ];
 

@@ -43,12 +43,18 @@ AppAsset::register($this);
                     ['label' => 'Pengguna', 'url' => ['/pengguna/index']],
                     ['label' => 'Jabatan', 'url' => ['/jabatan/index']],
                 ],
-                'visible' => !Yii::$app->user->isGuest,
+                'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([1]) : false,
             ],
             ['label' => 'Daftar', 'url' => ['/site/register'], 'visible' => Yii::$app->user->isGuest],
             ['label' => 'Unjuran', 'items' => [
-                                                ['label' => 'Unjuran Program', 'url' => ['/unjuran/index', 'id' => Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->id_jabatan]],
-                                                ['label' => 'Unjuran Semua', 'url' => ['/unjuran/index']],
+                                                [
+                                                    'label' => 'Unjuran Program',
+                                                    'url' => ['/unjuran/index', 'id' => Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->id_jabatan]],
+                                                [
+                                                    'label' => 'Unjuran Semua', 
+                                                    'url' => ['/unjuran/index-all'],
+                                                    'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([1, 3, 4, 5]) : false,
+                                                ],
                                               ], 
                                               'visible' => !Yii::$app->user->isGuest],
             ['label' => 'About', 'url' => ['/site/about']],

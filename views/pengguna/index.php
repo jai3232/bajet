@@ -53,7 +53,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'level',
                 'format' => 'raw',
                 'value' => function($model) {
-                        return Html::dropDownList('level', $model->level, ArrayHelper::map(KumpulanPengguna::find()->all(), 'id', 'nama'), ['class' => 'form-control']);
+                        return Html::dropDownList('level', 
+                                                    $model->level, 
+                                                    ArrayHelper::map(KumpulanPengguna::find()->all(), 'id', 'nama'), 
+                                                    [
+                                                        'class' => 'form-control level-control',
+                                                        'dir' => Url::to(['pengguna/set-level']),
+                                                        'id' => $model->id,
+                                                    ]
+                                                 );
                 },
                 'filter' => ArrayHelper::map(KumpulanPengguna::find()->all(), 'id', 'nama'),
             ],
@@ -74,7 +82,24 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             //'date',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            //['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'header' => 'Tindakan',
+                'contentOptions' => ['class' => 'text-center'],
+                'template' => '{update} {delete}',
+                'buttons' => [
+                    'delete' => function($url, $model){
+                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
+                            'class' => '',
+                            'data' => [
+                                'confirm' => 'Padam rekod ini?',
+                                'method' => 'post',
+                            ],
+                        ]);
+                    }
+                ]
+            ],
         ],
     ]); ?>
     <?php Pjax::end(); ?>
@@ -83,6 +108,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
     
 $this->registerJs('
+
+    var selectVal = 0;
+
     $(document).on("pjax:success", function() {
         $(".activate-user").on("click", function(){
             if(confirm("Set pengguna ini?")) {
@@ -92,6 +120,19 @@ $this->registerJs('
                  $(this).prop("checked", !$(this).prop("checked"));
 
         });
+
+        $(".level-control").click(function(){
+            selectVal = $(this).val();
+        });    
+
+        $(".level-control").change(function(){
+            if(confirm("Set pengguna ini?")) {
+                $.post($(this).attr("dir"), {id: $(this).attr("id"), val: $(this).val()}, function(data) {
+                })
+            }
+            else
+                $(this).val(selectVal);
+        });
     });
 
     $(".activate-user").on("click", function(){
@@ -100,6 +141,19 @@ $this->registerJs('
         }
         else
              $(this).prop("checked", !$(this).prop("checked")); 
+    });
+
+    $(".level-control").click(function(){
+        selectVal = $(this).val();
+    });    
+
+    $(".level-control").change(function(){
+        if(confirm("Set pengguna ini?")) {
+            $.post($(this).attr("dir"), {id: $(this).attr("id"), val: $(this).val()}, function(data) {
+            })
+        }
+        else
+            $(this).val(selectVal);
     });
 ');
 ?>

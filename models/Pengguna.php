@@ -23,6 +23,8 @@ class Pengguna extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public $password_ulang;
+
     public static function tableName()
     {
         return 'pengguna';
@@ -39,8 +41,10 @@ class Pengguna extends \yii\db\ActiveRecord
             [['date'], 'safe'],
             [['nama'], 'string', 'max' => 100],
             [['no_kp'], 'string', 'max' => 12],
-            [['password'], 'string', 'max' => 32],
+            [['password'], 'string', 'min' => 6, 'max' => 32],
+            [['password_ulang'], 'compare', 'compareAttribute'=>'password', 'skipOnEmpty' => true, 'message'=>"Katalaluan tidak sama"],
             [['emel'], 'string', 'max' => 50],
+            [['emel'], 'email'], 
             [['no_kp', 'emel'], 'unique'],
         ];
     }
@@ -72,5 +76,10 @@ class Pengguna extends \yii\db\ActiveRecord
     public function getUnit()
     {
         return $this->hasOne(Unit::className(), ['id' => 'id_unit']);
+    }
+
+    public function getLevel0()
+    {
+        return $this->hasOne(KumpulanPengguna::className(), ['id' => 'level']);
     }
 }

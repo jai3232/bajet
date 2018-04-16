@@ -24,6 +24,14 @@ use yii\captcha\Captcha;
 
     <?= $form->field($model, 'id_unit')->dropdownList([], [])->label('Unit') ?>
 
+    <?php if($model->isNewRecord) { ?>
+
+    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true])->label('Katalaluan') ?>
+
+    <?= $form->field($model, 'password_ulang')->passwordInput(['maxlength' => true])->label('Ulang Katalaluan') ?>
+
+    <?php } ?>
+
     <?= $form->field($model, 'emel')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">

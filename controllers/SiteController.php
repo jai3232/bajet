@@ -146,6 +146,11 @@ class SiteController extends Controller
         return $this->render('success');
     }
 
+    public function actionUnauthorized()
+    {
+        return $this->render('unauthorized');
+    }
+
     /**
      * Displays about page.
      *

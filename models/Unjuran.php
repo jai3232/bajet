@@ -85,4 +85,14 @@ class Unjuran extends \yii\db\ActiveRecord
             'user' => 'User',
         ];
     }
+
+    public function getJabatan()
+    {
+        return $this->hasOne(Jabatan::className(), ['id' => 'id_jabatan']);
+    }
+
+    public function getUnit()
+    {
+        return $this->hasOne(Unit::className(), ['id' => 'id_unit']);
+    }
 }

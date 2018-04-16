@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 use app\models\Jabatan;
 use app\models\Os;
 use app\models\Unjuran;
-use app\controllers\UnjuranController;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Unjuran */
@@ -28,7 +28,17 @@ for($i = $currentYear; $i < $currentYear + 5; $i++) {
 
     <?php //= $form->field($model, 'kod_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'os')->dropdownList(ArrayHelper::map(Os::find()->all(), 'os', 'os'), ['prompt' => '- Sila Pilih -'])->label('OS') ?>
+    <?php //= $form->field($model, 'os')->dropdownList(ArrayHelper::map(Os::find()->all(), 'os', 'os'), ['prompt' => '- Sila Pilih -'])->label('OS') ?>
+
+    <?= $form->field($model, 'os')->widget(Select2::classname(), [
+            'data' => ArrayHelper::map(Os::find()->select(['os', 'CONCAT(os, \' \' , butiran) AS butiran'])->all(), 'os', 'butiran'),
+            'language' => 'ms',
+            'options' => ['placeholder' => '- Sila Pilih -'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ])->label('OS');
+    ?>
 
     <?= $form->field($model, 'ol')->textInput(['maxlength' => true])->label('OL') ?>
 

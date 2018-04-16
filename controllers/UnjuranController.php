@@ -8,6 +8,7 @@ use app\models\UnjuranSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * UnjuranController implements the CRUD actions for Unjuran model.
@@ -20,6 +21,17 @@ class UnjuranController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index'],
+                'rules' => [
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -35,6 +47,19 @@ class UnjuranController extends Controller
      */
     public function actionIndex()
     {
+        $searchModel = new UnjuranSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionIndexAll()
+    {
+        if(!Yii::$app->user->identity->accessLevel([1, 3, 4, 5]))
+            return $this->redirect(['site/unauthorized']);
         $searchModel = new UnjuranSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -69,7 +94,7 @@ class UnjuranController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->kod_id = self::generateCode('U', empty(Unjuran::find()->max('id')) ? 1 : Unjuran::find()->max('id') + 1);
             if($model->save())
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index', 'UnjuranSearch[tahun]' => $model->tahun]);
             else
                 return print_r($model->getErrors());
         }

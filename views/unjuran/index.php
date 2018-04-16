@@ -8,23 +8,28 @@ use app\models\Jabatan;
 /* @var $searchModel app\models\UnjuranSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Unjuran ' . (isset($_GET['id']) ? Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan : 'Jabatan');
-$this->params['breadcrumbs'][] = $this->title;
-?>
-<?php
-
 $currentYear = date("Y"); 
 $yearList = ['' => ''];
 for($i = $currentYear - 5; $i < $currentYear + 5; $i++) {
     $yearList[$i] = $i; 
 }
-$kodList = ['@' => '', '' => 'ABCD', 'A' => 'A', 'B' => 'B', 'C' => 'C', 'D' => 'D'];
+$kodList = ['' => 'ABCD', 'A' => 'A', 'B' => 'B', 'C' => 'C', 'D' => 'D'];
 
+if(!isset($_GET['UnjuranSearch']['tahun']))
+    $selectedYear = $currentYear;
+else
+    $selectedYear = $_GET['UnjuranSearch']['tahun'];
+
+//print_r(Yii::$app->request->get('UnjuranSearch')['tahun']);
+
+$this->title = 'Unjuran Jabatan/Bahagian ' . (isset($_GET['id']) ? Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan : 'Jabatan') 
+                          . ' '.$selectedYear;;
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="unjuran-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php Pjax::begin(); ?>
+    <?php //Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
@@ -47,33 +52,51 @@ $kodList = ['@' => '', '' => 'ABCD', 'A' => 'A', 'B' => 'B', 'C' => 'C', 'D' => 
                 'label' => 'OL',
                 'attribute' => 'ol',
             ],
-            //'id_jabatan',
+            [
+                'label' => 'Jabatan',
+                'attribute' => 'id_jabatan',
+                'value' => 'jabatan.jabatan',
+                'visible' => Yii::$app->user->identity->accessLevel([1, 3, 4, 5]),
+                'filter' => Html::textInput('UnjuranSearch[jabatan]', $searchModel->jabatan, ['class' => 'form-control']),
+            ],
             [
                 'label' => 'Unit',
                 'attribute' => 'id_unit',
+                'value' => 'unit.unit',
+                'filter' => Html::textInput('UnjuranSearch[unit]', $searchModel->unit, ['class' => 'form-control']),
             ],
             'butiran:ntext',
             //'kuantiti',
             [
                 'attribute' => 'kod',
-                'filter' => Html::dropDownList('UnjuranSearch[kod]', null , $kodList, ['class' => 'form-control'])
+                'filter' => Html::dropDownList('UnjuranSearch[kod]', $searchModel->kod , $kodList, ['class' => 'form-control'])
             ],
-            [
-                'attribute' => 'jumlah_unjuran',
-                'contentOptions' => ['class' => 'text-right'],
-                'value' => function($model) {
-                    return number_format($model->jumlah_unjuran);  
-                } 
-            ],
-            //'kongsi',
-            'public',
+            // [
+            //     'attribute' => 'jumlah_unjuran',
+            //     // 'label' => 'Jumlah <br/> Unjuran',
+            //     // 'format' => 'raw',
+            //     // 'encodeLabel' => false,
+            //     'contentOptions' => ['class' => 'text-right'],
+            //     'value' => function($model) {
+            //         return number_format($model->jumlah_unjuran);  
+            //     } 
+            // ],
+            // //'kongsi',
+            // 'public',
             [
                 'attribute' => 'tahun',
-                'filter' => Html::dropDownList('UnjuranSearch[tahun]', null , $yearList, ['class' => 'form-control'])
+                'filter' => Html::dropDownList('UnjuranSearch[tahun]', $searchModel->tahun, $yearList, ['class' => 'form-control'])
             ],
             'catatan:ntext',
             //'status',
-            'sah',
+            [
+                'label' => 'Sah',
+                'attribute' => 'sah',
+                'format' => 'raw',
+                'value' => function($model) {
+                    return Html::checkbox('sah', !$model->sah ? false : true);
+                }
+            ],
             //'tarikh_jadi',
             //'tarikh_kemaskini',
             //'user',
@@ -81,5 +104,5 @@ $kodList = ['@' => '', '' => 'ABCD', 'A' => 'A', 'B' => 'B', 'C' => 'C', 'D' => 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-    <?php Pjax::end(); ?>
+    <?php //Pjax::end(); ?>
 </div>
