@@ -23,22 +23,25 @@ array_push($agihan_column, ['id' => -2, 'jabatan' => 'Jumlah', 'ringkasan' => 'J
 array_push($agihan_column, ['id' => -3, 'jabatan' => 'Baki', 'ringkasan' => 'Baki']);
 array_push($agihan_column, ['id' => -4, 'jabatan' => 'Jumlah Waran', 'ringkasan' => 'Jumlah Waran']);
 
-$a = Agihan::find()->leftJoin('jabatan', 'agihan.id_jabatan = jabatan.id')->where(['tahun' => $year])->asArray()->orderby('os, jabatan.ringkasan')->all();
-echo json_encode($a);
+//$agihans = Agihan::find()->leftJoin('jabatan', 'agihan.id_jabatan = jabatan.id')->where(['tahun' => $year])->asArray()->orderby('os, jabatan.ringkasan')->all();
+//echo json_encode($agihans);
 
 ?>
 <h1>agihan/index</h1>
-<div class="form-group year">
-	<form id="form-year" method="post">
-		<select class="form-control" name="year" id="select-year">
-		<?php
-			foreach ($yearList as $key => $value) {
-				$selected = $value == $year ? 'selected' : '';
+<div class="form-group row year">
+	<form id="form-year" method="post" class="form-inline">
+		<div class="col-xs-4">
+			<label>Tahun </label>
+			<select class="form-control" name="year" id="select-year">
+			<?php
+				foreach ($yearList as $key => $value) {
+					$selected = $value == $year ? 'selected' : '';
 
-				echo '<option value="'.$value.'" '.$selected.'>'.$value.'</option>';
-			}
-		?>
-		</select>
+					echo '<option value="'.$value.'" '.$selected.'>'.$value.'</option>';
+				}
+			?>
+			</select>
+		</div>
 		<input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
 	</form>
 </div>
@@ -46,6 +49,7 @@ echo json_encode($a);
 	<button class="btn btn-primary btn-kemaskini">Kemaskini Agihan</button>
 </div> -->
 
+<div class="output" style="overflow-y: auto">
 <div class="grid-view">
 	<table class="table table-condensed table-striped table-bordered table-hover table-responsive">
 		<thead class="thead-dark">
@@ -65,6 +69,7 @@ echo json_encode($a);
 					echo '<tr><td>'.$i++.'</td>';
 					//$agihan_data = $agihan->where(['os' => $value1['os'], 'tahun' => $year])->asArray()->all();
 					//print_r($agihan_data); echo "<br>";
+
 					foreach ($agihan_column as $key => $value2) {
 						$class = '';
 						if($value2['jabatan'] == 'OS') {
@@ -72,13 +77,13 @@ echo json_encode($a);
 						}
 						if($value2['jabatan'] == 'Jumlah Waran'){
 							$value2['jabatan'] = number_format($value1['total'], 2); 
-							$class = 'class="text-right" id="waran-'.$value1['os'].'"';
+							$class = 'class="text-right waran" id="waran-'.$value1['os'].'"';
 						}
 						if($value2['id'] <= 0) {
 							if($value2['jabatan'] == 'Jumlah')
-								echo '<td id="jumlah-'.$value1['os'].'" class="text-right"></td>';
+								echo '<td id="jumlah-'.$value1['os'].'" class="text-right jumlah'.$value2['id'].'"></td>';
 							elseif($value2['jabatan'] == 'Baki')
-								echo '<td id="baki-'.$value1['os'].'" class="text-right"></td>';
+								echo '<td id="baki-'.$value1['os'].'" class="text-right baki'.$value2['id'].'"></td>';
 							else
 								echo '<td '.$class.'>'.$value2['jabatan'].'</td>';
 						}
@@ -102,10 +107,16 @@ echo json_encode($a);
 						}
 
 							//echo '<td> <input type="number" id="'.$value1['os'].'_'.$value2['id'].'" class="input-agihan text-right column'.$value2['id'].'"></td>';
+							$input_value = Agihan::find()->select(['agihan_jabatan'])->where([
+											'os' => $value1['os'],
+											'id_jabatan' => $value2['id'], 
+											'tahun' => $year
+										])->asArray()->one()['agihan_jabatan'];
 
 							echo '<td>'. MaskedInput::widget([
 							    'name' => $value1['os'].'_'.$value2['id'],
 							    'id' => $value1['os'].'_'.$value2['id'],
+							    'value' => $input_value,
 							    'options' => [
 							    	'class' => 'form-control input-agihan column'.$value2['id'].' row-'.$value1['os'],
 							    ],
@@ -142,6 +153,7 @@ echo json_encode($a);
 		<button class="btn btn-primary btn-kemaskini">Kemaskini Agihan</button>
 	</div> -->
 </div>
+</div>
 
 <?php 
 /*echo MaskedInput::widget([
@@ -167,6 +179,9 @@ echo json_encode($a);
 	');
 
 	$this->registerJs('
+
+		var background_red = false;
+
 		$("#select-year").change(function(){
 			$("#form-year").submit();
 		});
@@ -187,7 +202,6 @@ echo json_encode($a);
 			var id = $(this).attr("id");
 			var os = id.split("_")[0];
 			var jabatan = id.split("_")[1];
-			//console.log(jabatan);
 			var column_jabatan = $(".column"+jabatan);
 			var total_column = 0;
 			for(var i = 0; i < column_jabatan.length; i++) {
@@ -200,9 +214,19 @@ echo json_encode($a);
 			for(var i = 0; i < row_os.length; i++) {
 				total_row += row_os.eq(i).val().replace(/,/g, "") / 1;
 			}
-			console.log(row_os.length);
+
 			$("#jumlah-"+os).html(total_row.currency());
 			$("#baki-"+os).html(($("#waran-"+os).text().replace(/,/g, "") / 1 - $("#jumlah-"+os).text().replace(/,/g, "") / 1).currency());
+
+			if($("#baki-"+os).text().replace(/,/g, "") / 1 < 0) {
+				$(this).css("background", "red");
+				background_red = true;
+				alert("Agihan melebihi waran peruntukan");
+			}
+			else {
+				$(this).css("background", "");	
+				background_red = false;
+			}
 		});
 
 		Number.prototype.currency = function() {
@@ -212,19 +236,76 @@ echo json_encode($a);
 		$(".input-agihan").trigger("keyup");
 
 		$(".input-agihan").change(function(data){
-			if(confirm("Simpan kemaskini data?")) {
-				var id = $(this).attr("id");
-				var os = id.split("_")[0];
-				var jabatan = id.split("_")[1];
-				var val = $(this).val().replace(/,/g, "");
-				$.post("'.Url::to(['waran/update-agihan']).'", {os:os, jabatan:jabatan, tahun:'.$year.', value:val}, function(data){ 
-					alert(data);
-				});
+			if($(this).val() == "") {
+				$(this).focus();
+				$(this).attr("placeholder", "Sila masukkan nombor.");
+				$(this).css("background", "red");
+				return false;
 			}
-			else {
-				$(this).val(input_value);
+			else if($(this).css("background") == "red")
+				$(this).css("background", "");
+
+			var jumlah = 0;
+			var class_jumlah = $(".jumlah-2");
+			for(var i = 0; i < class_jumlah.length; i++) {
+				jumlah += class_jumlah.eq(i).text().replace(/,/g, "") / 1;
+			}
+			$("#footer-2").html(jumlah.currency());
+
+			var jumlah_baki = 0;
+			var class_baki = $(".baki-3");
+			for(var i = 0; i < class_baki.length; i++) {
+				jumlah_baki += class_baki.eq(i).text().replace(/,/g, "") / 1;
+			}
+			$("#footer-3").html(jumlah_baki.currency());
+
+			var jumlah_waran = 0;
+			var class_waran = $(".waran");
+			for(var i = 0; i < class_waran.length; i++) {
+				jumlah_waran += class_waran.eq(i).text().replace(/,/g, "") / 1;
+			}
+			$("#footer-4").html(jumlah_waran.currency());
+
+			//if($(this).css("background") != "red") {
+			if(!background_red) {
+				if(confirm("Simpan kemaskini data?")) {
+					var id = $(this).attr("id");
+					var os = id.split("_")[0];
+					var jabatan = id.split("_")[1];
+					var val = $(this).val().replace(/,/g, "");
+					$(this).css("background", "white");
+					$.post("'.Url::to(['waran/update-agihan']).'", {os:os, jabatan:jabatan, tahun:'.$year.', value:val}, function(data){ 
+						if(data)
+							alert("Kemaskini berjaya");
+					});
+				}
+				else {
+					$(this).val(input_value);
+				}
 			}
 		});
+
+		var jumlah = 0;
+		var class_jumlah = $(".jumlah-2");
+		for(var i = 0; i < class_jumlah.length; i++) {
+			jumlah += class_jumlah.eq(i).text().replace(/,/g, "") / 1;
+		}
+		$("#footer-2").html(jumlah.currency());
+
+		var jumlah_baki = 0;
+		var class_baki = $(".baki-3");
+		for(var i = 0; i < class_baki.length; i++) {
+			jumlah_baki += class_baki.eq(i).text().replace(/,/g, "") / 1;
+		}
+		$("#footer-3").html(jumlah_baki.currency());
+
+		var jumlah_waran = 0;
+		var class_waran = $(".waran");
+		for(var i = 0; i < class_waran.length; i++) {
+			jumlah_waran += class_waran.eq(i).text().replace(/,/g, "") / 1;
+		}
+		$("#footer-4").html(jumlah_waran.currency());
+
 
 		// $(".input-agihan").inputmask("numeric", {
 		//     radixPoint: ".",
