@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\models\Jabatan;
+use yii\bootstrap\Modal;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UnjuranSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -28,13 +29,30 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="unjuran-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h2><?php //= Html::encode($this->title) ?></h2>
     <?php //Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Tambah Unjuran', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= isset($all) ? '' : Html::a('Tambah Unjuran', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+    <div class="alert alert-info">
+        A: Diluluskan, B: Wajib, C: Keutamaan, D: Kurang Utama
+    </div>
+
+    <?php
+
+        Modal::begin([
+            'header' => '<h3 id="modal-header">Penukaran Kod A</h3>',
+            'id' => 'modal',
+            'clientOptions' => ['backdrop' => 'static'],
+            'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>',
+        ]);
+
+        echo '<div id="modalContent"></div>';
+        Modal::end();
+
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -69,18 +87,19 @@ $this->params['breadcrumbs'][] = $this->title;
             //'kuantiti',
             [
                 'attribute' => 'kod',
+                'contentOptions' => ['class' => 'text-center'],
                 'filter' => Html::dropDownList('UnjuranSearch[kod]', $searchModel->kod , $kodList, ['class' => 'form-control'])
             ],
-            // [
-            //     'attribute' => 'jumlah_unjuran',
-            //     // 'label' => 'Jumlah <br/> Unjuran',
-            //     // 'format' => 'raw',
-            //     // 'encodeLabel' => false,
-            //     'contentOptions' => ['class' => 'text-right'],
-            //     'value' => function($model) {
-            //         return number_format($model->jumlah_unjuran);  
-            //     } 
-            // ],
+            [
+                'attribute' => 'jumlah_unjuran',
+                'label' => 'Unjuran',
+                // 'format' => 'raw',
+                //'encodeLabel' => false,
+                'contentOptions' => ['class' => 'text-right'],
+                'value' => function($model) {
+                    return number_format($model->jumlah_unjuran);  
+                } 
+            ],
             // //'kongsi',
             // 'public',
             [
@@ -92,6 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Sah',
                 'attribute' => 'sah',
+                'contentOptions' => ['class' => 'text-center'],
                 'format' => 'raw',
                 'value' => function($model) {
                     return Html::checkbox('sah', !$model->sah ? false : true);
@@ -105,7 +125,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Tindakan',
                 'contentOptions' => ['class' => 'text-center'],
-                'template' => '{update} {delete}',
+                'template' => '{update} {delete} {a} {list}',
                 'buttons' => [
                     'delete' => function($url, $model){
                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
@@ -115,6 +135,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'method' => 'post',
                             ],
                         ]);
+                    },
+                    'a' => function($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-text-background" title="Tukar kod A"></span>', ['a', 'id' => $model->id]);
+                    },
+                    'list' => function($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-list"></span>', ['list', 'id' => $model->id]);
                     }
                 ]
             ],
@@ -122,3 +148,14 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
     <?php //Pjax::end(); ?>
 </div>
+
+<?php
+$this->registerJs('
+    $(".unjuran-index .glyphicon-text-background").click(function(){
+        $("#modal").modal("show").find("#modalContent").load($(this).parent().attr("href"));
+        $("#modal-header").html("Penukaran Kod A");
+        return false;
+    });
+');
+
+?>

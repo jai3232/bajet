@@ -21,6 +21,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $jenis;
     public $aktif;
     public $date;
+    public $user;
 
     private static $users = [
         '100' => [

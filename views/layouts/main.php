@@ -57,6 +57,12 @@ AppAsset::register($this);
                                                 ],
                                               ], 
                                               'visible' => !Yii::$app->user->isGuest],
+            ['label' => 'Waran', 'items' => [
+                    ['label' => 'Senarai Waran', 'url' => ['/waran/index']],
+                    ['label' => 'Masukan Waran', 'url' => ['/waran/create']],
+                    ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
+                ] 
+            ],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (

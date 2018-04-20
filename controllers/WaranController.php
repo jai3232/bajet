@@ -3,17 +3,18 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Unjuran;
-use app\models\UnjuranSearch;
+use app\models\Waran;
+use app\models\WaranSearch;
+use app\models\Jabatan;
+use app\models\Agihan;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 
 /**
- * UnjuranController implements the CRUD actions for Unjuran model.
+ * WaranController implements the CRUD actions for Waran model.
  */
-class UnjuranController extends Controller
+class WaranController extends Controller
 {
     /**
      * @inheritdoc
@@ -21,17 +22,6 @@ class UnjuranController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['index'],
-                'rules' => [
-                    [
-                        'actions' => ['index'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -42,36 +32,22 @@ class UnjuranController extends Controller
     }
 
     /**
-     * Lists all Unjuran models.
+     * Lists all Waran models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UnjuranSearch();
+        $searchModel = new WaranSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    public function actionIndexAll()
-    {
-        if(!Yii::$app->user->identity->accessLevel([1, 3, 4, 5]))
-            return $this->redirect(['site/unauthorized']);
-        $searchModel = new UnjuranSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'all' => true,
         ]);
     }
 
     /**
-     * Displays a single Unjuran model.
+     * Displays a single Waran model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -84,21 +60,16 @@ class UnjuranController extends Controller
     }
 
     /**
-     * Creates a new Unjuran model.
+     * Creates a new Waran model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Unjuran();
+        $model = new Waran();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->kod_id = self::generateCode('U', empty(Unjuran::find()->max('id')) ? 1 : Unjuran::find()->max('id') + 1);
-            $model->user = Yii::$app->user->identity->id;
-            if($model->save())
-                return $this->redirect(['index', 'UnjuranSearch[tahun]' => $model->tahun]);
-            else
-                return print_r($model->getErrors());
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -107,7 +78,7 @@ class UnjuranController extends Controller
     }
 
     /**
-     * Updates an existing Unjuran model.
+     * Updates an existing Waran model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -127,7 +98,7 @@ class UnjuranController extends Controller
     }
 
     /**
-     * Deletes an existing Unjuran model.
+     * Deletes an existing Waran model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -140,30 +111,50 @@ class UnjuranController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionA($id)
+
+    public function actionAgihan()
     {
-        return $this->renderAjax('a', ['model' => $this->findModel($id)]);
+        $jabatan = Jabatan::find();
+        $waran = Waran::find();
+        $agihan = Agihan::find();
+
+        return $this->render('agihan', [
+            'jabatan' => $jabatan,
+            'waran' => $waran,
+            'agihan' => $agihan,
+        ]);
     }
 
-    static function generateCode($c, $data) {
-        $dLength = strlen($data);
-        $str = $c;
-        $sLength = strlen($c);
-        for($i = 0; $i < (10 - $dLength - $sLength); $i++)
-            $str .= "0";
-        return ($str.$data);
-    }
+    public function actionUpdateAgihan()
+    {
+        $os = $_POST['os'];
+        $id_jabatan = $_POST['jabatan'];
+        $tahun = $_POST['tahun'];
+        $value = $_POST['value'];
+
+        $model = Agihan::findOne([
+            'id_jabatan' => $id_jabatan,
+            'os' => $os,
+            'tahun' => $tahun,
+        ]);
+        //return $value;
+        $model->agihan_jabatan = $value;
+        if(!$model->save())
+            return json_encode($model->getErrors());
+        return true;
+
+    }    
 
     /**
-     * Finds the Unjuran model based on its primary key value.
+     * Finds the Waran model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Unjuran the loaded model
+     * @return Waran the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Unjuran::findOne($id)) !== null) {
+        if (($model = Waran::findOne($id)) !== null) {
             return $model;
         }
 
