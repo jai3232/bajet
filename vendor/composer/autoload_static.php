@@ -18,6 +18,7 @@ class ComposerStaticInit7b1b3caab82c15bfbb902c3aa1cab7cb
         'y' => 
         array (
             'yii\\swiftmailer\\' => 16,
+            'yii\\jui\\' => 8,
             'yii\\gii\\' => 8,
             'yii\\faker\\' => 10,
             'yii\\debug\\' => 10,
@@ -35,9 +36,13 @@ class ComposerStaticInit7b1b3caab82c15bfbb902c3aa1cab7cb
         ),
         'k' => 
         array (
+            'kartik\\sortable\\' => 16,
             'kartik\\select2\\' => 15,
             'kartik\\mpdf\\' => 12,
             'kartik\\grid\\' => 12,
+            'kartik\\form\\' => 12,
+            'kartik\\export\\' => 14,
+            'kartik\\dynagrid\\' => 16,
             'kartik\\dialog\\' => 14,
             'kartik\\base\\' => 12,
         ),
@@ -92,6 +97,10 @@ class ComposerStaticInit7b1b3caab82c15bfbb902c3aa1cab7cb
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-swiftmailer',
         ),
+        'yii\\jui\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-jui',
+        ),
         'yii\\gii\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-gii',
@@ -126,6 +135,10 @@ class ComposerStaticInit7b1b3caab82c15bfbb902c3aa1cab7cb
         array (
             0 => __DIR__ . '/..' . '/miloschuman/yii2-highcharts-widget/src',
         ),
+        'kartik\\sortable\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-sortable',
+        ),
         'kartik\\select2\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-select2',
@@ -137,6 +150,18 @@ class ComposerStaticInit7b1b3caab82c15bfbb902c3aa1cab7cb
         'kartik\\grid\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-grid',
+        ),
+        'kartik\\form\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-activeform',
+        ),
+        'kartik\\export\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-export',
+        ),
+        'kartik\\dynagrid\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-dynagrid',
         ),
         'kartik\\dialog\\' => 
         array (
@@ -235,6 +260,10 @@ class ComposerStaticInit7b1b3caab82c15bfbb902c3aa1cab7cb
             'Prophecy\\' => 
             array (
                 0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
+            ),
+            'PHPExcel' => 
+            array (
+                0 => __DIR__ . '/..' . '/phpoffice/phpexcel/Classes',
             ),
         ),
         'H' => 

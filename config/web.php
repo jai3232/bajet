@@ -52,13 +52,20 @@ $config = [
         ],
         */
     ],
+    'modules' => [
+        'gridview' => ['class' => 'kartik\grid\Module'],
+    ],
     'container' => [
         'definitions' => [
             yii\grid\GridView::class => [
                 'tableOptions' => [
-                    'class' => 'table table-condensed table-striped table-bordered table-hover',
+                    'class' => 'table table-condensed table-striped table-bordered table-hover table-responsive',
                 ],
                 'headerRowOptions' => ['class'=>'thead-dark',]
+            ],
+            'yii\widgets\LinkPager' => [
+                'firstPageLabel' => 'Pertama',
+                'lastPageLabel'  => 'Terakhir'
             ],
         ],
     ],

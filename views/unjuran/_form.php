@@ -5,6 +5,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use app\models\Jabatan;
+use app\models\Unit;
 use app\models\Os;
 use app\models\Unjuran;
 use kartik\select2\Select2;
@@ -20,6 +21,7 @@ $yearList = [];
 for($i = $currentYear; $i < $currentYear + 5; $i++) {
     $yearList[$i] = $i; 
 }
+$id_jabatan_personal = Yii::$app->user->identity->id_jabatan;
 
 ?>
 <div class="unjuran-form">
@@ -42,9 +44,14 @@ for($i = $currentYear; $i < $currentYear + 5; $i++) {
 
     <?= $form->field($model, 'ol')->textInput(['maxlength' => true])->label('OL') ?>
 
-    <?= $form->field($model, 'id_jabatan')->dropdownList(ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'), ['prompt' => '- Sila Pilih -', 'onchange' => '$.get("'.Url::to(['pengguna/unit-list']).'", {id: this.value}, function(data){$("#unjuran-id_unit").html(data); $("#unjuran-id_unit").val('.$model->id_unit.');});'])->label('Jabatan'); ?>
+    <?php //= $form->field($model, 'id_jabatan')->dropdownList(ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'), ['prompt' => '- Sila Pilih -', 'onchange' => '$.get("'.Url::to(['pengguna/unit-list']).'", {id: this.value}, function(data){$("#unjuran-id_unit").html(data); $("#unjuran-id_unit").val('.$model->id_unit.');});'])->label('Jabatan'); ?>
 
-    <?= $form->field($model, 'id_unit')->dropdownList([''])->label('Unit') ?>
+    <?= $form->field($model, 'id_jabatan')->hiddenInput(['value' => $id_jabatan_personal])->label(false) ?>
+
+    <?= $form->field($model, 'id_unit')->dropdownList(
+            ArrayHelper::map(Unit::find()->where(['id_jabatan' => $id_jabatan_personal])->all(), 'id', 'unit'), 
+            ['prompt' => '- Sila Piliih -'])->label('Unit') 
+    ?>
 
     <?= $form->field($model, 'butiran')->textarea(['rows' => 2]) ?>
 

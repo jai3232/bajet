@@ -10,6 +10,7 @@ use app\models\Agihan;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\DynamicModel;
 
 /**
  * WaranController implements the CRUD actions for Waran model.
@@ -40,9 +41,18 @@ class WaranController extends Controller
         $searchModel = new WaranSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $field = [
+            'fileImport' => 'File Import',
+        ];
+        $modelImport = DynamicModel::validateData($field, [
+            [['fileImport'], 'required'],
+            [['fileImport'], 'file', 'extensions'=>'xls,xlsx','maxSize'=>1024*1024],
+        ]);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'modelImport' => $modelImport,
         ]);
     }
 
@@ -71,6 +81,8 @@ class WaranController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+
+        $model->status_waran = 0;
 
         return $this->render('create', [
             'model' => $model,
@@ -118,7 +130,7 @@ class WaranController extends Controller
         $waran = Waran::find();
         $agihan = Agihan::find();
 
-        return $this->render('agihan', [
+        return $this->render('distribution', [
             'jabatan' => $jabatan,
             'waran' => $waran,
             'agihan' => $agihan,

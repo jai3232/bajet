@@ -42,24 +42,34 @@ AppAsset::register($this);
             ['label' => 'Admin', 'items' => [
                     ['label' => 'Pengguna', 'url' => ['/pengguna/index']],
                     ['label' => 'Jabatan', 'url' => ['/jabatan/index']],
+                    ['label' => 'OS (Objek Sebagai)', 'url' => ['/os/index']],
                 ],
                 'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([1]) : false,
             ],
             ['label' => 'Daftar', 'url' => ['/site/register'], 'visible' => Yii::$app->user->isGuest],
             ['label' => 'Unjuran', 'items' => [
                                                 [
-                                                    'label' => 'Unjuran Program',
-                                                    'url' => ['/unjuran/index', 'id' => Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->id_jabatan]],
+                                                    'label' => 'Unjuran Jabatan/Bahagian',
+                                                    'url' => ['/unjuran/index', 'id' => Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->id_jabatan]
+                                                ],
                                                 [
                                                     'label' => 'Unjuran Semua', 
                                                     'url' => ['/unjuran/index-all'],
                                                     'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([1, 3, 4, 5]) : false,
                                                 ],
+                                                [
+                                                    'label' => 'Laporan Unjuran Jabatan/OS',
+                                                    'url' => ['/unjuran/report'],   
+                                                ],
+                                                [
+                                                    'label' => 'Laporan Unjuran OS/Kod',
+                                                    'url' => ['/unjuran/report-os-kod'],   
+                                                ],
                                               ], 
                                               'visible' => !Yii::$app->user->isGuest],
             ['label' => 'Waran', 'items' => [
                     ['label' => 'Senarai Waran', 'url' => ['/waran/index']],
-                    ['label' => 'Masukan Waran', 'url' => ['/waran/create']],
+                    ['label' => 'Tambah Waran', 'url' => ['/waran/create']],
                     ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
                 ] 
             ],

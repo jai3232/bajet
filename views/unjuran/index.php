@@ -23,13 +23,12 @@ else
 
 //print_r(Yii::$app->request->get('UnjuranSearch')['tahun']);
 
-$this->title = 'Unjuran Jabatan/Bahagian ' . (isset($_GET['id']) ? Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan : '') 
-                          . ' '.$selectedYear;;
+$this->title = 'Unjuran Jabatan/Bahagian '.Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan.' '.$selectedYear;;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="unjuran-index">
 
-    <h2><?php //= Html::encode($this->title) ?></h2>
+    <h2><?= Html::encode($this->title) ?></h2>
     <?php //Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -51,6 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         echo '<div id="modalContent"></div>';
         Modal::end();
+        $id_pengguna = Yii::$app->user->identity->id;
 
     ?>
 
@@ -70,13 +70,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'OL',
                 'attribute' => 'ol',
             ],
-            [
+            /*[
                 'label' => 'Jabatan',
                 'attribute' => 'id_jabatan',
                 'value' => 'jabatan.jabatan',
-                'visible' => Yii::$app->user->identity->accessLevel([1, 3, 4, 5]),
                 'filter' => Html::textInput('UnjuranSearch[jabatan]', $searchModel->jabatan, ['class' => 'form-control']),
-            ],
+            ],*/
             [
                 'label' => 'Unit',
                 'attribute' => 'id_unit',
@@ -113,6 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'sah',
                 'contentOptions' => ['class' => 'text-center'],
                 'format' => 'raw',
+                'visible' => Yii::$app->user->identity->accessLevel([3, 5, 6]),
                 'value' => function($model) {
                     return Html::checkbox('sah', !$model->sah ? false : true);
                 }
@@ -127,17 +127,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['class' => 'text-center'],
                 'template' => '{update} {delete} {a} {list}',
                 'buttons' => [
-                    'delete' => function($url, $model){
-                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
-                            'class' => '',
-                            'data' => [
-                                'confirm' => 'Padam rekod ini?',
-                                'method' => 'post',
-                            ],
+                    'update' => function($url, $model) {
+                        if(Yii::$app->user->identity->accessLevel([1, 2, 3, 4, 5, 6]) || Yii::$app->user->identity->id == $model->user ) //visible to kj only
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id], [
                         ]);
                     },
+                    'delete' => function($url, $model){
+                        if(Yii::$app->user->identity->accessLevel([1, 2, 3, 4, 5, 6]) || Yii::$app->user->identity->id == $model->user) //visible to kj only
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
+                                'class' => '',
+                                'data' => [
+                                    'confirm' => 'Padam rekod ini?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+                    },
                     'a' => function($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-text-background" title="Tukar kod A"></span>', ['a', 'id' => $model->id]);
+                        if(Yii::$app->user->identity->accessLevel([6])) //visible to kj only
+                            return Html::a('<span class="glyphicon glyphicon-text-background" title="Tukar kod A"></span>', ['a', 'id' => $model->id]);
                     },
                     'list' => function($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-list"></span>', ['list', 'id' => $model->id]);

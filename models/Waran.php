@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property string $no_waran
  * @property string $tarikh_waran
- * @property string $status_waran
+ * @property int $status_waran
  * @property string $tahun
  * @property string $os
  * @property double $jumlah_waran
@@ -34,12 +34,12 @@ class Waran extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['no_waran', 'tarikh_waran', 'status_waran', 'tahun', 'os', 'jumlah_waran', 'user'], 'required'],
+            [['no_waran', 'tarikh_waran', 'tahun', 'os', 'jumlah_waran', 'user'], 'required'],
             [['tarikh_waran', 'tarikh'], 'safe'],
+            [['status_waran'], 'integer'],
             [['jumlah_waran'], 'number'],
             [['catatan'], 'string'],
             [['no_waran'], 'string', 'max' => 15],
-            [['status_waran'], 'string', 'max' => 6],
             [['tahun'], 'string', 'max' => 4],
             [['os'], 'string', 'max' => 16],
             [['user'], 'string', 'max' => 30],
@@ -57,7 +57,7 @@ class Waran extends \yii\db\ActiveRecord
             'tarikh_waran' => 'Tarikh Waran',
             'status_waran' => 'Status Waran',
             'tahun' => 'Tahun',
-            'os' => 'Os',
+            'os' => 'OS',
             'jumlah_waran' => 'Jumlah Waran',
             'catatan' => 'Catatan',
             'tarikh' => 'Tarikh',

@@ -5,6 +5,8 @@ namespace app\controllers;
 use Yii;
 use app\models\Unjuran;
 use app\models\UnjuranSearch;
+use app\models\Jabatan;
+use app\models\Waran;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -50,6 +52,9 @@ class UnjuranController extends Controller
         $searchModel = new UnjuranSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        // if(!isset($_GET['id']))
+        //     return $this->redirect(['site/unauthorized']);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -63,7 +68,7 @@ class UnjuranController extends Controller
         $searchModel = new UnjuranSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('indexAll', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'all' => true,
@@ -93,7 +98,8 @@ class UnjuranController extends Controller
         $model = new Unjuran();
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->kod_id = self::generateCode('U', empty(Unjuran::find()->max('id')) ? 1 : Unjuran::find()->max('id') + 1);
+            $year = Yii::$app->request->post('Unjuran')['tahun']; 
+            $model->kod_id = self::generateCode('U'.substr($year,2,2), empty(Unjuran::find()->max('id')) ? 1 : Unjuran::find()->max('id') + 1);
             $model->user = Yii::$app->user->identity->id;
             if($model->save())
                 return $this->redirect(['index', 'UnjuranSearch[tahun]' => $model->tahun]);
@@ -143,6 +149,32 @@ class UnjuranController extends Controller
     public function actionA($id)
     {
         return $this->renderAjax('a', ['model' => $this->findModel($id)]);
+    }
+
+    public function actionReport()
+    {
+        $jabatan = Jabatan::find();
+        $waran = Waran::find();
+        $unjuran = Unjuran::find();
+
+        return $this->render('report', [
+            'unjuran' => $unjuran,
+            'jabatan' => $jabatan,
+            'waran' => $waran,
+        ]);
+   }
+
+    public function actionReportOsKod()
+    {
+        $jabatan = Jabatan::find();
+        $waran = Waran::find();
+        $unjuran = Unjuran::find();
+
+        return $this->render('reportOsKod', [
+            'unjuran' => $unjuran,
+            'jabatan' => $jabatan,
+            'waran' => $waran,
+        ]);
     }
 
     static function generateCode($c, $data) {

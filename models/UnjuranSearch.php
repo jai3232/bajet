@@ -48,6 +48,8 @@ class UnjuranSearch extends Unjuran
         $query = Unjuran::find()->joinWith(['jabatan', 'unit']);
 
         // add conditions that should always apply here
+        if(isset($params['id']))
+            $query->where(['unjuran.id_jabatan' => $params['id']]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

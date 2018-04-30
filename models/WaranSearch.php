@@ -58,6 +58,8 @@ class WaranSearch extends Waran
             return $dataProvider;
         }
 
+        $this->tahun = isset($this->tahun) ? $this->tahun : date("Y");
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -74,5 +76,19 @@ class WaranSearch extends Waran
             ->andFilterWhere(['like', 'user', $this->user]);
 
         return $dataProvider;
+    }
+
+    public function exportFields()
+    {
+        return [
+            'id' => function ($model) {
+                /* @var $model User */
+                return $model->id;
+            },
+            'no_waran',
+            'tarikh_waran',
+            'tahun',
+            'os'
+        ];
     }
 }

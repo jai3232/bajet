@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Waran */
 
-$this->title = 'Update Waran: {nameAttribute}';
-$this->params['breadcrumbs'][] = ['label' => 'Warans', 'url' => ['index']];
+$this->title = 'Kemaskini Waran '.$model->no_waran;
+$this->params['breadcrumbs'][] = ['label' => 'Waran', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
