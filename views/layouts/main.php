@@ -49,6 +49,10 @@ AppAsset::register($this);
             ['label' => 'Daftar', 'url' => ['/site/register'], 'visible' => Yii::$app->user->isGuest],
             ['label' => 'Unjuran', 'items' => [
                                                 [
+                                                    'label' => 'Masukan Unjuran',
+                                                    'url' => ['/unjuran/create'],
+                                                ],
+                                                [
                                                     'label' => 'Unjuran Jabatan/Bahagian',
                                                     'url' => ['/unjuran/index', 'id' => Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->id_jabatan]
                                                 ],

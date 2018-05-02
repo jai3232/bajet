@@ -2,6 +2,8 @@
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;	
 use yii\helpers\Html;
+use app\models\Agihan;
+use app\models\Unjuran;
 ?>
 
 <?php /*DetailView::widget([
@@ -28,15 +30,25 @@ use yii\helpers\Html;
             //'user',
         ],
     ])*/ ?>
-<?php
- 	$this->registerCss("
- 		.table-hover tr:hover td, .table-hover tr:hover th {
-   			background: #96bff7;
-		}
-");
- ?>
 
-<table id="kodA" class="table table-striped table-bordered table-hover list-view">
+<?php
+    //echo $model->tahun;
+    //echo Yii::$app->user->identity->id_jabatan;
+    $jumlah_agihan = Agihan::find()->where([
+        'id_jabatan' => Yii::$app->user->identity->id_jabatan, 
+        'tahun' => $model->tahun, 
+        'os' => $model->os])
+    ->sum('agihan_jabatan');
+    $jumlah_ujuran_A = Unjuran::find()->where([
+        'id_jabatan' => Yii::$app->user->identity->id_jabatan, 
+        'tahun' => $model->tahun, 
+        'os' => $model->os,
+        'kod' => 'A'])
+    ->sum('jumlah_unjuran');
+
+?>
+
+<table id="kodA" class="table table-striped table-bordered table-hover table-responsive list-view">
 	<tbody>
 		<tr><th>Kod ID</th><td><?= $model->kod_id ?></td></tr>
 		<tr><th>OS</th><td><?= $model->os ?></td></tr>
@@ -46,6 +58,7 @@ use yii\helpers\Html;
 		<tr><th>Kod Unjuran</th><td><?= $model->kod ?></td></tr>
 		<tr><th>Jumlah Unjuran</th><td><?= number_format($model->jumlah_unjuran, 2) ?></td></tr>
 		<tr><th>Catatan</th><td><?= $model->catatan ?></td></tr>
+        <tr><th>Jumlah Baki Unjuran yang ada </th><td><?= number_format($jumlah_agihan - $jumlah_ujuran_A, 2); ?></td></tr>
 	</tbody>
 </table>
 

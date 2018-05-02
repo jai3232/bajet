@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\WaranSearch */
@@ -29,9 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Tambah Waran', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?php
-        use kartik\export\ExportMenu;
-
-
         $gridColumns = [
             ['class' => 'yii\grid\SerialColumn'],
             'no_waran',

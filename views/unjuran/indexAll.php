@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\models\Jabatan;
 use yii\bootstrap\Modal;
+use kartik\export\ExportMenu;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UnjuranSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -52,6 +53,62 @@ $this->params['breadcrumbs'][] = $this->title;
         Modal::end();
 
     ?>
+
+    <?php
+        $gridColumns = [
+            ['class' => 'yii\grid\SerialColumn'],
+            'id',
+            'os',
+            'ol',
+            [
+                'label' => 'Jabatan',
+                'attribute' => 'id_jabatan',
+                'value' => 'jabatan.jabatan',
+            ],
+            [
+                'label' => 'Unit',
+                'attribute' => 'id_unit',
+                'value' => 'unit.unit',
+            ],
+            'butiran:ntext',
+            'kod',
+            'jumlah_unjuran',
+            'tahun',
+            //'catatan:ntext',
+            'sah',
+            ['class' => 'yii\grid\ActionColumn'],
+        ];
+
+        echo ExportMenu::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => $gridColumns,
+            'showConfirmAlert' => false,
+            'showColumnSelector' => false,
+            'enableFormatter' => true,
+            'filename' => 'Unjuran-semua'.$selectedYear,
+            'target' => ExportMenu::TARGET_SELF,
+            'exportConfig' => [
+                ExportMenu::FORMAT_PDF => false,
+                ExportMenu::FORMAT_HTML => false,
+                //ExportMenu::FORMAT_CSV => true,
+                ExportMenu::FORMAT_TEXT => false,
+                ExportMenu::FORMAT_EXCEL => false,
+                ExportMenu::FORMAT_EXCEL_X => [
+                    'label' => "Excel",
+                    // 'icon' => true ? 'file-excel-o' : 'floppy-remove',
+                    'iconOptions' => ['class' => 'text-success'],
+                    // 'linkOptions' => [],
+                    'options' => ['title' => "Microsoft Excel"],
+                    //'message' => null,
+                    'alertMsg' => "Fail Excel akan diproses untuk muatturun.",
+                    'mime' => 'application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'extension' => 'xls',
+                    'writer' => 'Excel2007',
+                ],
+            ],
+        ]);
+    ?>    
+
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
