@@ -31,6 +31,8 @@ use app\models\Unjuran;
         ],
     ])*/ ?>
 
+
+
 <?php
     //echo $model->tahun;
     //echo Yii::$app->user->identity->id_jabatan;
@@ -68,32 +70,78 @@ use app\models\Unjuran;
 	</tbody>
 </table>
 
-<div class="jabatan-form" style="display: none;">
+<div class="jabatan-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'kodA']); ?>
 
     <?= $form->field($model, 'jabatan')->hiddenInput(['maxlength' => true])->label(false) ?>
 
-    <?= $form->field($model, 'jumlah_unjuran')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'jumlah_unjuran')->textInput(['maxlength' => true, 'readonly' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Simpan'), ['class' => 'btn btn-success', 'data-confirm' => 'Simpan?']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Simpan'), ['class' => 'btn btn-success', 'id' => 'simpanA', 'data-confirm' => 'Set?']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
-</div>	
+</div>
+
 
 <?php
 
 $this->registerJs('
     $("input[name=lulus]").click(function(){
         if($(this).val() == "1") {
-            $(".jabatan-form").eq(0).show(300);
+            $("#unjuran-jumlah_unjuran").attr("readonly", false);
         }
         else
-            $(".jabatan-form").eq(0).hide(300);
+            $("#unjuran-jumlah_unjuran").attr("readonly", true);
+    });
+
+    $("form#kodA").on("submit", function() {
+        var form = $(this);
+        $.post(form.attr("action"), form.serialize())
+            .done(function(data){
+                alert(data);
+            })
+            .fail();
+
+        return false;  
     });
 ');
 
 ?>
+
+<?php $script = <<< JS
+
+$('form#kodA').on('beforeSubmit', function(){
+    alert("Y");
+    return false;
+    var form = $(this);
+    //alert(form.attr('action'));
+    //return false;
+    $.post(
+        form.attr('action'),
+        form.serialize()
+    )
+        .done(function(data){
+            if($.trim(data) == 1) { // if create success
+                form.trigger('reset');
+                $.pjax.reload({container: '#bidangGrid'});
+            }
+            else
+            if($.trim(data) == 2) { // if uddate success
+                $('#modalContent').html('<h4>Berjaya</h4>');
+                $.pjax.reload({container: '#bidangGrid'});
+            }
+            else {
+                alert('error:'+data);
+            }
+        })
+        .fail();
+    return false;
+})
+
+
+JS;
+$this->registerJs($script);

@@ -77,8 +77,26 @@ AppAsset::register($this);
                     ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
                 ] 
             ],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => 'Perolehan', 'items' => [
+                    ['label' => 'Senarai Waran', 'url' => ['/waran/index']],
+                    ['label' => 'Tambah Waran', 'url' => ['/waran/create']],
+                    ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
+                ] 
+            ],
+            ['label' => 'Tuntutan', 'items' => [
+                    ['label' => 'Senarai Waran', 'url' => ['/waran/index']],
+                    ['label' => 'Tambah Waran', 'url' => ['/waran/create']],
+                    ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
+                ] 
+            ],
+            ['label' => 'Laporan', 'items' => [
+                    ['label' => 'Senarai Waran', 'url' => ['/waran/index']],
+                    ['label' => 'Tambah Waran', 'url' => ['/waran/create']],
+                    ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
+                ] 
+            ],
+            ['label' => 'Bantuan', 'url' => ['/site/about']],
+            //['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (

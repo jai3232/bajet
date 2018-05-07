@@ -17,8 +17,5 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Cancel' => 'Batal',
-    'Confirmation' => 'Pengesahan',
-    'Information' => 'Maklumat',
-    'Ok' => '',
+    'It is recommended you use an upgraded browser to display the {type} control properly.' => '',
 ];

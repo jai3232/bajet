@@ -148,6 +148,36 @@ class UnjuranController extends Controller
 
     public function actionA($id)
     {
+        if(Yii::$app->request->post()) {
+            $unjuran_post = Yii::$app->request->post('Unjuran')['jumlah_unjuran'];
+            $model = $this->findModel($id);
+            if($model->jumlah_unjuran > $unjuran_post) {
+                $new_model = new Unjuran();
+                $year = $model->tahun;
+                $new_model->kod_id = self::generateCode('U'.substr($year,2,2), empty(Unjuran::find()->max('id')) ? 1 : Unjuran::find()->max('id') + 1);
+                $new_model->os = $model->os;
+                $new_model->id_jabatan = $model->id_jabatan;
+                $new_model->id_unit = $model->id_unit;
+                $new_model->butiran = $model->butiran;
+                $new_model->kuantiti = $model->kuantiti;
+                $new_model->kod = $model->kod;
+                $new_model->jumlah_unjuran = ($model->jumlah_unjuran - $unjuran_post);
+                $new_model->tahun = $model->tahun;
+                $new_model->catatan = '@ Unjuran dari '.$model->kod_id;
+                $new_model->status = $model->status;
+                $new_model->user = Yii::$app->user->identity->id;
+                if(!$new_model->save())
+                    return print_r($new_model->getErrors());
+            }
+            $model->kod = 'A';
+            $model->jumlah_unjuran = $unjuran_post;
+
+    
+            if($model->save()) {
+                return true;
+            }
+            return print_r($model->getErrors());
+        }
         return $this->renderAjax('a', ['model' => $this->findModel($id)]);
     }
 

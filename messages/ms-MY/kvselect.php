@@ -17,8 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Cancel' => 'Batal',
-    'Confirmation' => 'Pengesahan',
-    'Information' => 'Maklumat',
-    'Ok' => '',
+    'Select all' => '',
+    'Unselect all' => '',
 ];

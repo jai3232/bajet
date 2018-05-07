@@ -20,5 +20,5 @@ return [
     'Cancel' => 'Batal',
     'Confirmation' => 'Pengesahan',
     'Information' => 'Maklumat',
-    'Ok' => '',
+    'Ok' => 'OK',
 ];

@@ -26,7 +26,7 @@ else
 //print_r(Yii::$app->request->get('UnjuranSearch')['tahun']);
 
 $this->title = 'Unjuran Jabatan/Bahagian '.Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan.' '.$selectedYear;;
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $this->title; echo Yii::t('app','Confirmation');
 ?>
 <div class="unjuran-index">
 
@@ -109,6 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -177,7 +178,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Tindakan',
                 'contentOptions' => ['class' => 'text-center'],
-                'template' => '{update} {delete} {a} {list}',
+                'template' => '{update} {delete} {a} {share} {list}',
                 'buttons' => [
                     'update' => function($url, $model) {
                         if(Yii::$app->user->identity->accessLevel([1, 2, 3, 4, 5, 6]) || Yii::$app->user->identity->id == $model->user ) //visible to kj only
@@ -195,8 +196,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]);
                     },
                     'a' => function($url, $model) {
-                        if(Yii::$app->user->identity->accessLevel([6])) //visible to kj only
+                        if(Yii::$app->user->identity->accessLevel([6]) && $model->kod != 'A') //visible to kj only
                             return Html::a('<span class="glyphicon glyphicon-text-background" title="Tukar kod A"></span>', ['a', 'id' => $model->id]);
+                    },
+                    'share' => function($url, $model) {
+                        if(Yii::$app->user->identity->accessLevel([6]))
+                            return Html::a('<span class="glyphicon glyphicon glyphicon-share" title="Kongsi Unjuran"</span>', ['Kongsi', 'id' => $model->id]);
                     },
                     'list' => function($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-list"></span>', ['list', 'id' => $model->id]);
