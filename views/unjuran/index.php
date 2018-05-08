@@ -26,7 +26,8 @@ else
 //print_r(Yii::$app->request->get('UnjuranSearch')['tahun']);
 
 $this->title = 'Unjuran Jabatan/Bahagian '.Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan.' '.$selectedYear;;
-$this->params['breadcrumbs'][] = $this->title; echo Yii::t('app','Confirmation');
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="unjuran-index">
 
@@ -159,7 +160,13 @@ $this->params['breadcrumbs'][] = $this->title; echo Yii::t('app','Confirmation')
                 'filter' => Html::dropDownList('UnjuranSearch[tahun]', $searchModel->tahun, $yearList, ['class' => 'form-control'])
             ],
             'catatan:ntext',
-            //'status',
+            [
+                'attribute' => 'status',
+                'value' => function($model) {
+                    return $model->status == 0 ? 'Asal' : 'Tambah'; 
+                },
+                'filter' => ['Asal', 'Tambah'],
+            ],
             [
                 'label' => 'Sah',
                 'attribute' => 'sah',
@@ -182,7 +189,7 @@ $this->params['breadcrumbs'][] = $this->title; echo Yii::t('app','Confirmation')
                 'buttons' => [
                     'update' => function($url, $model) {
                         if(Yii::$app->user->identity->accessLevel([1, 2, 3, 4, 5, 6]) || Yii::$app->user->identity->id == $model->user ) //visible to kj only
-                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id], [
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id], ['title' => 'Kemaskini'
                         ]);
                     },
                     'delete' => function($url, $model){
@@ -193,6 +200,7 @@ $this->params['breadcrumbs'][] = $this->title; echo Yii::t('app','Confirmation')
                                     'confirm' => 'Padam rekod ini?',
                                     'method' => 'post',
                                 ],
+                                'title' => 'Padam',
                             ]);
                     },
                     'a' => function($url, $model) {
@@ -204,7 +212,7 @@ $this->params['breadcrumbs'][] = $this->title; echo Yii::t('app','Confirmation')
                             return Html::a('<span class="glyphicon glyphicon glyphicon-share" title="Kongsi Unjuran"</span>', ['Kongsi', 'id' => $model->id]);
                     },
                     'list' => function($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-list"></span>', ['list', 'id' => $model->id]);
+                        return Html::a('<span class="glyphicon glyphicon-list"></span>', ['list', 'id' => $model->id], ['title' => 'Senarai Aktiviti']);
                     }
                 ]
             ],

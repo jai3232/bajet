@@ -101,6 +101,8 @@ class UnjuranController extends Controller
             $year = Yii::$app->request->post('Unjuran')['tahun']; 
             $model->kod_id = self::generateCode('U'.substr($year,2,2), empty(Unjuran::find()->max('id')) ? 1 : Unjuran::find()->max('id') + 1);
             $model->user = Yii::$app->user->identity->id;
+            if($year == date("Y"))
+                $model->status = 1;
             if($model->save())
                 return $this->redirect(['index', 'UnjuranSearch[tahun]' => $model->tahun]);
             else
