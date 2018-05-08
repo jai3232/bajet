@@ -48,6 +48,16 @@ use app\models\Unjuran;
         'kod' => 'A'])
     ->sum('jumlah_unjuran');
 
+    $baki_agihan = $jumlah_agihan - $jumlah_ujuran_A;
+    $checked = '';
+    $disabled = '';
+    if($jumlah_agihan >= $model->jumlah_unjuran) {
+        $checked = 'checked';
+    }
+    else
+        $disabled = 'disabled';
+
+
 ?>
 
 <table id="kodA" class="table table-striped table-bordered table-hover table-responsive list-view">
@@ -58,51 +68,84 @@ use app\models\Unjuran;
 		<tr><th>Butiran</th><td><?= $model->butiran ?></td></tr>
 		<tr><th>Kuantiti</th><td><?= isset($model->kuantiti) ? $model->kuantiti : '-' ?></td></tr>
 		<tr><th>Kod Unjuran</th><td><?= $model->kod ?></td></tr>
-		<tr><th>Jumlah Unjuran</th><td><?= number_format($model->jumlah_unjuran, 2) ?></td></tr>
+		<tr><th>Jumlah Unjuran</th><td id="jumlah_unjuran"><?= number_format($model->jumlah_unjuran, 2) ?></td></tr>
 		<tr><th>Catatan</th><td><?= $model->catatan ?></td></tr>
-        <tr><th>Jumlah Baki Unjuran yang ada </th><td><?= number_format($jumlah_agihan - $jumlah_ujuran_A, 2); ?></td></tr>
+        <tr><th>Jumlah Baki Agihan </th><td id="baki_agihan"><?= number_format($baki_agihan, 2); ?></td></tr>
         <tr><th>Kelulusan </th><td>
-                                <input name="lulus" type="radio" checked value="0"> Tukar kepada kod A seperti nilai unjuran. <br>
-                                <input name="lulus" type="radio" value="1"> Tukar kepada kod A dengan perubahan.
+                                <input name="lulus" type="radio" <?= $checked.$disabled ?> value="0"> Tukar kepada kod A seperti nilai unjuran. <br>
+                                <input name="lulus" type="radio" value="1" id="tukar2"> Tukar kepada kod A dengan perubahan.
                                </td>
         </tr>
         
 	</tbody>
 </table>
+<?php 
+    if($baki_agihan > 0) {
+?>
+    <div class="kod-a-form">
 
-<div class="jabatan-form">
+        <?php $form = ActiveForm::begin(['id' => 'kodA']); ?>
 
-    <?php $form = ActiveForm::begin(['id' => 'kodA']); ?>
+        <?= $form->field($model, 'jabatan')->hiddenInput(['maxlength' => true])->label(false) ?>
 
-    <?= $form->field($model, 'jabatan')->hiddenInput(['maxlength' => true])->label(false) ?>
+        <?= $form->field($model, 'jumlah_unjuran')->textInput(['maxlength' => true, 'readonly' => true, 'type' => 'number']) ?>
 
-    <?= $form->field($model, 'jumlah_unjuran')->textInput(['maxlength' => true, 'readonly' => true]) ?>
+        <div class="form-group">
+            <?= Html::submitButton(Yii::t('app', 'Simpan'), ['class' => 'btn btn-success', 'id' => 'simpanA', 'data-confirm' => 'Simpan Data Ini?']) ?>
+        </div>
 
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Simpan'), ['class' => 'btn btn-success', 'id' => 'simpanA', 'data-confirm' => 'Set?']) ?>
+        <?php ActiveForm::end(); ?>
+
     </div>
-
-    <?php ActiveForm::end(); ?>
-
-</div>
+<?php
+    }
+    else
+        echo "<h5 style=\"color: red; font-weight: bold;\">Penukaran Kod A tidak boleh dilakukan kerana bagi agihan adalah kosong.</h5>";
+?>
 
 
 <?php
 
 $this->registerJs('
+    var jumlah_unjuran = $.trim($("#jumlah_unjuran").html().replace(/,/g, "")) / 1;
+    var baki_agihan = $.trim($("#baki_agihan").html().replace(/,/g, "")) / 1;
     $("input[name=lulus]").click(function(){
         if($(this).val() == "1") {
             $("#unjuran-jumlah_unjuran").attr("readonly", false);
+            if(baki_agihan >= jumlah_unjuran)       
+                $("#unjuran-jumlah_unjuran").val(jumlah_unjuran);
+            else
+                $("#unjuran-jumlah_unjuran").val(baki_agihan);
         }
-        else
+        else {
+            $("#unjuran-jumlah_unjuran").val(jumlah_unjuran);
             $("#unjuran-jumlah_unjuran").attr("readonly", true);
+        }
     });
 
+    $("#unjuran-jumlah_unjuran").keyup(function(){
+        if($(this).val() > baki_agihan) {
+            $(this).css("background", "red");
+            alert("Tidak dibenarkan melebihi agihan waran");
+        }
+        else
+            $(this).css("background", "");
+
+    });
+
+    if(baki_agihan < jumlah_unjuran)
+        $("#tukar2").trigger("click");
+
     $("form#kodA").on("submit", function() {
+        if($("#unjuran-jumlah_unjuran").val() > baki_agihan)
+            return false;
         var form = $(this);
         $.post(form.attr("action"), form.serialize())
             .done(function(data){
-                alert(data);
+                //alert(data);
+                form.trigger("reset");
+                $.pjax.reload({container: "#unjuran-grid"});
+                $("#modalContent").html("<h4>Berjaya</h4>");
             })
             .fail();
 

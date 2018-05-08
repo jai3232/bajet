@@ -44,6 +44,8 @@ return [
     'Penggunas' => '',
     'Reset' => '',
     'Search' => '',
+    'Select all' => 'Piih Semua',
+    'Unselect all' => 'Nyahpilih Semua',
     'Simpan' => '',
     'Tambah Jabatan' => '',
     'Tambah Pengguna' => '',

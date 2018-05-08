@@ -106,7 +106,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]);
     ?>    
-
+    <?php Pjax::begin(['id' => 'unjuran-grid']) ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -209,7 +209,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'share' => function($url, $model) {
                         if(Yii::$app->user->identity->accessLevel([6]))
-                            return Html::a('<span class="glyphicon glyphicon glyphicon-share" title="Kongsi Unjuran"</span>', ['Kongsi', 'id' => $model->id]);
+                            return Html::a('<span class="glyphicon glyphicon-share" title="Kongsi Unjuran"</span>', ['share', 'id' => $model->id]);
                     },
                     'list' => function($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-list"></span>', ['list', 'id' => $model->id], ['title' => 'Senarai Aktiviti']);
@@ -218,16 +218,37 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-    <?php //Pjax::end(); ?>
+    <?php Pjax::end(); ?>
 </div>
 
 <?php
 $this->registerJs('
-    $(".unjuran-index .glyphicon-text-background").click(function(){
+    $(".unjuran-index .glyphicon-text-background").on("click", function(){
         $("#modal").modal("show").find("#modalContent").load($(this).parent().attr("href"));
         $("#modal-header").html("Penukaran Kod A");
         return false;
     });
+
+    $(".unjuran-index .glyphicon-share").on("click", function(){
+        $("#modal").modal("show").find("#modalContent").load($(this).parent().attr("href"));
+        $("#modal-header").html("Kongsi Unjuran");
+        return false;
+    });
+
+    $(document).on("ready, pjax:success", function() {
+        $(".unjuran-index .glyphicon-text-background").on("click", function(){
+            $("#modal").modal("show").find("#modalContent").load($(this).parent().attr("href"));
+            $("#modal-header").html("Penukaran Kod A");
+            return false;
+        });
+
+        $(".unjuran-index .glyphicon-share").on("click", function(){
+            $("#modal").modal("show").find("#modalContent").load($(this).parent().attr("href"));
+            $("#modal-header").html("Kongsi Unjuran");
+            return false;
+        });
+    });
+
 ');
 
 ?>

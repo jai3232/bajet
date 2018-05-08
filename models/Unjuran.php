@@ -52,7 +52,6 @@ class Unjuran extends \yii\db\ActiveRecord
             [['os'], 'string', 'max' => 16],
             [['ol'], 'string', 'max' => 50],
             [['kod'], 'string', 'max' => 1],
-            [['kongsi'], 'string', 'max' => 30],
             [['tahun'], 'string', 'max' => 4],
             [['kod_id'], 'unique'],
         ];

@@ -183,6 +183,15 @@ class UnjuranController extends Controller
         return $this->renderAjax('a', ['model' => $this->findModel($id)]);
     }
 
+    public function actionShare($id)
+    {
+        if(Yii::$app->request->post()) {
+            return print_r(Yii::$app->request->post('Unjuran')['kongsi']);
+
+        }
+        return $this->renderAjax('share', ['model' => $this->findModel($id)]);   
+    }
+
     public function actionReport()
     {
         $jabatan = Jabatan::find();
