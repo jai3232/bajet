@@ -56,12 +56,7 @@ array_push($report_column, ['id' => -4, 'jabatan' => 'Perbezaan', 'ringkasan' =>
 </div> -->
 
 <div class="output" style="overflow-y: auto">
-<?php
 
-
-
-
-?>
 <div id="unjuran-grid" class="grid-view">
 	<table id="unjuran-report" class="table table-condensed table-striped table-bordered table-hover table-responsive">
 		<thead class="thead-dark">
@@ -146,7 +141,7 @@ array_push($report_column, ['id' => -4, 'jabatan' => 'Perbezaan', 'ringkasan' =>
 	</table>
 	<div class="form-group">
 		<!-- <button id="excel_btn" class="btn btn-primary btn-kemaskini">Eksport ke Excel</button> -->
-		<a id="excel-export" class="btn btn-primary">Ekstport ke Excel</a>
+		<a id="excel-export" class="btn btn-primary">Eksport ke Excel</a>
 	</div>
 </div>
 </div>

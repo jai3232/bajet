@@ -65,7 +65,7 @@ class WaranSearch extends Waran
             'id' => $this->id,
             'tarikh_waran' => $this->tarikh_waran,
             'jumlah_waran' => $this->jumlah_waran,
-            'tarikh' => $this->tarikh,
+            'tarikh' => $this->tarikh_jadi,
         ]);
 
         $query->andFilterWhere(['like', 'no_waran', $this->no_waran])

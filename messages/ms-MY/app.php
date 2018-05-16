@@ -19,6 +19,7 @@
 return [
     'Aktif' => '',
     'Are you sure you want to delete this item?' => '',
+    'Create Perolehan' => 'Borang Perolehan',
     'Confirmation' => 'Pengesahan',
     'Butiran' => '',
     'Cari' => '',
@@ -46,7 +47,7 @@ return [
     'Search' => '',
     'Select all' => 'Piih Semua',
     'Unselect all' => 'Nyahpilih Semua',
-    'Simpan' => '',
+    'Save' => 'Simpan',
     'Tambah Jabatan' => '',
     'Tambah Pengguna' => '',
     'Tambah Unit' => '',

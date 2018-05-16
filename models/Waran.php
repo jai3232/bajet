@@ -15,8 +15,9 @@ use Yii;
  * @property string $os
  * @property double $jumlah_waran
  * @property string $catatan
- * @property string $tarikh
- * @property string $user
+ * @property string $tarikh_jadi
+ * @property string $tarikh_kemaskini
+ * @property int $user
  */
 class Waran extends \yii\db\ActiveRecord
 {
@@ -35,14 +36,13 @@ class Waran extends \yii\db\ActiveRecord
     {
         return [
             [['no_waran', 'tarikh_waran', 'tahun', 'os', 'jumlah_waran', 'user'], 'required'],
-            [['tarikh_waran', 'tarikh'], 'safe'],
-            [['status_waran'], 'integer'],
+            [['tarikh_waran', 'tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
+            [['status_waran', 'user'], 'integer'],
             [['jumlah_waran'], 'number'],
             [['catatan'], 'string'],
             [['no_waran'], 'string', 'max' => 15],
             [['tahun'], 'string', 'max' => 4],
             [['os'], 'string', 'max' => 16],
-            [['user'], 'string', 'max' => 30],
         ];
     }
 
@@ -60,7 +60,8 @@ class Waran extends \yii\db\ActiveRecord
             'os' => 'OS',
             'jumlah_waran' => 'Jumlah Waran',
             'catatan' => 'Catatan',
-            'tarikh' => 'Tarikh',
+            'tarikh_jadi' => 'Tarikh Jadi',
+            'tarikh_kemaskini' => 'Tarikh Kemaskini',
             'user' => 'User',
         ];
     }

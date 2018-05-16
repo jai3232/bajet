@@ -78,8 +78,8 @@ AppAsset::register($this);
                 ] 
             ],
             ['label' => 'Perolehan', 'items' => [
-                    ['label' => 'Senarai Waran', 'url' => ['/waran/index']],
-                    ['label' => 'Tambah Waran', 'url' => ['/waran/create']],
+                    ['label' => 'Borang Perolehan', 'url' => ['/perolehan/create']],
+                    ['label' => 'Senarai Perolehan', 'url' => ['/perolehan/index']],
                     ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
                 ] 
             ],

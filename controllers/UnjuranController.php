@@ -185,11 +185,29 @@ class UnjuranController extends Controller
 
     public function actionShare($id)
     {
+        $model = $this->findModel($id);
         if(Yii::$app->request->post()) {
-            return print_r(Yii::$app->request->post('Unjuran')['kongsi']);
-
+            $model->kongsi = implode(',', Yii::$app->request->post('kongsi-jabatan'));
+            if($model->save())
+                return true;
+            return print_r($model->getErrors());
         }
-        return $this->renderAjax('share', ['model' => $this->findModel($id)]);   
+        return $this->renderAjax('share', ['model' => $model]);   
+    }
+
+    public function actionSah($id, $val = 0)
+    {
+        $model = $this->findModel($id);
+        $model->sah = $val;
+        if($model->save())
+            return true;
+        else
+            return print_r($model->getErrors());
+    }
+
+    public function actionListActivity($id)
+    {
+
     }
 
     public function actionReport()

@@ -53,6 +53,9 @@ class UnjuranSearch extends Unjuran
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['os' =>  SORT_ASC, 'kod_id' => SORT_ASC],
+            ],
         ]);
 
         $this->load($params);

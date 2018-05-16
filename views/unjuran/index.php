@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\models\Jabatan;
@@ -153,7 +154,22 @@ $this->params['breadcrumbs'][] = $this->title;
                     return number_format($model->jumlah_unjuran);  
                 } 
             ],
-            // //'kongsi',
+            [
+                'label' => 'Kongsi',
+                'value' => function($model) {
+                    $jabatans_id= explode(',', $model->kongsi);
+                    $jabatans = '';
+                    foreach ($jabatans_id as $key => $value) {
+                        $value = $value / 1;
+                        if($value == 0) continue;
+                        $jabatans .= Jabatan::findOne($value)->jabatan.', ';
+                    }
+                    //return (Jabatan::findOne(11)->jabatan);
+                    if($value != 0)
+                        return $jabatans;
+                    return '-';
+                },
+            ],
             // 'public',
             [
                 'attribute' => 'tahun',
@@ -174,7 +190,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'visible' => Yii::$app->user->identity->accessLevel([3, 5, 6]),
                 'value' => function($model) {
-                    return Html::checkbox('sah', !$model->sah ? false : true);
+                    return Html::checkbox('sah', !$model->sah ? false : true, 
+                        ['class' => 'sah', 'value' => Url::to(['unjuran/sah', 'id' => $model->id])]);
                 }
             ],
             //'tarikh_jadi',
@@ -212,7 +229,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             return Html::a('<span class="glyphicon glyphicon-share" title="Kongsi Unjuran"</span>', ['share', 'id' => $model->id]);
                     },
                     'list' => function($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-list"></span>', ['list', 'id' => $model->id], ['title' => 'Senarai Aktiviti']);
+                        return Html::a('<span class="glyphicon glyphicon-list"></span>', ['list-activity', 'id' => $model->id], ['title' => 'Senarai Aktiviti']);
                     }
                 ]
             ],
@@ -235,6 +252,28 @@ $this->registerJs('
         return false;
     });
 
+    $(".sah").on("click", function(data){
+        var checkbox = $(this);
+        var val = "";
+        if(checkbox.prop("checked"))
+            val = "&val=1";
+        krajeeDialog.confirm("Sahkan unjuran ini?", function (result) {
+            if(result) {
+                $.get(checkbox.prop("value")+val);
+                if(val != "")
+                    checkbox.prop("checked", true).attr("checked", true);
+                else
+                    checkbox.prop("checked",false).attr("checked", false);
+            }
+            else
+                if(val != "")
+                    checkbox.prop("checked",false).attr("checked", false);
+                else
+                    checkbox.prop("checked", true).attr("checked", true);
+        });
+    });
+
+
     $(document).on("ready, pjax:success", function() {
         $(".unjuran-index .glyphicon-text-background").on("click", function(){
             $("#modal").modal("show").find("#modalContent").load($(this).parent().attr("href"));
@@ -246,6 +285,27 @@ $this->registerJs('
             $("#modal").modal("show").find("#modalContent").load($(this).parent().attr("href"));
             $("#modal-header").html("Kongsi Unjuran");
             return false;
+        });
+
+        $(".sah").on("click", function(data){
+            var checkbox = $(this);
+            var val = "";
+            if(checkbox.prop("checked"))
+                val = "&val=1";
+            krajeeDialog.confirm("Sahkan unjuran ini?", function (result) {
+                if(result) {
+                    $.get(checkbox.prop("value")+val);
+                    if(val != "")
+                        checkbox.prop("checked", true).attr("checked", true);
+                    else
+                        checkbox.prop("checked",false).attr("checked", false);
+                }
+                else
+                    if(val != "")
+                        checkbox.prop("checked",false).attr("checked", false);
+                    else
+                        checkbox.prop("checked", true).attr("checked", true);
+            });
         });
     });
 
