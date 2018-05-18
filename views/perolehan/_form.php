@@ -32,25 +32,25 @@ use yii\bootstrap\Modal;
 <div class="form-group">
     <button id="pilih-unjuran" class="btn btn-primary">Pilih Unjuran</button>
 </div>
-
-<div class="form-group">
-    <label>Kod Unjuran: <span id="kod-unjuran"></span></label>
-</div>
-<div class="form-group">
-    <label>OS: <span id="os"></span></label>
-</div>
-<div class="form-group">
-    <label>Butiran: <span id="butiran"></span></label>
-</div>
-<div class="form-group">
-    <label>Jumlah Unjuran: <span id="jumlah-unjuran"></span></label>
-</div>
-<div class="form-group">
-    <label>Baki: <span id="baki"></span></label>
-</div>
-<div class="form-group">
-    <label>Unjuran Jabatan: <span id="jabatan"></span></label>
-</div>
+<div id="unjuran_info" style="display: none;">
+    <div class="form-group">
+        <label>Kod Unjuran: <span id="kod-unjuran"></span></label>
+    </div>
+    <div class="form-group">
+        <label>OS: <span id="os"></span></label>
+    </div>
+    <div class="form-group">
+        <label>Butiran: <span id="butiran"></span></label>
+    </div>
+    <div class="form-group">
+        <label>Jumlah Unjuran: <span id="jumlah-unjuran"></span></label>
+    </div>
+    <div class="form-group">
+        <label>Baki: <span id="baki"></span></label>
+    </div>
+    <div class="form-group">
+        <label>Unjuran Jabatan: <span id="jabatan"></span></label>
+    </div>
 
 </div>
 
