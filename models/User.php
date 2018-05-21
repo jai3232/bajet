@@ -52,7 +52,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
         else
             return null;
 
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        //return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
     }
 
     /**
@@ -83,13 +83,13 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
             return new static($user);
         else
             return null;
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
+        // foreach (self::$users as $user) {
+        //     if (strcasecmp($user['username'], $username) === 0) {
+        //         return new static($user);
+        //     }
+        // }
 
-        return null;
+        // return null;
     }
 
     /**

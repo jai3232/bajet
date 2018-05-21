@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\PerolehanSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Perolehans');
+$this->title = Yii::t('app', 'Perolehan');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="perolehan-index">

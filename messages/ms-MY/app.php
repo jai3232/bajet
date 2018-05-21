@@ -37,6 +37,7 @@ return [
     'Kemaskini Unit: {nameAttribute}' => '',
     'Level' => '',
     'Nama' => '',
+    'Next' => 'Seterusnya',
     'No Kp' => '',
     'Padam' => '',
     'Padam item ini?' => '',

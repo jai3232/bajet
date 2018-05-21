@@ -62,7 +62,7 @@ use yii\bootstrap\Modal;
 
     <?= $form->field($model, 'kod_unjuran')->hiddenInput(['maxlength' => true])->label(false) ?>
 
-    <?= $form->field($model, 'id_jabatan')->textInput()->label('Unjuran Dari Jabatan') ?>
+    <?= $form->field($model, 'id_jabatan')->hiddenInput()->label('Unjuran Dari Jabatan')->label(false) ?>
 
     <?= $form->field($model, 'id_jabatan_asal')->hiddenInput(['value' => Yii::$app->user->identity->id_jabatan])->label(false) ?>  
 
@@ -125,8 +125,47 @@ use yii\bootstrap\Modal;
     <?php //= $form->field($model, 'tarikh_kemaskini')->textInput() ?>
 
     <?php //= $form->field($model, 'user')->textInput() ?>
-
     <div class="form-group">
+        <?= Html::button(Yii::t('app', 'Next'), ['class' => 'btn btn-primary', 'id' => 'seterusnya']) ?>
+    </div>
+    <div class="form-group">
+        <h3>Jenis Barang / Perkhidmatan </h3>
+        <table id="unjuran-carian" class="table table-condensed table-striped table-bordered table-hover table-responsive">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th><th>Justifikasi Keperluan Perolehan <br>(Bekalan / Perkhidmatan / Kerja)</th><th>Kuantiti</th><th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-center">1</td><td><?= Html::textarea('Barangan[justifikasi1]', '', ['class' => 'justifikasi form-control']) ?></td><td><?= Html::textInput('Barangan[kuantiti1]', '', ['class' => 'kuantiti form-control', 'size' => '5']) ?></td><td class="text-center"> </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="form-group">
+        <button class="btn btn-success" id="btn-barangan"><span class="glyphicon glyphicon-plus-sign icon-size"></span></button>
+    </div>
+    </div>
+    <div class="form-group">
+        <h3>Pengesyoran Kontraktor / Pembekal </h3>
+        <table id="unjuran-carian" class="table table-condensed table-striped table-bordered table-hover table-responsive">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th><th>Keutamaan</th><th>Nama Syarikat & No.ROB/ROC</th><th>Nama Pegawai Untuk dihubungi</th><th>No. Telefon</th><th>Jumlah Harga (RM)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-center">1</td><td><?= Html::radio('keutamaan', false, ['class' => 'keutamaan form-control']) ?></td><td><?= Html::textInput('Barangan[kuantiti1]', '', ['class' => 'kuantiti form-control', 'size' => '5']) ?></td><td class="text-center"> </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="form-group">
+        <button class="btn btn-success" id="btn-pembekal"><span class="glyphicon glyphicon-plus-sign icon-size"></span></button>
+    </div>
+    </div>
+
+    <div class="form-group" style="display: none;">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
@@ -141,5 +180,37 @@ $this->registerJs('
         //$("#modal-header").html("Penukaran Kod A");
         return false;
     });
-')
+
+    var i = 1;
+    var row = "";
+
+    $("#btn-barangan").on("click", function(e){
+        i++;
+        row = "<tr><td class=\"text-center\">" + i + "</td>" +
+              "<td><textarea class=\"justifikasi form-control\" name=\"Barangan[justifikasi" + i + "]\"></textarea></td>" +
+              "<td><input type=\"text\" class=\"kuantiti form-control\" name=\"Barangan[kuantiti" + i + "]\" size=\"5\"></td>" +
+              "<td class=\"text-center\"><button class=\"btn btn-warning btn-minus\"><span class=\"glyphicon glyphicon-minus-sign icon-size\"></span></button></td></tr>";
+        $("tbody").append(row);
+        e.stopPropagation();
+        return false;
+    });
+
+    $("#btn-pembekal").on("click", function(e){
+        return false;
+    });
+
+    $(document).on("click", ".btn-minus", function(e){
+        if(confirm("Padam maklumat ini?")) {
+            $(this).parent().parent().remove();
+        }
+        e.stopPropagation();
+        return false;
+    });
+');
+
+$this->registerCss('
+    .icon-size{
+       font-size: 1.5em; 
+    }
+');
 ?>

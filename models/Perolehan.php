@@ -55,7 +55,7 @@ class Perolehan extends \yii\db\ActiveRecord
             [['tarikh_lulus1', 'tarikh_lulus2', 'tarikhlo', 'tarikh_voucher', 'tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
             [['catatan1', 'catatan2'], 'string'],
             [['lulus_perolehan', 'nilai_perolehan'], 'number'],
-            [['kod_id', 'kod_unjuran'], 'string', 'max' => 8],
+            [['kod_id', 'kod_unjuran'], 'string', 'max' => 10],
             [['nolo', 'novoucher'], 'string', 'max' => 20],
             [['tahun'], 'string', 'max' => 4],
             [['kod_id'], 'unique'],
