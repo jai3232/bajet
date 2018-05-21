@@ -136,9 +136,11 @@ use yii\bootstrap\Modal;
                 <th>#</th><th>Justifikasi Keperluan Perolehan <br>(Bekalan / Perkhidmatan / Kerja)</th><th>Kuantiti</th><th></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="barang_body">
             <tr>
-                <td class="text-center">1</td><td><?= Html::textarea('Barangan[justifikasi1]', '', ['class' => 'justifikasi form-control']) ?></td><td><?= Html::textInput('Barangan[kuantiti1]', '', ['class' => 'kuantiti form-control', 'size' => '5']) ?></td><td class="text-center"> </td>
+                <td class="text-center">1</td><td><?= Html::textarea('Barangan[justifikasi][1]', '', ['class' => 'justifikasi form-control']) ?></td>
+                <td><?= Html::textInput('Barangan[kuantiti][1]', '', ['class' => 'kuantiti form-control', 'size' => '1']) ?></td>
+                <td class="text-center"> </td>
             </tr>
         </tbody>
     </table>
@@ -151,12 +153,17 @@ use yii\bootstrap\Modal;
         <table id="unjuran-carian" class="table table-condensed table-striped table-bordered table-hover table-responsive">
         <thead class="thead-dark">
             <tr>
-                <th>#</th><th>Keutamaan</th><th>Nama Syarikat & No.ROB/ROC</th><th>Nama Pegawai Untuk dihubungi</th><th>No. Telefon</th><th>Jumlah Harga (RM)</th>
+                <th>#</th><th>Keutamaan</th><th>Nama Syarikat & No.ROB/ROC</th><th>Nama Pegawai Untuk dihubungi</th><th>No. Telefon</th><th>Jumlah Harga (RM)</th><th></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="pembekal_body">
             <tr>
-                <td class="text-center">1</td><td><?= Html::radio('keutamaan', false, ['class' => 'keutamaan form-control']) ?></td><td><?= Html::textInput('Barangan[kuantiti1]', '', ['class' => 'kuantiti form-control', 'size' => '5']) ?></td><td class="text-center"> </td>
+                <td class="text-center">1</td><td class="text-center"><?= Html::radio('Pembekal[keutamaan]', false, ['class' => 'keutamaan form-check-input', 'value' => 1]) ?></td>
+                <td><?= Html::textInput('Pembekal[pembekal][1]', '', ['class' => 'pembekal form-control']) ?></td>
+                <td><?= Html::textInput('Pembekal[nama_pembekal][1]', '', ['class' => 'nama_pembekal form-control']) ?></td>
+                <td><?= Html::textInput('Pembekal[telefon][1]', '', ['class' => 'telefon form-control']) ?></td>
+                <td><?= Html::textInput('Pembekal[harga][1]', '', ['class' => 'harga form-control', 'size' => '1']) ?></td>
+                <td class="text-center"> </td>
             </tr>
         </tbody>
     </table>
@@ -165,7 +172,7 @@ use yii\bootstrap\Modal;
     </div>
     </div>
 
-    <div class="form-group" style="display: none;">
+    <div class="form-group" style="display: nonex;">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
@@ -181,21 +188,31 @@ $this->registerJs('
         return false;
     });
 
-    var i = 1;
+    var i = 1, j = 1;
     var row = "";
 
     $("#btn-barangan").on("click", function(e){
         i++;
         row = "<tr><td class=\"text-center\">" + i + "</td>" +
-              "<td><textarea class=\"justifikasi form-control\" name=\"Barangan[justifikasi" + i + "]\"></textarea></td>" +
-              "<td><input type=\"text\" class=\"kuantiti form-control\" name=\"Barangan[kuantiti" + i + "]\" size=\"5\"></td>" +
+              "<td><textarea class=\"justifikasi form-control\" name=\"Barangan[justifikasi][" + i + "]\"></textarea></td>" +
+              "<td><input type=\"text\" class=\"kuantiti form-control\" name=\"Barangan[kuantiti][" + i + "]\" size=\"5\"></td>" +
               "<td class=\"text-center\"><button class=\"btn btn-warning btn-minus\"><span class=\"glyphicon glyphicon-minus-sign icon-size\"></span></button></td></tr>";
-        $("tbody").append(row);
+        $("tbody#barang_body").append(row);
         e.stopPropagation();
         return false;
     });
 
     $("#btn-pembekal").on("click", function(e){
+        j++;
+        row = "<tr><td class=\"text-center\">" + j + "</td>" +
+              "<td class=\"text-center\"><input type=\"radio\" class=\"keutamaan form-check-input\" name=\"Pembekal[keutamaan]\" value=\"" + j + "\"></td>" +
+              "<td><input class=\"pembekal form-control\" name=\"Pembekal[pembekal][" + j + "]\"></td>" +
+              "<td><input class=\"nama_pembekal form-control\" name=\"Pembekal[nama_pembekal][" + j + "]\"></td>" +
+              "<td><input class=\"telefon form-control\" name=\"Pembekal[telefon][" + j + "]\"></td>" +
+              "<td><input type=\"text\" class=\"harga form-control\" name=\"Pembekal[harga][" + j + "]\" size=\"1\"></td>" +
+              "<td class=\"text-center\"><button class=\"btn btn-warning btn-minus\"><span class=\"glyphicon glyphicon-minus-sign icon-size\"></span></button></td></tr>";
+        $("tbody#pembekal_body").append(row);
+        e.stopPropagation();
         return false;
     });
 
