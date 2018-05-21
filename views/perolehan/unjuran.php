@@ -55,10 +55,6 @@ $this->registerJs('
 	    });
 	});
 
-	$("#myTable tr").hover(function(){
-		console.log($(this).children(0).html());
-	});
-
 	$("#myTable tr").on("click", function(){
 		var td = $(this).children();
 		$("#perolehan-kod_unjuran").val(td.eq(1).html());
@@ -69,7 +65,8 @@ $this->registerJs('
 		$("#baki").html(td.eq(5).html());
 		$("#jabatan").html(td.eq(6).children().prop("title"));
 		$("#perolehan-id_jabatan").val(td.eq(6).children().prop("id"));
-		$("#unjuran_info").slideDown(200);
+		$("#unjuran_info").slideDown(150);
+		$(".perolehan-form").slideDown(200);
 	});
 ');
 

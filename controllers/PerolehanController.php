@@ -5,6 +5,8 @@ namespace app\controllers;
 use Yii;
 use app\models\Perolehan;
 use app\models\PerolehanSearch;
+use app\models\Barangan;
+use app\models\Pembekal;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -67,7 +69,9 @@ class PerolehanController extends Controller
         $model = new Perolehan();
 
         if ($model->load(Yii::$app->request->post())) {
-            return print_r(Yii::$app->request->post());
+            $perolehan = Yii::$app->request->post('Perolehan');
+            $barangans = Yii::$app->request->post('Barangan');
+            $pembekals = Yii::$app->request->post('Pembekal');
             //$model->save()
             //return $this->redirect(['view', 'id' => $model->id]);
         }

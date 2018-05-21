@@ -54,9 +54,9 @@ use yii\bootstrap\Modal;
 
 </div>
 
-<div class="perolehan-form">
+<div class="perolehan-form" style="display: none;">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'perolehan-form']); ?>
 
     <?php //= $form->field($model, 'kod_id')->textInput(['maxlength' => true]) ?>
 
@@ -125,21 +125,21 @@ use yii\bootstrap\Modal;
     <?php //= $form->field($model, 'tarikh_kemaskini')->textInput() ?>
 
     <?php //= $form->field($model, 'user')->textInput() ?>
-    <div class="form-group">
+    <!-- <div class="form-group">
         <?= Html::button(Yii::t('app', 'Next'), ['class' => 'btn btn-primary', 'id' => 'seterusnya']) ?>
-    </div>
+    </div> -->
     <div class="form-group">
         <h3>Jenis Barang / Perkhidmatan </h3>
         <table id="unjuran-carian" class="table table-condensed table-striped table-bordered table-hover table-responsive">
         <thead class="thead-dark">
             <tr>
-                <th>#</th><th>Justifikasi Keperluan Perolehan <br>(Bekalan / Perkhidmatan / Kerja)</th><th>Kuantiti</th><th></th>
+                <th>#</th><th>Justifikasi Keperluan Perolehan <br>(Bekalan / Perkhidmatan / Kerja)</th><th style="width: 20%;">Kuantiti</th><th></th>
             </tr>
         </thead>
         <tbody id="barang_body">
             <tr>
-                <td class="text-center">1</td><td><?= Html::textarea('Barangan[justifikasi][1]', '', ['class' => 'justifikasi form-control']) ?></td>
-                <td><?= Html::textInput('Barangan[kuantiti][1]', '', ['class' => 'kuantiti form-control', 'size' => '1']) ?></td>
+                <td class="text-center">1</td><td><?= Html::textarea('Barangan[justifikasi][1]', '', ['class' => 'justifikasi form-control must']) ?></td>
+                <td><?= Html::textInput('Barangan[kuantiti][1]', '', ['class' => 'kuantiti form-control must', 'size' => '1', 'type' => 'number']) ?></td>
                 <td class="text-center"> </td>
             </tr>
         </tbody>
@@ -159,10 +159,10 @@ use yii\bootstrap\Modal;
         <tbody id="pembekal_body">
             <tr>
                 <td class="text-center">1</td><td class="text-center"><?= Html::radio('Pembekal[keutamaan]', false, ['class' => 'keutamaan form-check-input', 'value' => 1]) ?></td>
-                <td><?= Html::textInput('Pembekal[pembekal][1]', '', ['class' => 'pembekal form-control']) ?></td>
+                <td><?= Html::textInput('Pembekal[pembekal][1]', '', ['class' => 'pembekal form-control must']) ?></td>
                 <td><?= Html::textInput('Pembekal[nama_pembekal][1]', '', ['class' => 'nama_pembekal form-control']) ?></td>
                 <td><?= Html::textInput('Pembekal[telefon][1]', '', ['class' => 'telefon form-control']) ?></td>
-                <td><?= Html::textInput('Pembekal[harga][1]', '', ['class' => 'harga form-control', 'size' => '1']) ?></td>
+                <td><?= Html::textInput('Pembekal[harga][1]', '', ['class' => 'harga form-control must', 'size' => '1', 'type' => 'number']) ?></td>
                 <td class="text-center"> </td>
             </tr>
         </tbody>
@@ -195,7 +195,7 @@ $this->registerJs('
         i++;
         row = "<tr><td class=\"text-center\">" + i + "</td>" +
               "<td><textarea class=\"justifikasi form-control\" name=\"Barangan[justifikasi][" + i + "]\"></textarea></td>" +
-              "<td><input type=\"text\" class=\"kuantiti form-control\" name=\"Barangan[kuantiti][" + i + "]\" size=\"5\"></td>" +
+              "<td><input type=\"number\" class=\"kuantiti form-control\" name=\"Barangan[kuantiti][" + i + "]\" size=\"5\"></td>" +
               "<td class=\"text-center\"><button class=\"btn btn-warning btn-minus\"><span class=\"glyphicon glyphicon-minus-sign icon-size\"></span></button></td></tr>";
         $("tbody#barang_body").append(row);
         e.stopPropagation();
@@ -206,10 +206,10 @@ $this->registerJs('
         j++;
         row = "<tr><td class=\"text-center\">" + j + "</td>" +
               "<td class=\"text-center\"><input type=\"radio\" class=\"keutamaan form-check-input\" name=\"Pembekal[keutamaan]\" value=\"" + j + "\"></td>" +
-              "<td><input class=\"pembekal form-control\" name=\"Pembekal[pembekal][" + j + "]\"></td>" +
+              "<td><input class=\"pembekal form-control must\" name=\"Pembekal[pembekal][" + j + "]\"></td>" +
               "<td><input class=\"nama_pembekal form-control\" name=\"Pembekal[nama_pembekal][" + j + "]\"></td>" +
               "<td><input class=\"telefon form-control\" name=\"Pembekal[telefon][" + j + "]\"></td>" +
-              "<td><input type=\"text\" class=\"harga form-control\" name=\"Pembekal[harga][" + j + "]\" size=\"1\"></td>" +
+              "<td><input type=\"number\" class=\"harga form-control must\" name=\"Pembekal[harga][" + j + "]\" size=\"1\"></td>" +
               "<td class=\"text-center\"><button class=\"btn btn-warning btn-minus\"><span class=\"glyphicon glyphicon-minus-sign icon-size\"></span></button></td></tr>";
         $("tbody#pembekal_body").append(row);
         e.stopPropagation();
@@ -222,6 +222,33 @@ $this->registerJs('
         }
         e.stopPropagation();
         return false;
+    });
+
+    $("form#perolehan-form").on("submit", function(){
+
+        var keutamaan = false;
+        $(".keutamaan").each(function(){
+            if($(this).is(":checked"))
+                keutamaan = true;
+        });
+        if(!keutamaan) {
+            alert("Sila Pilih Keutamaan Pembekal");
+            return false;
+        }
+        console.log($(".must").length);
+        $(".must").each(function(){
+            if($(this).val().length === 0) {
+                console.log($(this).attr("name"));
+                $(this).css("background", "#f90707");
+                $(this).prop("placeholder", "Input ini tidak boleh dibiarkan kosong");
+                return false;
+            }
+        });
+
+        if(confirm("Hantar perolehan ini?"))
+            return true;
+        else
+            return false;
     });
 ');
 
