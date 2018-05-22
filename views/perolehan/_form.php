@@ -173,7 +173,7 @@ use yii\bootstrap\Modal;
     </div>
 
     <div class="form-group" style="display: nonex;">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success', 'id' => 'simpan']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
@@ -194,8 +194,8 @@ $this->registerJs('
     $("#btn-barangan").on("click", function(e){
         i++;
         row = "<tr><td class=\"text-center\">" + i + "</td>" +
-              "<td><textarea class=\"justifikasi form-control\" name=\"Barangan[justifikasi][" + i + "]\"></textarea></td>" +
-              "<td><input type=\"number\" class=\"kuantiti form-control\" name=\"Barangan[kuantiti][" + i + "]\" size=\"5\"></td>" +
+              "<td><textarea class=\"justifikasi form-control must\" name=\"Barangan[justifikasi][" + i + "]\"></textarea></td>" +
+              "<td><input type=\"number\" class=\"kuantiti form-control must\" name=\"Barangan[kuantiti][" + i + "]\" size=\"5\"></td>" +
               "<td class=\"text-center\"><button class=\"btn btn-warning btn-minus\"><span class=\"glyphicon glyphicon-minus-sign icon-size\"></span></button></td></tr>";
         $("tbody#barang_body").append(row);
         e.stopPropagation();
@@ -223,8 +223,12 @@ $this->registerJs('
         e.stopPropagation();
         return false;
     });
+    var fire = false
+    $("form#perolehan-form").on("submit", function(e){
 
-    $("form#perolehan-form").on("submit", function(){
+        if(fire)
+            return false;
+        fire = true;
 
         var keutamaan = false;
         $(".keutamaan").each(function(){
@@ -233,22 +237,34 @@ $this->registerJs('
         });
         if(!keutamaan) {
             alert("Sila Pilih Keutamaan Pembekal");
+            e.stopPropagation();
             return false;
         }
-        console.log($(".must").length);
+
+        $(".must").each(function(){
+            $(this).css("background", "");
+        });        
+
         $(".must").each(function(){
             if($(this).val().length === 0) {
                 console.log($(this).attr("name"));
                 $(this).css("background", "#f90707");
                 $(this).prop("placeholder", "Input ini tidak boleh dibiarkan kosong");
+                $(this).focus();
+                e.preventDefault();
+                e.stopPropagation();
                 return false;
             }
         });
 
         if(confirm("Hantar perolehan ini?"))
             return true;
-        else
-            return false;
+
+        return false;
+    });
+
+    $("#simpan").click(function(){
+        fire = false;
     });
 ');
 

@@ -67,11 +67,35 @@ class PerolehanController extends Controller
     public function actionCreate()
     {
         $model = new Perolehan();
+        $year = date("Y");
 
         if ($model->load(Yii::$app->request->post())) {
             $perolehan = Yii::$app->request->post('Perolehan');
             $barangans = Yii::$app->request->post('Barangan');
             $pembekals = Yii::$app->request->post('Pembekal');
+            return print_r($barangans['justifikasi']);
+            return print_r($barangans);
+            $model->kod_id = self::generateCode('P'.substr($year,2,2), empty(Perolehan::find()->max('id')) ? 1 : Perolehan::find()->max('id') + 1);
+            $model->kod_unjuran = $perolehan['kod_unjuran'];
+            $model->id_jabatan = $perolehan['id_jabatan'];
+            $model->id_jabatan_asal = $perolehan['id_jabatan_asal'];
+            $model->id_unit = $perolehan['id_unit'];
+            $model->jenis_perolehan = $perolehan['jenis_perolehan'];
+            $model->kaedah_pembayaran = $perolehan['kaedah_pembayaran'];
+            $model->kontrak_pusat = $perolehan['kontrak_pusat'];
+            $model->tahun = $year;
+            $model->user = Yii::$app->user->identity->id;
+            if($model->save()) {
+                for($i = 0; $i < count($barangans['justifikasi']); $i++) 
+                {
+                    $model_barangan = new Barangan();
+                    $model_barangan->id_perolehan = $model->id;
+                    //$model_barangan->justifikasi = 'x';
+                }
+                return print_r($model->id);
+            }
+            else
+                return print_r($model->getErrors());
             //$model->save()
             //return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -127,6 +151,16 @@ class PerolehanController extends Controller
      * @return Perolehan the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
+
+    static function generateCode($c, $data) {
+        $dLength = strlen($data);
+        $str = $c;
+        $sLength = strlen($c);
+        for($i = 0; $i < (10 - $dLength - $sLength); $i++)
+            $str .= "0";
+        return ($str.$data);
+    }
+
     protected function findModel($id)
     {
         if (($model = Perolehan::findOne($id)) !== null) {
