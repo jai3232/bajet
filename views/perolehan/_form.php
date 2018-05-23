@@ -153,7 +153,7 @@ use yii\bootstrap\Modal;
         <table id="unjuran-carian" class="table table-condensed table-striped table-bordered table-hover table-responsive">
         <thead class="thead-dark">
             <tr>
-                <th>#</th><th>Keutamaan</th><th>Nama Syarikat & No.ROB/ROC</th><th>Nama Pegawai Untuk dihubungi</th><th>No. Telefon</th><th>Jumlah Harga (RM)</th><th></th>
+                <th>#</th><th>Keutamaan</th><th>Nama Syarikat & No.ROB/ROC</th><th>Nama Pegawai Untuk dihubungi</th><th>No. Telefon</th><th>Emel</th><th>Jumlah Harga (RM)</th><th></th>
             </tr>
         </thead>
         <tbody id="pembekal_body">
@@ -162,7 +162,8 @@ use yii\bootstrap\Modal;
                 <td><?= Html::textInput('Pembekal[pembekal][1]', '', ['class' => 'pembekal form-control must']) ?></td>
                 <td><?= Html::textInput('Pembekal[nama_pembekal][1]', '', ['class' => 'nama_pembekal form-control']) ?></td>
                 <td><?= Html::textInput('Pembekal[telefon][1]', '', ['class' => 'telefon form-control']) ?></td>
-                <td><?= Html::textInput('Pembekal[harga][1]', '', ['class' => 'harga form-control must', 'size' => '1', 'type' => 'number']) ?></td>
+                <td><?= Html::textInput('Pembekal[emel][1]', '', ['class' => 'emel form-control']) ?></td>
+                <td><?= Html::textInput('Pembekal[harga][1]', '', ['class' => 'harga form-control must', 'size' => '1', 'type' => 'number', 'step' => '0.01']) ?></td>
                 <td class="text-center"> </td>
             </tr>
         </tbody>
@@ -209,7 +210,8 @@ $this->registerJs('
               "<td><input class=\"pembekal form-control must\" name=\"Pembekal[pembekal][" + j + "]\"></td>" +
               "<td><input class=\"nama_pembekal form-control\" name=\"Pembekal[nama_pembekal][" + j + "]\"></td>" +
               "<td><input class=\"telefon form-control\" name=\"Pembekal[telefon][" + j + "]\"></td>" +
-              "<td><input type=\"number\" class=\"harga form-control must\" name=\"Pembekal[harga][" + j + "]\" size=\"1\"></td>" +
+              "<td><input class=\"emel form-control\" name=\"Pembekal[emel][" + j + "]\"></td>" +
+              "<td><input type=\"number\" step=\"0.01\" class=\"harga form-control must\" name=\"Pembekal[harga][" + j + "]\" size=\"1\"></td>" +
               "<td class=\"text-center\"><button class=\"btn btn-warning btn-minus\"><span class=\"glyphicon glyphicon-minus-sign icon-size\"></span></button></td></tr>";
         $("tbody#pembekal_body").append(row);
         e.stopPropagation();

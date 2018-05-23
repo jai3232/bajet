@@ -73,9 +73,13 @@ class PerolehanController extends Controller
             $perolehan = Yii::$app->request->post('Perolehan');
             $barangans = Yii::$app->request->post('Barangan');
             $pembekals = Yii::$app->request->post('Pembekal');
-            return print_r($barangans['justifikasi']);
-            return print_r($barangans);
-            $model->kod_id = self::generateCode('P'.substr($year,2,2), empty(Perolehan::find()->max('id')) ? 1 : Perolehan::find()->max('id') + 1);
+            //return print_r($barangans['justifikasi']);
+            //return print_r($pembekals);
+            $model->kod_id = self::generateCodeReset('P'.substr($year,2,2), 
+                                empty(Perolehan::find()->where(['LIKE', 'kod_id', 'P'.date('y').'%', false])->max('kod_id')) ? 
+                                    'P'.date('y').'0000000' 
+                                : 
+                                Perolehan::find()->where(['LIKE', 'kod_id', 'P'.date('y').'%', false])->max('kod_id'));
             $model->kod_unjuran = $perolehan['kod_unjuran'];
             $model->id_jabatan = $perolehan['id_jabatan'];
             $model->id_jabatan_asal = $perolehan['id_jabatan_asal'];
@@ -86,11 +90,30 @@ class PerolehanController extends Controller
             $model->tahun = $year;
             $model->user = Yii::$app->user->identity->id;
             if($model->save()) {
-                for($i = 0; $i < count($barangans['justifikasi']); $i++) 
+                for($i = 1; $i <= count($barangans['justifikasi']); $i++) 
                 {
                     $model_barangan = new Barangan();
                     $model_barangan->id_perolehan = $model->id;
-                    //$model_barangan->justifikasi = 'x';
+                    $model_barangan->justifikasi = $barangans['justifikasi'][$i];
+                    $model_barangan->kuantiti = $barangans['kuantiti'][$i]; 
+                    if(!$model_barangan->save()) {
+                        return print_r($model_barangan->getErrors());
+                    }
+                    
+                }
+                for($i = 1; $i <= count($pembekals['pembekal']); $i++) {
+                    $model_pembekal = new Pembekal();
+                    $model_pembekal->id_perolehan = $model->id;
+                    $model_pembekal->pembekal = $pembekals['pembekal'][$i];
+                    $model_pembekal->nama_pembekal = $pembekals['nama_pembekal'][$i];
+                    $model_pembekal->no_telefon = $pembekals['telefon'][$i];
+                    $model_pembekal->email = $pembekals['emel'][$i];
+                    $model_pembekal->harga = $pembekals['harga'][$i];
+                    if($i == $pembekals['keutamaan'])
+                        $model_pembekal->utama = 1;
+                    if(!$model_pembekal->save()) {
+                        return print_r($model_pembekal->getErrors());
+                    }
                 }
                 return print_r($model->id);
             }
@@ -144,6 +167,12 @@ class PerolehanController extends Controller
         return $this->renderAjax('unjuran');
     }
 
+    public function actionTest()
+    {
+        //print_r(substr(Perolehan::find()->where(['LIKE', 'kod_id', 'P'.date('y').'%', false])->max('kod_id'), 3)/1);
+        Perolehan::find()->where(['LIKE', 'kod_id', 'P'.date('y').'%', false])->max('kod_id');
+    }
+
     /**
      * Finds the Perolehan model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -160,6 +189,19 @@ class PerolehanController extends Controller
             $str .= "0";
         return ($str.$data);
     }
+
+    static function generateCodeReset($c, $data) {
+        $data = substr($data, 3) / 1;
+        $data++;
+        $dLength = strlen($data);
+        $str = $c;
+        $sLength = strlen($c);
+        for($i = 0; $i < (8 - $dLength - $sLength); $i++)
+            $str .= "0";
+        return ($str.$data);
+    }
+
+
 
     protected function findModel($id)
     {
