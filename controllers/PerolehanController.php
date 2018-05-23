@@ -90,10 +90,11 @@ class PerolehanController extends Controller
             $model->tahun = $year;
             $model->user = Yii::$app->user->identity->id;
             if($model->save()) {
+                $id_perolehan = $model->id;
                 for($i = 1; $i <= count($barangans['justifikasi']); $i++) 
                 {
                     $model_barangan = new Barangan();
-                    $model_barangan->id_perolehan = $model->id;
+                    $model_barangan->id_perolehan = $id_perolehan;
                     $model_barangan->justifikasi = $barangans['justifikasi'][$i];
                     $model_barangan->kuantiti = $barangans['kuantiti'][$i]; 
                     if(!$model_barangan->save()) {
@@ -103,7 +104,7 @@ class PerolehanController extends Controller
                 }
                 for($i = 1; $i <= count($pembekals['pembekal']); $i++) {
                     $model_pembekal = new Pembekal();
-                    $model_pembekal->id_perolehan = $model->id;
+                    $model_pembekal->id_perolehan = $id_perolehan;
                     $model_pembekal->pembekal = $pembekals['pembekal'][$i];
                     $model_pembekal->nama_pembekal = $pembekals['nama_pembekal'][$i];
                     $model_pembekal->no_telefon = $pembekals['telefon'][$i];
@@ -115,7 +116,7 @@ class PerolehanController extends Controller
                         return print_r($model_pembekal->getErrors());
                     }
                 }
-                return print_r($model->id);
+                return $this->redirect(['/perolehan/form', 'id' => $id_perolehan]);
             }
             else
                 return print_r($model->getErrors());
@@ -165,6 +166,18 @@ class PerolehanController extends Controller
     public function actionUnjuranList()
     {
         return $this->renderAjax('unjuran');
+    }
+
+    public function actionForm($id = 0)
+    {
+        $model = Perolehan::findOne($id);
+        $model_barangan = Barangan::find()->where(['id_perolehan' => $id])->all();
+        $model_pembekal = Pembekal::find()->where(['id_perolehan' => $id])->all();
+        return $this->render('perolehan-form', [
+            'model' => $model,
+            'model_barangan' => $model_barangan,
+            'model_pembekal' => $model_pembekal
+        ]);
     }
 
     public function actionTest()
