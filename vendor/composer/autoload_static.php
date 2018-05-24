@@ -25,6 +25,11 @@ class ComposerStaticInit7b1b3caab82c15bfbb902c3aa1cab7cb
             'yii\\composer\\' => 13,
             'yii\\bootstrap\\' => 14,
             'yii\\' => 4,
+            'yii2tech\\html2pdf\\' => 18,
+        ),
+        'r' => 
+        array (
+            'robregonm\\pdf\\' => 14,
         ),
         'p' => 
         array (
@@ -124,6 +129,14 @@ class ComposerStaticInit7b1b3caab82c15bfbb902c3aa1cab7cb
         'yii\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2',
+        ),
+        'yii2tech\\html2pdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yii2tech/html2pdf/src',
+        ),
+        'robregonm\\pdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/robregonm/yii2-pdf',
         ),
         'phpDocumentor\\Reflection\\' => 
         array (

@@ -147,4 +147,22 @@ return array (
       '@kartik/grid' => $vendorDir . '/kartik-v/yii2-grid',
     ),
   ),
+  'robregonm/yii2-pdf' => 
+  array (
+    'name' => 'robregonm/yii2-pdf',
+    'version' => '1.0.3.0',
+    'alias' => 
+    array (
+      '@robregonm/pdf' => $vendorDir . '/robregonm/yii2-pdf',
+    ),
+  ),
+  'yii2tech/html2pdf' => 
+  array (
+    'name' => 'yii2tech/html2pdf',
+    'version' => '1.0.3.0',
+    'alias' => 
+    array (
+      '@yii2tech/html2pdf' => $vendorDir . '/yii2tech/html2pdf/src',
+    ),
+  ),
 );

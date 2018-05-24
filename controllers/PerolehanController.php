@@ -173,6 +173,14 @@ class PerolehanController extends Controller
         $model = Perolehan::findOne($id);
         $model_barangan = Barangan::find()->where(['id_perolehan' => $id])->all();
         $model_pembekal = Pembekal::find()->where(['id_perolehan' => $id])->all();
+
+        // Yii::$app->response->format = 'pdf';
+        // Yii::$container->set(Yii::$app->response->formatters['pdf']['class'], [
+        //     'format' => [216, 356], // Legal page size in mm
+        //      'orientation' => 'Landscape', // This value will be used when 'format' is an array only. Skipped when 'format' is empty or is a string
+        //     // 'beforeRender' => function($mpdf, $data) {},
+        // ]);
+        
         return $this->render('perolehan-form', [
             'model' => $model,
             'model_barangan' => $model_barangan,

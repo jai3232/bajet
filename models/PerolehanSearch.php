@@ -18,7 +18,7 @@ class PerolehanSearch extends Perolehan
     public function rules()
     {
         return [
-            [['id', 'jabatan', 'jabatan_asal', 'unit', 'jenis_perolehan', 'kaedah_pembayaran', 'kontrak_pusat', 'id_syarikat', 'status', 'status_kewangan', 'user'], 'integer'],
+            [['id', 'id_jabatan', 'id_jabatan_asal', 'id_unit', 'jenis_perolehan', 'kaedah_pembayaran', 'kontrak_pusat', 'id_syarikat', 'status', 'status_kewangan', 'user'], 'integer'],
             [['kod_id', 'kod_unjuran', 'tarikh_lulus1', 'catatan1', 'tarikh_lulus2', 'nolo', 'tarikhlo', 'novoucher', 'tarikh_voucher', 'catatan2', 'tahun', 'tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
             [['lulus_perolehan', 'nilai_perolehan'], 'number'],
         ];
@@ -61,9 +61,9 @@ class PerolehanSearch extends Perolehan
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'jabatan' => $this->jabatan,
-            'jabatan_asal' => $this->jabatan_asal,
-            'unit' => $this->unit,
+            'jabatan' => $this->id_jabatan,
+            'id_jabatan_asal' => $this->id_jabatan_asal,
+            'id_unit' => $this->id_unit,
             'jenis_perolehan' => $this->jenis_perolehan,
             'kaedah_pembayaran' => $this->kaedah_pembayaran,
             'kontrak_pusat' => $this->kontrak_pusat,

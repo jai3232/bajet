@@ -25,7 +25,7 @@
         "suggest": {
             "symfony/yaml": "If you want to parse features, represented in YAML files"
         },
-        "time": "2017-08-30T11:04:43+00:00",
+        "time": "2017-08-30 11:04:43",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -286,7 +286,7 @@
             "facebook/xhprof": "*@dev",
             "phpunit/phpunit": "4.1.*"
         },
-        "time": "2017-07-16T21:13:23+00:00",
+        "time": "2017-07-16 21:13:23",
         "bin": [
             "bin/markdown"
         ],
@@ -379,7 +379,7 @@
             "stecman/symfony-console-completion": "For BASH autocompletion",
             "symfony/phpunit-bridge": "For phpunit-bridge support"
         },
-        "time": "2018-03-31T22:36:34+00:00",
+        "time": "2018-03-31 22:36:34",
         "bin": [
             "codecept"
         ],
@@ -443,7 +443,7 @@
             "codeception/specify": "*",
             "vlucas/phpdotenv": "^2.4"
         },
-        "time": "2018-03-31T18:50:01+00:00",
+        "time": "2018-03-31 18:50:01",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -485,7 +485,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.0"
         },
-        "time": "2016-10-21T09:42:00+00:00",
+        "time": "2016-10-21 09:42:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -526,7 +526,7 @@
         "require-dev": {
             "phpunit/phpunit": ">=4.8 <8.0"
         },
-        "time": "2018-02-18T13:56:56+00:00",
+        "time": "2018-02-18 13:56:56",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -558,7 +558,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.0"
         },
-        "time": "2017-01-09T10:58:51+00:00",
+        "time": "2017-01-09 10:58:51",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -603,7 +603,7 @@
             "phpunit/phpunit": "~4.0",
             "squizlabs/php_codesniffer": "~2.0"
         },
-        "time": "2015-06-14T21:17:01+00:00",
+        "time": "2015-06-14 21:17:01",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -655,7 +655,7 @@
         "require-dev": {
             "simpletest/simpletest": "^1.1"
         },
-        "time": "2018-02-23T01:58:20+00:00",
+        "time": "2018-02-23 01:58:20",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -706,7 +706,7 @@
             "phpunit/phpunit": "^4.0 || ^5.0",
             "squizlabs/php_codesniffer": "^1.5"
         },
-        "time": "2017-08-15T16:48:10+00:00",
+        "time": "2017-08-15 16:48:10",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -760,7 +760,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.0"
         },
-        "time": "2017-03-20T17:10:46+00:00",
+        "time": "2017-03-20 17:10:46",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -821,7 +821,7 @@
             "bower-asset/bootstrap3-dialog": "~1.34",
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2017-11-06T16:04:54+00:00",
+        "time": "2017-11-06 16:04:54",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -877,7 +877,7 @@
             "kartik-v/yii2-widget-activeform": "~1.4",
             "kartik-v/yii2-widget-select2": "~2.0"
         },
-        "time": "2018-02-15T17:31:12+00:00",
+        "time": "2018-02-15 17:31:12",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -939,7 +939,7 @@
             "kartik-v/yii2-mpdf": "~1.0",
             "phpoffice/phpexcel": "~1.8"
         },
-        "time": "2017-11-19T18:30:55+00:00",
+        "time": "2017-11-19 18:30:55",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1003,7 +1003,7 @@
         "suggest": {
             "kartik-v/yii2-mpdf": "For exporting grids to PDF"
         },
-        "time": "2018-05-03T13:25:56+00:00",
+        "time": "2018-05-03 13:25:56",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1054,7 +1054,7 @@
         "require": {
             "yiisoft/yii2-bootstrap": "@dev"
         },
-        "time": "2017-09-29T06:18:14+00:00",
+        "time": "2017-09-29 06:18:14",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1107,7 +1107,7 @@
         "require": {
             "mpdf/mpdf": "<7.0"
         },
-        "time": "2017-01-14T11:51:12+00:00",
+        "time": "2017-01-14 11:51:12",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1161,7 +1161,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-06-17T17:34:48+00:00",
+        "time": "2015-06-17 17:34:48",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1210,7 +1210,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2018-03-05T04:35:50+00:00",
+        "time": "2018-03-05 04:35:50",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1264,7 +1264,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2018-02-24T05:28:25+00:00",
+        "time": "2018-02-24 05:28:25",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -1323,7 +1323,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.4"
         },
-        "time": "2017-10-27T13:56:43+00:00",
+        "time": "2017-10-27 13:56:43",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1378,7 +1378,7 @@
         "suggest": {
             "ext-zlib": "Needed for compression of embedded resources, such as fonts"
         },
-        "time": "2017-07-09T16:46:12+00:00",
+        "time": "2017-07-09 16:46:12",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1427,7 +1427,7 @@
             "doctrine/collections": "1.*",
             "phpunit/phpunit": "~4.1"
         },
-        "time": "2017-04-12T18:52:22+00:00",
+        "time": "2017-04-12 18:52:22",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1470,7 +1470,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.6"
         },
-        "time": "2017-09-11T18:02:19+00:00",
+        "time": "2017-09-11 18:02:19",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1530,7 +1530,7 @@
             "mockery/mockery": "^0.9.4",
             "phpunit/phpunit": "^4.4"
         },
-        "time": "2017-08-08T06:39:58+00:00",
+        "time": "2017-08-08 06:39:58",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1575,7 +1575,7 @@
             "mockery/mockery": "^0.9.4",
             "phpunit/phpunit": "^5.2||^4.8.24"
         },
-        "time": "2017-06-03T08:32:36+00:00",
+        "time": "2017-06-03 08:32:36",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1621,7 +1621,7 @@
             "ext-xmlwriter": "*",
             "php": ">=5.2.0"
         },
-        "time": "2015-05-01T07:00:55+00:00",
+        "time": "2015-05-01 07:00:55",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1676,7 +1676,7 @@
             "reference": "0464787bfa7cd13576c5a1e318709768798bec6a",
             "shasum": ""
         },
-        "time": "2016-04-07T12:29:16+00:00",
+        "time": "2016-04-07 12:29:16",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1727,7 +1727,7 @@
             "phpspec/phpspec": "^2.5|^3.2",
             "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.5"
         },
-        "time": "2018-04-18T13:57:24+00:00",
+        "time": "2018-04-18 13:57:24",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1798,7 +1798,7 @@
             "ext-xdebug": ">=2.2.1",
             "ext-xmlwriter": "*"
         },
-        "time": "2015-10-06T15:47:00+00:00",
+        "time": "2015-10-06 15:47:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1848,7 +1848,7 @@
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-11-27T13:52:08+00:00",
+        "time": "2017-11-27 13:52:08",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1897,7 +1897,7 @@
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2015-06-21T13:50:34+00:00",
+        "time": "2015-06-21 13:50:34",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1943,7 +1943,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
         },
-        "time": "2017-02-26T11:10:40+00:00",
+        "time": "2017-02-26 11:10:40",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1995,7 +1995,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.2"
         },
-        "time": "2017-12-04T08:55:13+00:00",
+        "time": "2017-12-04 08:55:13",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2063,7 +2063,7 @@
         "suggest": {
             "phpunit/php-invoker": "~1.1"
         },
-        "time": "2017-06-21T08:07:12+00:00",
+        "time": "2017-06-21 08:07:12",
         "bin": [
             "phpunit"
         ],
@@ -2125,7 +2125,7 @@
         "suggest": {
             "ext-soap": "*"
         },
-        "time": "2015-10-02T06:51:40+00:00",
+        "time": "2015-10-02 06:51:40",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2174,7 +2174,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-08-06T14:39:51+00:00",
+        "time": "2016-08-06 14:39:51",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2226,7 +2226,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-10-10T12:19:37+00:00",
+        "time": "2016-10-10 12:19:37",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2280,7 +2280,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.4"
         },
-        "time": "2017-01-29T09:50:25+00:00",
+        "time": "2017-01-29 09:50:25",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2344,7 +2344,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
         },
-        "time": "2017-05-22T07:24:03+00:00",
+        "time": "2017-05-22 07:24:03",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2398,7 +2398,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8 || ^5.0"
         },
-        "time": "2016-08-18T05:49:44+00:00",
+        "time": "2016-08-18 05:49:44",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2452,7 +2452,7 @@
             "ext-mbstring": "*",
             "phpunit/phpunit": "~4.4"
         },
-        "time": "2016-06-17T09:04:28+00:00",
+        "time": "2016-06-17 09:04:28",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2522,7 +2522,7 @@
         "suggest": {
             "ext-uopz": "*"
         },
-        "time": "2015-10-12T03:26:01+00:00",
+        "time": "2015-10-12 03:26:01",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2572,7 +2572,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.4"
         },
-        "time": "2016-10-03T07:41:43+00:00",
+        "time": "2016-10-03 07:41:43",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2621,7 +2621,7 @@
             "reference": "58b3a85e7999757d6ad81c787a1fbf5ff6c628c6",
             "shasum": ""
         },
-        "time": "2015-06-21T13:59:46+00:00",
+        "time": "2015-06-21 13:59:46",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2663,7 +2663,7 @@
             "setasign/fpdi-fpdf": "Use this package to automatically evaluate dependencies to FPDF.",
             "setasign/fpdi-tcpdf": "Use this package to automatically evaluate dependencies to TCPDF."
         },
-        "time": "2017-05-11T14:25:49+00:00",
+        "time": "2017-05-11 14:25:49",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2716,7 +2716,7 @@
             "mockery/mockery": "~0.9.1",
             "symfony/phpunit-bridge": "~3.2"
         },
-        "time": "2018-01-23T07:37:21+00:00",
+        "time": "2018-01-23 07:37:21",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2776,7 +2776,7 @@
         "suggest": {
             "symfony/process": ""
         },
-        "time": "2018-03-19T22:32:39+00:00",
+        "time": "2018-03-19 22:32:39",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2847,7 +2847,7 @@
             "symfony/lock": "",
             "symfony/process": ""
         },
-        "time": "2018-04-30T01:22:56+00:00",
+        "time": "2018-04-30 01:22:56",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2898,7 +2898,7 @@
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2018-03-19T22:32:39+00:00",
+        "time": "2018-03-19 22:32:39",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2960,7 +2960,7 @@
         "require-dev": {
             "symfony/http-kernel": "~2.8|~3.0|~4.0"
         },
-        "time": "2018-04-30T16:53:52+00:00",
+        "time": "2018-04-30 16:53:52",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3018,7 +3018,7 @@
         "suggest": {
             "symfony/css-selector": ""
         },
-        "time": "2018-03-19T22:32:39+00:00",
+        "time": "2018-03-19 22:32:39",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3083,7 +3083,7 @@
             "symfony/dependency-injection": "",
             "symfony/http-kernel": ""
         },
-        "time": "2018-04-06T07:35:25+00:00",
+        "time": "2018-04-06 07:35:25",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3134,7 +3134,7 @@
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2018-04-04T05:07:11+00:00",
+        "time": "2018-04-04 05:07:11",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3188,7 +3188,7 @@
         "suggest": {
             "ext-mbstring": "For best performance"
         },
-        "time": "2018-04-26T10:06:28+00:00",
+        "time": "2018-04-26 10:06:28",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3255,7 +3255,7 @@
         "suggest": {
             "symfony/console": "For validating YAML files using the lint command"
         },
-        "time": "2018-04-08T08:21:29+00:00",
+        "time": "2018-04-08 08:21:29",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3310,7 +3310,7 @@
             "phpunit/phpunit": "^4.6",
             "sebastian/version": "^1.0.1"
         },
-        "time": "2018-01-29T19:49:41+00:00",
+        "time": "2018-01-29 19:49:41",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3368,7 +3368,7 @@
             "php": ">=5.4.0",
             "yiisoft/yii2-composer": "~2.0.4"
         },
-        "time": "2018-03-21T18:36:53+00:00",
+        "time": "2018-03-21 18:36:53",
         "bin": [
             "yii"
         ],
@@ -3461,7 +3461,7 @@
             "bower-asset/bootstrap": "3.3.* | 3.2.* | 3.1.*",
             "yiisoft/yii2": "~2.0.6"
         },
-        "time": "2018-02-16T10:41:52+00:00",
+        "time": "2018-02-16 10:41:52",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -3525,7 +3525,7 @@
         "require-dev": {
             "composer/composer": "^1.0"
         },
-        "time": "2018-03-21T16:15:55+00:00",
+        "time": "2018-03-21 16:15:55",
         "type": "composer-plugin",
         "extra": {
             "class": "yii\\composer\\Plugin",
@@ -3579,7 +3579,7 @@
             "yiisoft/yii2": "~2.0.13",
             "yiisoft/yii2-bootstrap": "~2.0.0"
         },
-        "time": "2017-12-05T07:36:23+00:00",
+        "time": "2017-12-05 07:36:23",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -3628,7 +3628,7 @@
             "fzaninotto/faker": "~1.4",
             "yiisoft/yii2": "~2.0.0"
         },
-        "time": "2018-02-19T20:27:10+00:00",
+        "time": "2018-02-19 20:27:10",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -3679,7 +3679,7 @@
             "yiisoft/yii2": "~2.0.14",
             "yiisoft/yii2-bootstrap": "~2.0.0"
         },
-        "time": "2018-05-02T22:05:25+00:00",
+        "time": "2018-05-02 22:05:25",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -3732,7 +3732,7 @@
             "bower-asset/jquery-ui": "~1.12.1",
             "yiisoft/yii2": "~2.0.4"
         },
-        "time": "2017-11-25T15:32:29+00:00",
+        "time": "2017-11-25 15:32:29",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -3780,7 +3780,7 @@
             "swiftmailer/swiftmailer": "~5.0",
             "yiisoft/yii2": "~2.0.4"
         },
-        "time": "2017-05-01T08:29:00+00:00",
+        "time": "2017-05-01 08:29:00",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -3810,6 +3810,110 @@
             "mailer",
             "swift",
             "swiftmailer",
+            "yii2"
+        ]
+    },
+    {
+        "name": "robregonm/yii2-pdf",
+        "version": "1.0.3",
+        "version_normalized": "1.0.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/robregonm/yii2-pdf.git",
+            "reference": "af535ca93616cdcc396abef453d649ad8f3e1b36"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/robregonm/yii2-pdf/zipball/af535ca93616cdcc396abef453d649ad8f3e1b36",
+            "reference": "af535ca93616cdcc396abef453d649ad8f3e1b36",
+            "shasum": ""
+        },
+        "require": {
+            "mpdf/mpdf": ">=5.7.0 <7.0.0",
+            "php": ">=5.4.0",
+            "yiisoft/yii2": "*",
+            "yiisoft/yii2-composer": "*"
+        },
+        "time": "2017-11-03 15:33:01",
+        "type": "yii2-extension",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "robregonm\\pdf\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "robregonm",
+                "email": "robregonm@gmail.com",
+                "homepage": "http://obregon.co",
+                "role": "Author"
+            }
+        ],
+        "description": "Yii 2 PDF Response Formatter",
+        "keywords": [
+            "documents",
+            "formatter",
+            "pdf",
+            "reports",
+            "response",
+            "yii",
+            "yii2"
+        ]
+    },
+    {
+        "name": "yii2tech/html2pdf",
+        "version": "1.0.3",
+        "version_normalized": "1.0.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/yii2tech/html2pdf.git",
+            "reference": "45ce872abd4b3a92ae90051da4bac5fe2970eb1f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/yii2tech/html2pdf/zipball/45ce872abd4b3a92ae90051da4bac5fe2970eb1f",
+            "reference": "45ce872abd4b3a92ae90051da4bac5fe2970eb1f",
+            "shasum": ""
+        },
+        "require": {
+            "yiisoft/yii2": "~2.0.13"
+        },
+        "time": "2018-04-09 08:28:47",
+        "type": "yii2-extension",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "yii2tech\\html2pdf\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Paul Klimov",
+                "email": "klimov.paul@gmail.com"
+            }
+        ],
+        "description": "Provides support for HTML to PDF and PHP to PDF conversion",
+        "keywords": [
+            "conversion",
+            "convert",
+            "html2pdf",
+            "pdf",
+            "php2pdf",
+            "template",
             "yii2"
         ]
     }

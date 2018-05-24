@@ -109,7 +109,7 @@ use app\models\RefKaedahPerolehan;
 	    				</td>
 	    				<td>
 	    					<h5><strong>Kelulusan Kewangan</strong></h5>
-	    					Ulasan:________________________________________________
+	    					Ulasan:________________________________________
 	    					<p>&nbsp;</p>
 	    					______________________________<br>
 	    					( Tandatangan dan cop jawatan)<br>
