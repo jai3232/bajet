@@ -3,6 +3,13 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\models\Jabatan;
+use app\models\Unit;
+use app\models\RefJenisPerolehan;
+use app\models\RefKaedahPerolehan;
+use app\models\Barangan;
+use app\models\Pembekal;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PerolehanSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -26,18 +33,55 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             'kod_id',
             'kod_unjuran',
-            'id_jabatan',
-            'id_jabatan_asal',
-            //'unit',
-            //'jenis_perolehan',
-            //'kaedah_pembayaran',
-            //'kontrak_pusat',
+            //'id_jabatan',
+            [
+                'label' => 'Jabatan / Unit',
+                'attribute' => 'id_jabatan_asal',
+                'value' => function($model) {
+                    return Jabatan::findOne($model->id_jabatan_asal)->jabatan . ' / ' . Unit::findOne($model->id_unit)->unit;
+                }
+            ],
+            [
+                'label' => 'Pembekal',
+                'format' => 'raw',
+                'attribute' => 'id.pembekals.pembekal',
+                'value' => function($model) {
+                    $pembekals = Pembekal::findAll(['id_perolehan' => $model->id]);
+                    $list = '<ol>';
+                    foreach ($pembekals as $key => $value) {
+                        $list .= '<li>'.$value->pembekal.'</li>';
+                    }
+                    $list .= '</ol>';
+                    return $list;
+                }
+            ],
+            [
+                'label' => 'Perolehan',
+                //'attribute' => 'jenis_perolehan',
+                'value' => function($model) {
+                    return RefJenisPerolehan::findOne($model->jenis_perolehan)->jenis . '/' . RefKaedahPerolehan::findOne($model->kaedah_pembayaran)->kaedah;
+                }
+            ],
+            // [
+            //     'label' => 'Kaedah Pembayaran',
+            //     'attribute' => 'kaedah_pembayaran',
+            //     'value' => function($model) {
+            //         return RefKaedahPerolehan::findOne($model->kaedah_pembayaran)->kaedah;
+            //     }
+            // ],
+            [
+                'label' => 'Kontrak Pusat',
+                //'attribute' => 'kontrak_pusat',
+                'value' => function($model) {
+                    return $model->kontrak_pusat == 1 ? 'Ya' : 'Tidak';
+                }
+            ],
             //'id_syarikat',
-            //'status',
-            //'tarikh_lulus1',
+            'status',
+            'tarikh_lulus1',
             //'catatan1:ntext',
             //'lulus_perolehan',
             //'status_kewangan',

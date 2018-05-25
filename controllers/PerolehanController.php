@@ -182,6 +182,19 @@ class PerolehanController extends Controller
         //     // 'beforeRender' => function($mpdf, $data) {},
         // ]);
 
+        return $this->render('perolehan-form', [
+            'model' => $model,
+            'model_barangan' => $model_barangan,
+            'model_pembekal' => $model_pembekal
+        ]);
+    }
+
+    public function actionFormPdf($id = 0)
+    {
+        $model = Perolehan::findOne($id);
+        $model_barangan = Barangan::find()->where(['id_perolehan' => $id])->all();
+        $model_pembekal = Pembekal::find()->where(['id_perolehan' => $id])->all();
+
         $content = $this->renderPartial('perolehan-form',[
             'model' => $model,
             'model_barangan' => $model_barangan,
@@ -189,37 +202,34 @@ class PerolehanController extends Controller
         ]);
         
         $pdf = new Pdf([
-        // set to use core fonts only
-        'mode' => Pdf::MODE_CORE, 
-        // A4 paper format
-        'format' => Pdf::FORMAT_A4, 
-        // portrait orientation
-        'orientation' => Pdf::ORIENT_PORTRAIT, 
-        // stream to browser inline
-        'destination' => Pdf::DEST_BROWSER, 
-        // your html content input
-        'content' => $content,  
-        // format content from your own css file if needed or use the
-        // enhanced bootstrap css built by Krajee for mPDF formatting 
-        'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
-        // any css to be embedded if required
-        'cssInline' => '.kv-heading-1{font-size:18px} .bordered {border: 1px solid black;}', 
-         // set mPDF properties on the fly
-        'options' => ['title' => 'Krajee Report Title'],
-         // call mPDF methods on the fly
-        'methods' => [ 
-            'SetHeader'=>['Krajee Report Header'], 
-            'SetFooter'=>['{PAGENO}'],
-        ]
-    ]);
-    
-    // return the pdf output as per the destination setting
-    return $pdf->render(); 
-        return $this->render('perolehan-form', [
-            'model' => $model,
-            'model_barangan' => $model_barangan,
-            'model_pembekal' => $model_pembekal
+            // set to use core fonts only
+            'mode' => Pdf::MODE_CORE, 
+            // A4 paper format
+            'format' => Pdf::FORMAT_A4, 
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_PORTRAIT, 
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER, 
+            // your html content input
+            'content' => $content,  
+            // format content from your own css file if needed or use the
+            // enhanced bootstrap css built by Krajee for mPDF formatting 
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            'cssInline' => '.kv-heading-1{font-size:18px} .bordered {border: 1px solid black;}', 
+             // set mPDF properties on the fly
+            'options' => ['title' => 'Borang Perolehan'],
+             // call mPDF methods on the fly
+            'methods' => [ 
+                'SetHeader'=>['Borang Perolehan'], 
+                'SetFooter'=>['{PAGENO}'],
+            ]
         ]);
+    
+        // return the pdf output as per the destination setting
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        //Yii::$app->response->headers->add('Content-Type', 'application/pdf');
+        return $pdf->render(); 
     }
 
     public function actionTest()

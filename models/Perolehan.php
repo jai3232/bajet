@@ -29,10 +29,13 @@ use Yii;
  * @property string $tarikh_voucher
  * @property double $nilai_perolehan
  * @property string $catatan2
- * @property string $tahun
+ * @property int $tahun
+ * @property string $user
  * @property string $tarikh_jadi
  * @property string $tarikh_kemaskini
- * @property int $user
+ *
+ * @property Barangan[] $barangans
+ * @property Pembekal[] $pembekals
  */
 class Perolehan extends \yii\db\ActiveRecord
 {
@@ -51,13 +54,13 @@ class Perolehan extends \yii\db\ActiveRecord
     {
         return [
             [['kod_id', 'kod_unjuran', 'id_jabatan', 'id_unit', 'jenis_perolehan', 'kaedah_pembayaran', 'tahun', 'user'], 'required'],
-            [['id_jabatan', 'id_jabatan_asal', 'id_unit', 'jenis_perolehan', 'kaedah_pembayaran', 'kontrak_pusat', 'id_syarikat', 'status', 'status_kewangan', 'user'], 'integer'],
+            [['id_jabatan', 'id_jabatan_asal', 'id_unit', 'jenis_perolehan', 'kaedah_pembayaran', 'kontrak_pusat', 'id_syarikat', 'status', 'status_kewangan', 'tahun'], 'integer'],
             [['tarikh_lulus1', 'tarikh_lulus2', 'tarikhlo', 'tarikh_voucher', 'tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
             [['catatan1', 'catatan2'], 'string'],
             [['lulus_perolehan', 'nilai_perolehan'], 'number'],
             [['kod_id', 'kod_unjuran'], 'string', 'max' => 10],
             [['nolo', 'novoucher'], 'string', 'max' => 20],
-            [['tahun'], 'string', 'max' => 4],
+            [['user'], 'string', 'max' => 30],
             [['kod_id'], 'unique'],
         ];
     }
@@ -68,32 +71,53 @@ class Perolehan extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'kod_id' => Yii::t('app', 'Kod ID'),
-            'kod_unjuran' => Yii::t('app', 'Kod Unjuran'),
-            'id_jabatan' => Yii::t('app', 'Id Jabatan'),
-            'id_jabatan_asal' => Yii::t('app', 'Id Jabatan Asal'),
-            'id_unit' => Yii::t('app', 'Id Unit'),
-            'jenis_perolehan' => Yii::t('app', 'Jenis Perolehan'),
-            'kaedah_pembayaran' => Yii::t('app', 'Kaedah Pembayaran'),
-            'kontrak_pusat' => Yii::t('app', 'Kontrak Pusat'),
-            'id_syarikat' => Yii::t('app', 'Id Syarikat'),
-            'status' => Yii::t('app', 'Status'),
-            'tarikh_lulus1' => Yii::t('app', 'Tarikh Lulus1'),
-            'catatan1' => Yii::t('app', 'Catatan1'),
-            'lulus_perolehan' => Yii::t('app', 'Lulus Perolehan'),
-            'status_kewangan' => Yii::t('app', 'Status Kewangan'),
-            'tarikh_lulus2' => Yii::t('app', 'Tarikh Lulus2'),
-            'nolo' => Yii::t('app', 'Nolo'),
-            'tarikhlo' => Yii::t('app', 'Tarikhlo'),
-            'novoucher' => Yii::t('app', 'Novoucher'),
-            'tarikh_voucher' => Yii::t('app', 'Tarikh Voucher'),
-            'nilai_perolehan' => Yii::t('app', 'Nilai Perolehan'),
-            'catatan2' => Yii::t('app', 'Catatan2'),
-            'tahun' => Yii::t('app', 'Tahun'),
-            'tarikh_jadi' => Yii::t('app', 'Tarikh Jadi'),
-            'tarikh_kemaskini' => Yii::t('app', 'Tarikh Kemaskini'),
-            'user' => Yii::t('app', 'User'),
+            'id' => 'ID',
+            'kod_id' => 'Kod ID',
+            'kod_unjuran' => 'Kod Unjuran',
+            'id_jabatan' => 'Id Jabatan',
+            'id_jabatan_asal' => 'Id Jabatan Asal',
+            'id_unit' => 'Id Unit',
+            'jenis_perolehan' => 'Jenis Perolehan',
+            'kaedah_pembayaran' => 'Kaedah Pembayaran',
+            'kontrak_pusat' => 'Kontrak Pusat',
+            'id_syarikat' => 'Id Syarikat',
+            'status' => 'Status',
+            'tarikh_lulus1' => 'Tarikh Lulus1',
+            'catatan1' => 'Catatan1',
+            'lulus_perolehan' => 'Lulus Perolehan',
+            'status_kewangan' => 'Status Kewangan',
+            'tarikh_lulus2' => 'Tarikh Lulus2',
+            'nolo' => 'Nolo',
+            'tarikhlo' => 'Tarikhlo',
+            'novoucher' => 'Novoucher',
+            'tarikh_voucher' => 'Tarikh Voucher',
+            'nilai_perolehan' => 'Nilai Perolehan',
+            'catatan2' => 'Catatan2',
+            'tahun' => 'Tahun',
+            'user' => 'User',
+            'tarikh_jadi' => 'Tarikh Jadi',
+            'tarikh_kemaskini' => 'Tarikh Kemaskini',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBarangans()
+    {
+        return $this->hasMany(Barangan::className(), ['id_perolehan' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPembekals()
+    {
+        return $this->hasMany(Pembekal::className(), ['id_perolehan' => 'id']);
+    }
+
+    public function getJabatan()
+    {
+        return $this->hasOne(Jabatan::className(), ['id' => 'id_jabatan']);
     }
 }

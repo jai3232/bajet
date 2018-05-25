@@ -12,6 +12,8 @@ use Yii;
  * @property string $justifikasi
  * @property int $kuantiti
  * @property string $tarikh_jadi
+ *
+ * @property Perolehan $perolehan
  */
 class Barangan extends \yii\db\ActiveRecord
 {
@@ -33,6 +35,7 @@ class Barangan extends \yii\db\ActiveRecord
             [['id_perolehan', 'kuantiti'], 'integer'],
             [['justifikasi'], 'string'],
             [['tarikh_jadi'], 'safe'],
+            [['id_perolehan'], 'exist', 'skipOnError' => true, 'targetClass' => Perolehan::className(), 'targetAttribute' => ['id_perolehan' => 'id']],
         ];
     }
 
@@ -42,11 +45,19 @@ class Barangan extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'id_perolehan' => Yii::t('app', 'Id Perolehan'),
-            'justifikasi' => Yii::t('app', 'Justifikasi'),
-            'kuantiti' => Yii::t('app', 'Kuantiti'),
-            'tarikh_jadi' => Yii::t('app', 'Tarikh Jadi'),
+            'id' => 'ID',
+            'id_perolehan' => 'Id Perolehan',
+            'justifikasi' => 'Justifikasi',
+            'kuantiti' => 'Kuantiti',
+            'tarikh_jadi' => 'Tarikh Jadi',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPerolehan()
+    {
+        return $this->hasOne(Perolehan::className(), ['id' => 'id_perolehan']);
     }
 }

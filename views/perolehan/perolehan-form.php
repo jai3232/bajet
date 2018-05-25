@@ -4,6 +4,7 @@ use app\models\Unit;
 use app\models\Pengguna;
 use app\models\RefJenisPerolehan;
 use app\models\RefKaedahPerolehan;
+use yii\helpers\Html;
 
 ?>
 
@@ -120,9 +121,9 @@ use app\models\RefKaedahPerolehan;
 	    		</tbody>
 	    	</table>
 	    </li>
-  </ul>
+  	</ul>
 </div>
-
+<?= Html::a('Lihat PDF', ['/perolehan/form-pdf', 'id' => yii::$app->request->get('id')], ['class'=>'btn btn-primary']) ?>
 <?php
 $this->registerCss('
 	.bordered {

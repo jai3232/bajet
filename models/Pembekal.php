@@ -17,6 +17,8 @@ use Yii;
  * @property string $email
  * @property double $harga
  * @property string $tarikh_jadi
+ *
+ * @property Perolehan $perolehan
  */
 class Pembekal extends \yii\db\ActiveRecord
 {
@@ -41,7 +43,8 @@ class Pembekal extends \yii\db\ActiveRecord
             [['tarikh_jadi'], 'safe'],
             [['nama_pembekal'], 'string', 'max' => 100],
             [['no_telefon'], 'string', 'max' => 12],
-            [['email'], 'string', 'max' => 50],
+            [['email'], 'string', 'max' => 30],
+            [['id_perolehan'], 'exist', 'skipOnError' => true, 'targetClass' => Perolehan::className(), 'targetAttribute' => ['id_perolehan' => 'id']],
         ];
     }
 
@@ -51,16 +54,24 @@ class Pembekal extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'id_perolehan' => Yii::t('app', 'Id Perolehan'),
-            'pembekal' => Yii::t('app', 'Pembekal'),
-            'nama_pembekal' => Yii::t('app', 'Nama Pembekal'),
-            'id_syarikat' => Yii::t('app', 'Id Syarikat'),
-            'utama' => Yii::t('app', 'Utama'),
-            'no_telefon' => Yii::t('app', 'No Telefon'),
-            'email' => Yii::t('app', 'Email'),
-            'harga' => Yii::t('app', 'Harga'),
-            'tarikh_jadi' => Yii::t('app', 'Tarikh Jadi'),
+            'id' => 'ID',
+            'id_perolehan' => 'Id Perolehan',
+            'pembekal' => 'Pembekal',
+            'nama_pembekal' => 'Nama Pembekal',
+            'id_syarikat' => 'Id Syarikat',
+            'utama' => 'Utama',
+            'no_telefon' => 'No Telefon',
+            'email' => 'Email',
+            'harga' => 'Harga',
+            'tarikh_jadi' => 'Tarikh Jadi',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPerolehan()
+    {
+        return $this->hasOne(Perolehan::className(), ['id' => 'id_perolehan']);
     }
 }
