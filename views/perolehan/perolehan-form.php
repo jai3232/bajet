@@ -57,7 +57,7 @@ use app\models\RefKaedahPerolehan;
     				<tr class="<?= $value->utama ? "success" : ""; ?>">
     					<td><?= $i++; ?><?=  $value->utama ? "<span class=\"glyphicon glyphicon-asterisk\"></span>" : ""; ?></td>
     					<td><?= $value->pembekal ?></td>
-    					<td><?= $value->nama_pembekal ?><br><span class="glyphicon glyphicon-phone-alt"></span><?= $value->no_telefon ?>, <span class="glyphicon glyphicon-envelope"></span> <?= $value->email ?></td>
+    					<td><?= $value->nama_pembekal ?><br><span class="glyphicon glyphicon-phone-alt">Tel: </span><?= $value->no_telefon ?>, <span class="glyphicon glyphicon-envelope">Email:</span> <?= $value->email ?></td>
     					<td class="text-right"><?= $value->harga ?> </td>
     				</tr>
     				<?php
@@ -67,7 +67,7 @@ use app\models\RefKaedahPerolehan;
     		</table>
 	    </li>
 	    <li class="list-group-item">
-	    	<table class="table">
+	    	<table class="tables">
 	    		<tbody>
 	    			<tr>
 	    				<td width="50%">
@@ -79,7 +79,7 @@ use app\models\RefKaedahPerolehan;
 	    						<tr><td class="bordered"></td><td>  Lain-Lain (sila nyatakan)________________</td></tr>
 	    					</table>
 	    				</td>
-	    				<td>
+	    				<td valign="top">
 	    					<h5><strong>Dipohon oleh</strong></h5>
 	    					<p>&nbsp;</p>
 	    					______________________________<br>
@@ -92,7 +92,7 @@ use app\models\RefKaedahPerolehan;
 	    	</table>
 	    </li>
 	    <li class="list-group-item">
-	    	<table class="table">
+	    	<table class="tables">
 	    		<tbody>
 	    			<tr>
 	    				<td width="50%">

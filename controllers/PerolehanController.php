@@ -10,6 +10,7 @@ use app\models\Pembekal;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use kartik\mpdf\Pdf;
 
 /**
  * PerolehanController implements the CRUD actions for Perolehan model.
@@ -180,7 +181,40 @@ class PerolehanController extends Controller
         //      'orientation' => 'Landscape', // This value will be used when 'format' is an array only. Skipped when 'format' is empty or is a string
         //     // 'beforeRender' => function($mpdf, $data) {},
         // ]);
+
+        $content = $this->renderPartial('perolehan-form',[
+            'model' => $model,
+            'model_barangan' => $model_barangan,
+            'model_pembekal' => $model_pembekal
+        ]);
         
+        $pdf = new Pdf([
+        // set to use core fonts only
+        'mode' => Pdf::MODE_CORE, 
+        // A4 paper format
+        'format' => Pdf::FORMAT_A4, 
+        // portrait orientation
+        'orientation' => Pdf::ORIENT_PORTRAIT, 
+        // stream to browser inline
+        'destination' => Pdf::DEST_BROWSER, 
+        // your html content input
+        'content' => $content,  
+        // format content from your own css file if needed or use the
+        // enhanced bootstrap css built by Krajee for mPDF formatting 
+        'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
+        // any css to be embedded if required
+        'cssInline' => '.kv-heading-1{font-size:18px} .bordered {border: 1px solid black;}', 
+         // set mPDF properties on the fly
+        'options' => ['title' => 'Krajee Report Title'],
+         // call mPDF methods on the fly
+        'methods' => [ 
+            'SetHeader'=>['Krajee Report Header'], 
+            'SetFooter'=>['{PAGENO}'],
+        ]
+    ]);
+    
+    // return the pdf output as per the destination setting
+    return $pdf->render(); 
         return $this->render('perolehan-form', [
             'model' => $model,
             'model_barangan' => $model_barangan,
