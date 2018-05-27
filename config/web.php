@@ -86,6 +86,12 @@ $config = [
             'viewPath' => '@app/pdf',
             'converter' => 'wkhtmltopdf',
         ],
+        'formatter' => [
+           'dateFormat' => 'dd-MM-Y',
+           'datetimeFormat' => 'dd-MM-Y H:i:s',
+           'timeFormat' => 'H:i:s',
+           'locale' => 'ms-MY'
+       ],
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,

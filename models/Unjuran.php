@@ -26,11 +26,17 @@ use Yii;
  * @property string $tarikh_jadi
  * @property string $tarikh_kemaskini
  * @property int $user
+ *
+ * @property Ot[] $ots
+ * @property Penceramah[] $penceramahs
+ * @property Perbelanjaan[] $perbelanjaans
+ * @property Perjalanan[] $perjalanans
+ * @property Perolehan[] $perolehans
  */
 class Unjuran extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function tableName()
     {
@@ -38,12 +44,12 @@ class Unjuran extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['os', 'id_jabatan', 'butiran', 'kod', 'jumlah_unjuran', 'tahun'], 'required'],
+            [['kod_id', 'os', 'id_jabatan', 'butiran', 'kod', 'jumlah_unjuran', 'tahun'], 'required'],
             [['id_jabatan', 'id_unit', 'kuantiti', 'public', 'status', 'sah', 'user'], 'integer'],
             [['butiran', 'catatan'], 'string'],
             [['jumlah_unjuran'], 'number'],
@@ -52,40 +58,81 @@ class Unjuran extends \yii\db\ActiveRecord
             [['os'], 'string', 'max' => 16],
             [['ol'], 'string', 'max' => 50],
             [['kod'], 'string', 'max' => 1],
+            [['kongsi'], 'string', 'max' => 30],
             [['tahun'], 'string', 'max' => 4],
             [['kod_id'], 'unique'],
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'kod_id' => 'Kod ID',
-            'os' => 'Os',
-            'ol' => 'Ol',
-            'id_jabatan' => 'Id Jabatan',
-            'id_unit' => 'Id Unit',
-            'butiran' => 'Butiran',
-            'kuantiti' => 'Kuantiti',
-            'kod' => 'Kod',
-            'jumlah_unjuran' => 'Jumlah Unjuran',
-            'kongsi' => 'Kongsi',
-            'public' => 'Public',
-            'tahun' => 'Tahun',
-            'catatan' => 'Catatan',
-            'status' => 'Status',
-            'sah' => 'Sah',
-            'tarikh_jadi' => 'Tarikh Jadi',
-            'tarikh_kemaskini' => 'Tarikh Kemaskini',
-            'user' => 'User',
+            'id' => Yii::t('app', 'ID'),
+            'kod_id' => Yii::t('app', 'Kod ID'),
+            'os' => Yii::t('app', 'Os'),
+            'ol' => Yii::t('app', 'Ol'),
+            'id_jabatan' => Yii::t('app', 'Id Jabatan'),
+            'id_unit' => Yii::t('app', 'Id Unit'),
+            'butiran' => Yii::t('app', 'Butiran'),
+            'kuantiti' => Yii::t('app', 'Kuantiti'),
+            'kod' => Yii::t('app', 'Kod'),
+            'jumlah_unjuran' => Yii::t('app', 'Jumlah Unjuran'),
+            'kongsi' => Yii::t('app', 'Kongsi'),
+            'public' => Yii::t('app', 'Public'),
+            'tahun' => Yii::t('app', 'Tahun'),
+            'catatan' => Yii::t('app', 'Catatan'),
+            'status' => Yii::t('app', 'Status'),
+            'sah' => Yii::t('app', 'Sah'),
+            'tarikh_jadi' => Yii::t('app', 'Tarikh Jadi'),
+            'tarikh_kemaskini' => Yii::t('app', 'Tarikh Kemaskini'),
+            'user' => Yii::t('app', 'User'),
         ];
     }
 
-    public function getJabatan()
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOts()
+    {
+        return $this->hasMany(Ot::className(), ['kod_unjuran' => 'kod_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPenceramahs()
+    {
+        return $this->hasMany(Penceramah::className(), ['kod_unjuran' => 'kod_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPerbelanjaans()
+    {
+        return $this->hasMany(Perbelanjaan::className(), ['kod_unjuran' => 'kod_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPerjalanans()
+    {
+        return $this->hasMany(Perjalanan::className(), ['kod_unjuran' => 'kod_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPerolehans()
+    {
+        return $this->hasMany(Perolehan::className(), ['kod_unjuran' => 'kod_id']);
+    }
+
+        public function getJabatan()
     {
         return $this->hasOne(Jabatan::className(), ['id' => 'id_jabatan']);
     }

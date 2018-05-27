@@ -40,14 +40,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'kod_id',
             'kod_unjuran',
             //'id_jabatan',
-            // [
-            //     'label' => 'Jabatan',
-            //     'attribute' => 'id_jabatan_asal',
-            //     'value' => function($model) {
-            //         return Jabatan::findOne($model->id_jabatan_asal)->jabatan;
-            //     },
-            //     'filter' => ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'),
-            // ],
+            [
+                'label' => 'Jabatan',
+                'attribute' => 'id_jabatan_asal',
+                'value' => function($model) {
+                    return Jabatan::findOne($model->id_jabatan_asal)->jabatan;
+                },
+                'filter' => ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'),
+            ],
             [
                 'label' => 'Unit',
                 'attribute' => 'id_unit',
@@ -62,22 +62,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'os',
                 'value' => function($model) {
                     return Unjuran::findOne(['kod_id' => $model->kod_unjuran])->os;
-                },
-                'filter' => ArrayHelper::map(Agihan::find()->where(['tahun' => date('Y')])->all(), 'os', 'os'),
-            ],
-            [
-                'label' => 'Barangan <br>Perkhidmatan',
-                'format' => 'raw',
-                'encodeLabel' => false,
-                'attribute' => 'barangan',
-                'value' => function($model) {
-                    $barangans = Barangan::findAll(['id_perolehan' => $model->id]);
-                    $list = '<ol style="margin-left: 0; padding-left: 15px;">';
-                    foreach ($barangans as $key => $value) {
-                        $list .= '<li>'.$value->justifikasi.'</li>';
-                    }
-                    $list .= '</ol>';
-                    return $list;
                 }
             ],
             [
@@ -86,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'pembekal',
                 'value' => function($model) {
                     $pembekals = Pembekal::findAll(['id_perolehan' => $model->id]);
-                    $list = '<ol style="margin-left: 0; padding-left: 15px;">';
+                    $list = '<ol style="margin-left: 0; padding-left: 15px">';
                     foreach ($pembekals as $key => $value) {
                         if($value->utama == 1)
                             $list .= '<li><strong>'.$value->pembekal.'</strong></li>';
@@ -98,22 +82,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'label' => 'Jenis',
-                'attribute' => 'jenis_perolehan',
+                'label' => 'Perolehan',
+                //'attribute' => 'jenis_perolehan',
                 'value' => function($model) {
-                    return RefJenisPerolehan::findOne($model->jenis_perolehan)->jenis;
-                },
-                'filter' => [1 => 'Bekalan', 2 => 'Perkhidmatan', 3 => 'Kerja'],
+                    return RefJenisPerolehan::findOne($model->jenis_perolehan)->jenis . '/' . RefKaedahPerolehan::findOne($model->kaedah_pembayaran)->kaedah;
+                }
             ],
-            [
-                'label' => 'Kaedah',
-                'attribute' => 'kaedah_pembayaran',
-                'value' => function($model) {
-                    return RefKaedahPerolehan::findOne($model->kaedah_pembayaran)->kaedah;
-                },
-                'filter' => [1 => 'Pembelian Terus', 2 => 'Sebutharga', 3 => 'Panjar', 4 => 'Kontrak', 5 => 'Pukal', 6 => 'Lain-lain'],
-
-            ],
+            // [
+            //     'label' => 'Kaedah Pembayaran',
+            //     'attribute' => 'kaedah_pembayaran',
+            //     'value' => function($model) {
+            //         return RefKaedahPerolehan::findOne($model->kaedah_pembayaran)->kaedah;
+            //     }
+            // ],
             // [
             //     'label' => 'Kontrak Pusat',
             //     //'attribute' => 'kontrak_pusat',
@@ -150,14 +131,3 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
     <?php Pjax::end(); ?>
 </div>
-
-<?php
-    $this->registerJs('
-        $("select option[value=\"\"]").append("Semua");
-
-        $(document).on("pjax:success", function() {
-            $("select option[value=\"\"]").append("Semua");
-        });
-    ');
-
-?>

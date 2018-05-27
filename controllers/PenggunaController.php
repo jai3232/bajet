@@ -122,6 +122,9 @@ class PenggunaController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $render = 'update';
+            if(yii::$app->user->identity->level != 0)
+                return $this->redirect(['profile', 'id' => $model->id]);
             return $this->redirect(['view', 'id' => $model->id]);
         }
         if(count($model->getErrors()))
@@ -129,6 +132,60 @@ class PenggunaController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+        ]);
+    }
+
+    public function actionProfile($id)
+    {
+        if($id != yii::$app->user->identity->id) {
+            return $this->redirect(['site/unauthorized']);
+        }
+        return $this->render('profile', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function actionPassword($id)
+    {
+        if($id != yii::$app->user->identity->id) {
+            return $this->redirect(['site/unauthorized']);
+        }
+        //return yii::$app->user->identity->id;
+
+        $msg = '';
+        if(Yii::$app->request->post('katalaluan_baru')) {
+
+            $model = new Pengguna();
+            $old_password = Yii::$app->request->post('katalaluan_lama');
+            $old_hash = md5($old_password);
+            $id = Yii::$app->request->post('id');
+            
+            if($id) {
+                $pengguna = $model->findOne(['id' => $id]);
+                $new_password = Yii::$app->request->post('katalaluan_baru');
+                $repeat_password = Yii::$app->request->post('katalaluan_baru_ulang');
+                //if(password_verify($old_password, $personal->katalaluan)) { // PHP 5.5 >=
+                if(md5($old_password) == $pengguna->password) {
+                    //return $this->redirect(['personal/info', 'tab' => 5]);
+                    //return $this->render('info', ['tab' => 5]);
+                    if($new_password == $repeat_password) {
+                        $pengguna->password = md5($new_password);
+                        if(!$pengguna->save())
+                            return print_r($pengguna->getErrors());
+                        $msg = 'OK';
+                    }
+                    else
+                        $msg = 'MatchError';
+                }
+                else
+                    $msg = 'PassError';
+            }
+                //return $this->actionInfo(5);
+        }
+
+        return $this->render('password', [
+            'model' => $this->findModel($id),
+            'msg' => $msg,
         ]);
     }
 

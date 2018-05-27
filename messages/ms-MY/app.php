@@ -26,6 +26,7 @@ return [
     'Daftar' => '',
     'Daftar Pengguna' => '',
     'Date' => 'Tarikh',
+    'Delete' => 'Padam',
     'Emel' => '',
     'ID' => '',
     'Id Jabatan' => '',
@@ -47,12 +48,13 @@ return [
     'Reset' => '',
     'Search' => '',
     'Select all' => 'Piih Semua',
-    'Unselect all' => 'Nyahpilih Semua',
     'Save' => 'Simpan',
     'Tambah Jabatan' => '',
     'Tambah Pengguna' => '',
     'Tambah Unit' => '',
     'The requested page does not exist.' => '',
     'Unit' => '',
-    'Units' => '',
+    'Units' => 'Unit',
+    'Unselect all' => 'Nyahpilih Semua',
+    'Update' => 'Kemaskini'
 ];

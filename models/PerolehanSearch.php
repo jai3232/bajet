@@ -15,11 +15,13 @@ class PerolehanSearch extends Perolehan
     /**
      * @inheritdoc
      */
+    public $pembekal, $barangan, $os;
+
     public function rules()
     {
         return [
             [['id', 'id_jabatan', 'id_jabatan_asal', 'id_unit', 'jenis_perolehan', 'kaedah_pembayaran', 'kontrak_pusat', 'id_syarikat', 'status', 'status_kewangan', 'user'], 'integer'],
-            [['kod_id', 'kod_unjuran', 'tarikh_lulus1', 'catatan1', 'tarikh_lulus2', 'nolo', 'tarikhlo', 'novoucher', 'tarikh_voucher', 'catatan2', 'tahun', 'tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
+            [['kod_id', 'kod_unjuran', 'tarikh_lulus1', 'catatan1', 'tarikh_lulus2', 'nolo', 'tarikhlo', 'novoucher', 'tarikh_voucher', 'catatan2', 'tahun', 'tarikh_jadi', 'tarikh_kemaskini', 'barangan', 'pembekal', 'os'], 'safe'],
             [['lulus_perolehan', 'nilai_perolehan'], 'number'],
         ];
     }
@@ -42,12 +44,28 @@ class PerolehanSearch extends Perolehan
      */
     public function search($params)
     {
-        $query = Perolehan::find();
+        $user_level = yii::$app->user->identity->level;
+        $id_jabatan = yii::$app->user->identity->id_jabatan;
 
+        $query = Perolehan::find();
+        // $query->leftJoin('barangan', 'perolehan.id = barangan.id_perolehan')
+        //       ->leftJoin('pembekal', 'perolehan.id = pembekal.id_perolehan')
+        //       ->leftJoin('panjar', 'perolehan.id = panjar.id_perolehan');
+        $query->joinWith('barangans')
+              ->joinWith('pembekals')
+              ->joinWith('panjars')
+              ->joinWith('kodUnjuran');
+
+        $query->where(['perolehan.tahun' => date('Y'), 'id_jabatan_asal' => $id_jabatan]);
+        
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['id'=>SORT_DESC],
+                //'attributes' => ['id', 'pembekal'],
+            ]
         ]);
 
         $this->load($params);
@@ -61,7 +79,7 @@ class PerolehanSearch extends Perolehan
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'jabatan' => $this->id_jabatan,
+            'id_jabatan' => $this->id_jabatan,
             'id_jabatan_asal' => $this->id_jabatan_asal,
             'id_unit' => $this->id_unit,
             'jenis_perolehan' => $this->jenis_perolehan,
@@ -78,11 +96,13 @@ class PerolehanSearch extends Perolehan
             'nilai_perolehan' => $this->nilai_perolehan,
             'tarikh_jadi' => $this->tarikh_jadi,
             'tarikh_kemaskini' => $this->tarikh_kemaskini,
+            'unjuran.os' => $this->os,
             'user' => $this->user,
         ]);
 
         $query->andFilterWhere(['like', 'kod_id', $this->kod_id])
             ->andFilterWhere(['like', 'kod_unjuran', $this->kod_unjuran])
+            ->andFilterWhere(['like', 'barangan.justifikasi', $this->barangan])
             ->andFilterWhere(['like', 'catatan1', $this->catatan1])
             ->andFilterWhere(['like', 'nolo', $this->nolo])
             ->andFilterWhere(['like', 'novoucher', $this->novoucher])

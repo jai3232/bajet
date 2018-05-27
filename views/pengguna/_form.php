@@ -16,11 +16,11 @@ use yii\captcha\Captcha;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'nama')->textInput(['maxlength' => true, 'readonly' => $model->level == 0 ? false : true]) ?>
 
-    <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true])->label('No. KP (Tanpa "-")') ?>
+    <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true, 'readonly' => $model->level == 0 ? false : true])->label('No. KP (Tanpa "-")') ?>
 
-    <?= $form->field($model, 'id_jabatan')->dropdownList(ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'), ['prompt' => '- Sila Pilih -', 'onchange' => '$.get("'.Url::to(['pengguna/unit-list']).'", {id: this.value}, function(data){$("#pengguna-id_unit").html(data); $("#pengguna-id_unit").val('.$model->id_unit.').change();});'])->label('Jabatan'); ?>
+    <?= $form->field($model, 'id_jabatan')->dropdownList(ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'), ['prompt' => '- Sila Pilih -', 'onchange' => '$.get("'.Url::to(['pengguna/unit-list']).'", {id: this.value}, function(data){$("#pengguna-id_unit").html(data); $("#pengguna-id_unit").val('.$model->id_unit.').change();});', 'readonly' => $model->level == 0 ? false : true])->label('Jabatan'); ?>
 
     <?= $form->field($model, 'id_unit')->dropdownList([], [])->label('Unit') ?>
 

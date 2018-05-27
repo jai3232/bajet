@@ -44,7 +44,7 @@ AppAsset::register($this);
                     ['label' => 'Jabatan', 'url' => ['/jabatan/index']],
                     ['label' => 'OS (Objek Sebagai)', 'url' => ['/os/index']],
                 ],
-                'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([1]) : false,
+                'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([0]) : false,
             ],
             ['label' => 'Daftar', 'url' => ['/site/register'], 'visible' => Yii::$app->user->isGuest],
             ['label' => 'Unjuran', 'items' => [
@@ -59,7 +59,7 @@ AppAsset::register($this);
                                                 [
                                                     'label' => 'Unjuran Semua', 
                                                     'url' => ['/unjuran/index-all'],
-                                                    'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([1, 3, 4, 5]) : false,
+                                                    'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([0, 2, 3, 4]) : false,
                                                 ],
                                                 [
                                                     'label' => 'Laporan Unjuran Jabatan/OS',
@@ -75,27 +75,36 @@ AppAsset::register($this);
                     ['label' => 'Senarai Waran', 'url' => ['/waran/index']],
                     ['label' => 'Tambah Waran', 'url' => ['/waran/create']],
                     ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
-                ] 
+                ],
+                'visible' => !Yii::$app->user->isGuest,
             ],
             ['label' => 'Perolehan', 'items' => [
                     ['label' => 'Borang Perolehan', 'url' => ['/perolehan/create']],
                     ['label' => 'Senarai Perolehan', 'url' => ['/perolehan/index']],
                     ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
-                ] 
+                ],
+                'visible' => !Yii::$app->user->isGuest,
             ],
             ['label' => 'Tuntutan', 'items' => [
                     ['label' => 'Senarai Waran', 'url' => ['/waran/index']],
                     ['label' => 'Tambah Waran', 'url' => ['/waran/create']],
                     ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
-                ] 
+                ],
+                'visible' => !Yii::$app->user->isGuest,
             ],
             ['label' => 'Laporan', 'items' => [
                     ['label' => 'Senarai Waran', 'url' => ['/waran/index']],
                     ['label' => 'Tambah Waran', 'url' => ['/waran/create']],
                     ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
-                ] 
+                ],
+                'visible' => !Yii::$app->user->isGuest, 
             ],
-            ['label' => 'Bantuan', 'url' => ['/site/about']],
+            ['label' => 'Bantuan', 'items' => [
+                    ['label' => 'Profail', 'url' => ['/pengguna/profile', 'id' => Yii::$app->user->isGuest ? 0 : yii::$app->user->identity->id], 'visible' => !Yii::$app->user->isGuest],
+                    ['label' => 'Tukar Katalaluan', 'url' => ['/pengguna/password', 'id' => Yii::$app->user->isGuest ? 0 : yii::$app->user->identity->id], 'visible' => !Yii::$app->user->isGuest],
+                    ['label' => 'About', 'url' => ['/site/about']],
+                ]
+            ],
             //['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
