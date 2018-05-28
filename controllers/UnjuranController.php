@@ -68,7 +68,7 @@ class UnjuranController extends Controller
         $searchModel = new UnjuranSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('indexAll', [
+        return $this->render('index-all', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'all' => true,
@@ -229,7 +229,7 @@ class UnjuranController extends Controller
         $waran = Waran::find();
         $unjuran = Unjuran::find();
 
-        return $this->render('reportOsKod', [
+        return $this->render('report-os-kod', [
             'unjuran' => $unjuran,
             'jabatan' => $jabatan,
             'waran' => $waran,

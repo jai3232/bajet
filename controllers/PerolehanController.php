@@ -47,6 +47,17 @@ class PerolehanController extends Controller
         ]);
     }
 
+    public function actionIndexAll()
+    {
+        $searchModel = new PerolehanSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index-all', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Displays a single Perolehan model.
      * @param integer $id

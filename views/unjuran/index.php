@@ -17,7 +17,7 @@ $yearList = ['' => ''];
 for($i = $currentYear - 5; $i < $currentYear + 5; $i++) {
     $yearList[$i] = $i; 
 }
-$kodList = ['' => 'ABCD', 'A' => 'A', 'B' => 'B', 'C' => 'C', 'D' => 'D'];
+$kodList = ['' => '', 'A' => 'A', 'B' => 'B', 'C' => 'C', 'D' => 'D'];
 
 if(!isset($_GET['UnjuranSearch']['tahun']))
     $selectedYear = $currentYear;
@@ -307,7 +307,11 @@ $this->registerJs('
                         checkbox.prop("checked", true).attr("checked", true);
             });
         });
+
+        $("select option[value=\"\"]").append("Semua");
     });
+
+    $("select option[value=\"\"]").append("Semua");
 
 ');
 

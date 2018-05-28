@@ -91,7 +91,7 @@ $config = [
            'datetimeFormat' => 'dd-MM-Y H:i:s',
            'timeFormat' => 'H:i:s',
            'locale' => 'ms-MY'
-       ],
+        ],
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,

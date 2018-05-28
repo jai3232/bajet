@@ -80,7 +80,8 @@ AppAsset::register($this);
             ],
             ['label' => 'Perolehan', 'items' => [
                     ['label' => 'Borang Perolehan', 'url' => ['/perolehan/create']],
-                    ['label' => 'Senarai Perolehan', 'url' => ['/perolehan/index']],
+                    ['label' => 'Senarai Perolehan Jabatan', 'url' => ['/perolehan/index']],
+                    ['label' => 'Senarai Perolehan Semua', 'url' => ['/perolehan/index-all']],
                     ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
                 ],
                 'visible' => !Yii::$app->user->isGuest,

@@ -19,17 +19,26 @@ use app\models\Agihan;
 
 $this->title = Yii::t('app', 'Perolehan');
 $this->params['breadcrumbs'][] = $this->title;
+
+$currentYear = date("Y"); 
+$yearList = ['' => ''];
+for($i = $currentYear - 5; $i < $currentYear + 5; $i++) {
+    $yearList[$i] = $i; 
+}
 ?>
 <div class="perolehan-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <div class="alert alert-info">
+        <strong>Petunjuk</strong> <p>A: Sedang diproses, B: Lulus, B+: Lulus dengan perubahan, C: Tolak </p>
+    </div>
 
     <p>
         <?= Html::a(Yii::t('app', 'Create Perolehan'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
+    <div class="output" style="overflow-x: auto">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -122,32 +131,78 @@ $this->params['breadcrumbs'][] = $this->title;
             //     }
             // ],
             //'id_syarikat',
-            'status',
+            // [
+            //     'attribute' => 'status',
+            //     'value' => function($model) {
+            //         $status = ['A', 'B', 'C'];
+            //         return $status[$model->status];
+            //     },
+            //     'filter' => ['A', 'B', 'C'],
+            // ],
             //'tarikh_lulus1',
             //'catatan1:ntext',
             //'lulus_perolehan',
             //'status_kewangan',
+            [
+                'label' => 'Status <br> Kewangan',
+                'attribute' => 'status_kewangan',
+                'encodeLabel' => false,
+                'value' => function($model) {
+                    $status = ['A', 'B', 'C'];
+                    return $status[$model->status_kewangan];
+                },
+                'filter' => ['A', 'B', 'B+', 'C'],
+            ],
             //'tarikh_lulus2',
             //'nolo',
             //'tarikhlo',
             //'novoucher',
             //'tarikh_voucher',
             //'nilai_perolehan',
-            //'catatan2:ntext',
-            //'tahun',
             [
-                'label' => 'Tarikh',
+                'label' => 'Nilai <br>Perolehan',
+                'attribute' => 'nilai_perolehan',
+                'encodeLabel' => false,
+                'contentOptions' => ['class' => 'text-right'],
+                'value' => function($model) {
+                    return number_format(Pembekal::findOne(['id_perolehan' => $model->id, 'utama' => 1])['harga'], 2);
+                    //return print_r(Pembekal::findOne(['id_perolehan' => $model->id, 'utama' => 1])['harga']);
+                }
+            ],
+            //'catatan2:ntext',
+            [
+                'attribute' => 'tahun',
+                'filter' => Html::dropDownList('PerolehanSearch[tahun]', $searchModel->tahun, $yearList, ['class' => 'form-control'])
+            ],
+            [
+                'label' => 'Tarikh <br>(dd-mm-yyyy)',
                 'attribute' => 'tarikh_jadi',
+                'encodeLabel' => false,
                 'value' => function($model) {
                     return Yii::$app->formatter->asDate($model->tarikh_jadi);
-                }
+                },
+                // 'filter' =>  DatePicker::widget([
+                //                 'name' => 'PerolehanSearch[tarikh_jadi]',
+                //                 'options' => ['class' => 'form-control'],
+                //                 'dateFormat' => 'yyyy-MM-dd',
+                //              ]),
             ],
             //'tarikh_kemaskini',
             //'user',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}{delete}',
+                'visibleButtons' => [
+                    'view' => true,
+                    'delete' => function($model) {
+                        return is_null($model->nolo) ? true : false;
+                    }
+                ]
+            ],
         ],
     ]); ?>
+    </div>
     <?php Pjax::end(); ?>
 </div>
 

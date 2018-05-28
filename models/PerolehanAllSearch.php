@@ -10,7 +10,7 @@ use app\models\Perolehan;
 /**
  * PerolehanSearch represents the model behind the search form of `app\models\Perolehan`.
  */
-class PerolehanSearch extends Perolehan
+class PerolehanAllSearch extends Perolehan
 {
     /**
      * @inheritdoc
