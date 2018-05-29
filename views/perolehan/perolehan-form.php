@@ -123,7 +123,7 @@ use yii\helpers\Html;
 	    </li>
   	</ul>
 </div>
-<?= Html::a('Lihat PDF', ['/perolehan/form-pdf', 'id' => yii::$app->request->get('id')], ['class'=>'btn btn-primary']) ?>
+<?= Html::a('Papar PDF', ['/perolehan/form-pdf', 'id' => yii::$app->request->get('id')], ['class'=>'btn btn-primary']) ?>
 <?php
 $this->registerCss('
 	.bordered {

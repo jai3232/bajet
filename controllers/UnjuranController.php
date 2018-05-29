@@ -52,8 +52,9 @@ class UnjuranController extends Controller
         $searchModel = new UnjuranSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        // if(!isset($_GET['id']))
-        //     return $this->redirect(['site/unauthorized']);
+        if(!isset($_GET['id']))
+            return $this->redirect(['unjuran/index', 'id' => yii::$app->user->identity->id_jabatan]);
+
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -63,7 +64,7 @@ class UnjuranController extends Controller
 
     public function actionIndexAll()
     {
-        if(!Yii::$app->user->identity->accessLevel([1, 3, 4, 5]))
+        if(!Yii::$app->user->identity->accessLevel([0, 2, 3, 4]))
             return $this->redirect(['site/unauthorized']);
         $searchModel = new UnjuranSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -104,7 +105,7 @@ class UnjuranController extends Controller
             if($year == date("Y"))
                 $model->status = 1;
             if($model->save())
-                return $this->redirect(['index', 'UnjuranSearch[tahun]' => $model->tahun]);
+                return $this->redirect(['index', 'id' => Yii::$app->user->identity->id_jabatan, 'UnjuranSearch[tahun]' => $model->tahun]);
             else
                 return print_r($model->getErrors());
         }

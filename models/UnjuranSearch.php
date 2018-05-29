@@ -78,7 +78,7 @@ class UnjuranSearch extends Unjuran
 
         $this->tahun = isset($this->tahun) ? $this->tahun : date("Y");
 
-        if(!Yii::$app->user->identity->accessLevel([1, 3, 4, 5]))
+        if(!Yii::$app->user->identity->accessLevel([0, 2, 3, 4]))
             $this->id_jabatan = Yii::$app->user->identity->id_jabatan;
 
         // grid filtering conditions

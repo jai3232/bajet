@@ -22,7 +22,7 @@ class PerolehanAllSearch extends Perolehan
         return [
             [['id', 'id_jabatan', 'id_jabatan_asal', 'id_unit', 'jenis_perolehan', 'kaedah_pembayaran', 'kontrak_pusat', 'id_syarikat', 'status', 'status_kewangan', 'user'], 'integer'],
             [['kod_id', 'kod_unjuran', 'tarikh_lulus1', 'catatan1', 'tarikh_lulus2', 'nolo', 'tarikhlo', 'novoucher', 'tarikh_voucher', 'catatan2', 'tahun', 'tarikh_jadi', 'tarikh_kemaskini', 'barangan', 'pembekal', 'os'], 'safe'],
-            [['lulus_perolehan', 'nilai_perolehan'], 'number'],
+            [['nilai_permohonan', 'nilai_perolehan'], 'number'],
         ];
     }
 
@@ -45,7 +45,7 @@ class PerolehanAllSearch extends Perolehan
     public function search($params)
     {
         $user_level = yii::$app->user->identity->level;
-        $id_jabatan = yii::$app->user->identity->id_jabatan;
+        //$id_jabatan = yii::$app->user->identity->id_jabatan;
 
         $query = Perolehan::find();
         // $query->leftJoin('barangan', 'perolehan.id = barangan.id_perolehan')
@@ -56,7 +56,7 @@ class PerolehanAllSearch extends Perolehan
               ->joinWith('panjars')
               ->joinWith('kodUnjuran');
 
-        $query->where(['perolehan.tahun' => date('Y'), 'id_jabatan_asal' => $id_jabatan]);
+        $query->where(['perolehan.tahun' => date('Y')]);
         
         // add conditions that should always apply here
 
@@ -81,6 +81,7 @@ class PerolehanAllSearch extends Perolehan
             'desc' => ['unjuran.os' => SORT_DESC],
         ];
 
+        $this->tahun = isset($this->tahun) ? $this->tahun : date("Y");
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -93,7 +94,7 @@ class PerolehanAllSearch extends Perolehan
             'id_syarikat' => $this->id_syarikat,
             'status' => $this->status,
             'tarikh_lulus1' => $this->tarikh_lulus1,
-            'lulus_perolehan' => $this->lulus_perolehan,
+            'nilai_permohonan' => $this->nilai_permohonan,
             'status_kewangan' => $this->status_kewangan,
             'tarikh_lulus2' => $this->tarikh_lulus2,
             'tarikhlo' => $this->tarikhlo,

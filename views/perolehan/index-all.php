@@ -17,19 +17,25 @@ use app\models\Agihan;
 /* @var $searchModel app\models\PerolehanSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Perolehan');
-$this->params['breadcrumbs'][] = $this->title;
 
 $currentYear = date("Y"); 
 $yearList = ['' => ''];
-for($i = $currentYear - 5; $i < $currentYear + 5; $i++) {
+for($i = $currentYear - 5; $i < $currentYear + 1; $i++) {
     $yearList[$i] = $i; 
 }
+if(!isset($_GET['PerolehanSearch']['tahun']))
+    $selectedYear = $currentYear;
+else
+    $selectedYear = $_GET['PerolehanSearch']['tahun'];
+
+Pjax::begin(); 
+$this->title = Yii::t('app', 'Perolehan').' '.$selectedYear;
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="perolehan-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php Pjax::begin(); ?>
+    <h2><?= Html::encode($this->title) ?></h2>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="alert alert-info">
         <strong>Petunjuk</strong> <p>A: Sedang diproses, B: Lulus, B+: Lulus dengan perubahan, C: Tolak </p>

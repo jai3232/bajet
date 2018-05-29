@@ -9,12 +9,13 @@ use Yii;
  *
  * @property int $id
  * @property int $id_perolehan
- * @property int $sambungan
+ * @property string $sambungan
  * @property double $jumlah_panjar
  * @property string $tujuan
- * @property string $nama_pemohon
  * @property string $jawatan
  * @property string $tarikh_jadi
+ *
+ * @property Perolehan $perolehan
  */
 class Panjar extends \yii\db\ActiveRecord
 {
@@ -32,13 +33,13 @@ class Panjar extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_perolehan', 'sambungan', 'jumlah_panjar', 'tujuan', 'nama_pemohon', 'jawatan'], 'required'],
-            [['id_perolehan', 'sambungan'], 'integer'],
+            [['id_perolehan', 'sambungan', 'jumlah_panjar', 'tujuan', 'jawatan'], 'required'],
+            [['id_perolehan'], 'integer'],
             [['jumlah_panjar'], 'number'],
             [['tujuan'], 'string'],
             [['tarikh_jadi'], 'safe'],
-            [['nama_pemohon'], 'string', 'max' => 50],
-            [['jawatan'], 'string', 'max' => 10],
+            [['sambungan', 'jawatan'], 'string', 'max' => 10],
+            [['id_perolehan'], 'exist', 'skipOnError' => true, 'targetClass' => Perolehan::className(), 'targetAttribute' => ['id_perolehan' => 'id']],
         ];
     }
 
@@ -53,9 +54,16 @@ class Panjar extends \yii\db\ActiveRecord
             'sambungan' => Yii::t('app', 'Sambungan'),
             'jumlah_panjar' => Yii::t('app', 'Jumlah Panjar'),
             'tujuan' => Yii::t('app', 'Tujuan'),
-            'nama_pemohon' => Yii::t('app', 'Nama Pemohon'),
             'jawatan' => Yii::t('app', 'Jawatan'),
             'tarikh_jadi' => Yii::t('app', 'Tarikh Jadi'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPerolehan()
+    {
+        return $this->hasOne(Perolehan::className(), ['id' => 'id_perolehan']);
     }
 }

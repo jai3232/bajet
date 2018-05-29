@@ -25,8 +25,8 @@ else
     $selectedYear = $_GET['UnjuranSearch']['tahun'];
 
 //print_r(Yii::$app->request->get('UnjuranSearch')['tahun']);
-
-$this->title = 'Unjuran Jabatan/Bahagian '.Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan.' '.$selectedYear;;
+Pjax::begin(['id' => 'unjuran-grid']);
+$this->title = 'Unjuran Jabatan/Bahagian '.Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan.' '.$selectedYear;
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -107,7 +107,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]);
     ?>    
-    <?php Pjax::begin(['id' => 'unjuran-grid']) ?>
+    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -188,7 +188,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'sah',
                 'contentOptions' => ['class' => 'text-center'],
                 'format' => 'raw',
-                'visible' => Yii::$app->user->identity->accessLevel([3, 5, 6]),
+                'visible' => Yii::$app->user->identity->accessLevel([2, 4, 5]),
                 'value' => function($model) {
                     return Html::checkbox('sah', !$model->sah ? false : true, 
                         ['class' => 'sah', 'value' => Url::to(['unjuran/sah', 'id' => $model->id])]);
@@ -205,12 +205,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{update} {delete} {a} {share} {list}',
                 'buttons' => [
                     'update' => function($url, $model) {
-                        if(Yii::$app->user->identity->accessLevel([1, 2, 3, 4, 5, 6]) || Yii::$app->user->identity->id == $model->user ) //visible to kj only
+                        if(Yii::$app->user->identity->accessLevel([0, 1, 2, 3, 4, 5]) || Yii::$app->user->identity->id == $model->user ) //visible to kj only
                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->id], ['title' => 'Kemaskini'
                         ]);
                     },
                     'delete' => function($url, $model){
-                        if(Yii::$app->user->identity->accessLevel([1, 2, 3, 4, 5, 6]) || Yii::$app->user->identity->id == $model->user) //visible to kj only
+                        if(Yii::$app->user->identity->accessLevel([0, 1, 2, 3, 4, 5]) || Yii::$app->user->identity->id == $model->user) //visible to kj only
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
                                 'class' => '',
                                 'data' => [
@@ -221,11 +221,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]);
                     },
                     'a' => function($url, $model) {
-                        if(Yii::$app->user->identity->accessLevel([6]) && $model->kod != 'A') //visible to kj only
+                        if(Yii::$app->user->identity->accessLevel([5]) && $model->kod != 'A') //visible to kj only
                             return Html::a('<span class="glyphicon glyphicon-text-background" title="Tukar kod A"></span>', ['a', 'id' => $model->id]);
                     },
                     'share' => function($url, $model) {
-                        if(Yii::$app->user->identity->accessLevel([6]))
+                        if(Yii::$app->user->identity->accessLevel([5]))
                             return Html::a('<span class="glyphicon glyphicon-share" title="Kongsi Unjuran"</span>', ['share', 'id' => $model->id]);
                     },
                     'list' => function($url, $model) {
@@ -309,9 +309,12 @@ $this->registerJs('
         });
 
         $("select option[value=\"\"]").append("Semua");
+        $("select[name*=tahun] > option:first").hide();
     });
 
     $("select option[value=\"\"]").append("Semua");
+    $("select[name*=tahun] > option:first").hide();
+
 
 ');
 

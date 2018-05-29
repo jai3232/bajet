@@ -48,29 +48,30 @@ AppAsset::register($this);
             ],
             ['label' => 'Daftar', 'url' => ['/site/register'], 'visible' => Yii::$app->user->isGuest],
             ['label' => 'Unjuran', 'items' => [
-                                                [
-                                                    'label' => 'Masukan Unjuran',
-                                                    'url' => ['/unjuran/create'],
-                                                ],
-                                                [
-                                                    'label' => 'Unjuran Jabatan/Bahagian',
-                                                    'url' => ['/unjuran/index', 'id' => Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->id_jabatan]
-                                                ],
-                                                [
-                                                    'label' => 'Unjuran Semua', 
-                                                    'url' => ['/unjuran/index-all'],
-                                                    'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([0, 2, 3, 4]) : false,
-                                                ],
-                                                [
-                                                    'label' => 'Laporan Unjuran Jabatan/OS',
-                                                    'url' => ['/unjuran/report'],   
-                                                ],
-                                                [
-                                                    'label' => 'Laporan Unjuran OS/Kod',
-                                                    'url' => ['/unjuran/report-os-kod'],   
-                                                ],
-                                              ], 
-                                              'visible' => !Yii::$app->user->isGuest],
+                    [
+                        'label' => 'Masukan Unjuran',
+                        'url' => ['/unjuran/create'],
+                    ],
+                    [
+                        'label' => 'Unjuran Jabatan/Bahagian',
+                        'url' => ['/unjuran/index', 'id' => Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->id_jabatan]
+                    ],
+                    [
+                        'label' => 'Unjuran Semua', 
+                        'url' => ['/unjuran/index-all'],
+                        'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([0, 2, 3, 4]) : false,
+                    ],
+                    [
+                        'label' => 'Laporan Unjuran Jabatan/OS',
+                        'url' => ['/unjuran/report'],   
+                    ],
+                    [
+                        'label' => 'Laporan Unjuran OS/Kod',
+                        'url' => ['/unjuran/report-os-kod'],   
+                    ],
+                ], 
+                'visible' => !Yii::$app->user->isGuest
+            ],
             ['label' => 'Waran', 'items' => [
                     ['label' => 'Senarai Waran', 'url' => ['/waran/index']],
                     ['label' => 'Tambah Waran', 'url' => ['/waran/create']],
@@ -81,8 +82,12 @@ AppAsset::register($this);
             ['label' => 'Perolehan', 'items' => [
                     ['label' => 'Borang Perolehan', 'url' => ['/perolehan/create']],
                     ['label' => 'Senarai Perolehan Jabatan', 'url' => ['/perolehan/index']],
-                    ['label' => 'Senarai Perolehan Semua', 'url' => ['/perolehan/index-all']],
-                    ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
+                    [
+                        'label' => 'Senarai Perolehan Semua', 
+                        'url' => ['/perolehan/index-all'], 
+                        'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([0, 2, 3, 4]) : false,
+                    ],
+                    ['label' => 'Kelulusan Kewangan', 'url' => ['/perolehan/finance']]
                 ],
                 'visible' => !Yii::$app->user->isGuest,
             ],

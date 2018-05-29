@@ -128,49 +128,72 @@ use yii\bootstrap\Modal;
     <!-- <div class="form-group">
         <?= Html::button(Yii::t('app', 'Next'), ['class' => 'btn btn-primary', 'id' => 'seterusnya']) ?>
     </div> -->
-    <div class="form-group">
+    <div class="form-group" id="barangan">
         <h3>Jenis Barang / Perkhidmatan </h3>
         <table id="unjuran-carian" class="table table-condensed table-striped table-bordered table-hover table-responsive">
-        <thead class="thead-dark">
-            <tr>
-                <th>#</th><th>Justifikasi Keperluan Perolehan <br>(Bekalan / Perkhidmatan / Kerja)</th><th style="width: 20%;">Kuantiti</th><th></th>
-            </tr>
-        </thead>
-        <tbody id="barang_body">
-            <tr>
-                <td class="text-center">1</td><td><?= Html::textarea('Barangan[justifikasi][1]', '', ['class' => 'justifikasi form-control must']) ?></td>
-                <td><?= Html::textInput('Barangan[kuantiti][1]', '', ['class' => 'kuantiti form-control must', 'size' => '1', 'type' => 'number']) ?></td>
-                <td class="text-center"> </td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="form-group">
-        <button class="btn btn-success" id="btn-barangan"><span class="glyphicon glyphicon-plus-sign icon-size"></span></button>
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th><th>Justifikasi Keperluan Perolehan <br>(Bekalan / Perkhidmatan / Kerja)</th><th style="width: 20%;">Kuantiti</th><th></th>
+                </tr>
+            </thead>
+            <tbody id="barang_body">
+                <tr>
+                    <td class="text-center">1</td><td><?= Html::textarea('Barangan[justifikasi][1]', '', ['class' => 'justifikasi form-control must']) ?></td>
+                    <td><?= Html::textInput('Barangan[kuantiti][1]', '', ['class' => 'kuantiti form-control must', 'size' => '1', 'type' => 'number']) ?></td>
+                    <td class="text-center"> </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="form-group">
+            <button class="btn btn-success" id="btn-barangan"><span class="glyphicon glyphicon-plus-sign icon-size"></span></button>
+        </div>
     </div>
-    </div>
-    <div class="form-group">
+    <div class="form-group" id="pembekal">
         <h3>Pengesyoran Kontraktor / Pembekal </h3>
         <table id="unjuran-carian" class="table table-condensed table-striped table-bordered table-hover table-responsive">
-        <thead class="thead-dark">
-            <tr>
-                <th>#</th><th>Keutamaan</th><th>Nama Syarikat & No.ROB/ROC</th><th>Nama Pegawai Untuk dihubungi</th><th>No. Telefon</th><th>Emel</th><th>Jumlah Harga (RM)</th><th></th>
-            </tr>
-        </thead>
-        <tbody id="pembekal_body">
-            <tr>
-                <td class="text-center">1</td><td class="text-center"><?= Html::radio('Pembekal[keutamaan]', false, ['class' => 'keutamaan form-check-input', 'value' => 1]) ?></td>
-                <td><?= Html::textInput('Pembekal[pembekal][1]', '', ['class' => 'pembekal form-control must']) ?></td>
-                <td><?= Html::textInput('Pembekal[nama_pembekal][1]', '', ['class' => 'nama_pembekal form-control']) ?></td>
-                <td><?= Html::textInput('Pembekal[telefon][1]', '', ['class' => 'telefon form-control']) ?></td>
-                <td><?= Html::textInput('Pembekal[emel][1]', '', ['class' => 'emel form-control']) ?></td>
-                <td><?= Html::textInput('Pembekal[harga][1]', '', ['class' => 'harga form-control must', 'size' => '1', 'type' => 'number', 'step' => '0.01']) ?></td>
-                <td class="text-center"> </td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="form-group">
-        <button class="btn btn-success" id="btn-pembekal"><span class="glyphicon glyphicon-plus-sign icon-size"></span></button>
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th><th>Keutamaan</th><th>Nama Syarikat & No.ROB/ROC</th><th>Nama Pegawai Untuk dihubungi</th><th>No. Telefon</th><th>Emel</th><th>Jumlah Harga (RM)</th><th></th>
+                </tr>
+            </thead>
+            <tbody id="pembekal_body">
+                <tr>
+                    <td class="text-center">1</td><td class="text-center"><?= Html::radio('Pembekal[keutamaan]', false, ['class' => 'keutamaan form-check-input', 'value' => 1]) ?></td>
+                    <td><?= Html::textInput('Pembekal[pembekal][1]', '', ['class' => 'pembekal form-control must']) ?></td>
+                    <td><?= Html::textInput('Pembekal[nama_pembekal][1]', '', ['class' => 'nama_pembekal form-control']) ?></td>
+                    <td><?= Html::textInput('Pembekal[telefon][1]', '', ['class' => 'telefon form-control']) ?></td>
+                    <td><?= Html::textInput('Pembekal[emel][1]', '', ['class' => 'emel form-control']) ?></td>
+                    <td><?= Html::textInput('Pembekal[harga][1]', '', ['class' => 'harga form-control must', 'size' => '1', 'type' => 'number', 'step' => '0.01']) ?></td>
+                    <td class="text-center"> </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="form-group">
+            <button class="btn btn-success" id="btn-pembekal"><span class="glyphicon glyphicon-plus-sign icon-size"></span></button>
+        </div>
     </div>
+    <div class="form-group" id="panjar">
+        <h3>Panjar </h3>
+        <div class="form-group"p>
+            <label class="control-label">Dipohon Oleh</label>
+            <?= Html::textInput('pemohon', yii::$app->user->identity->nama, ['class' => 'form-control', 'readonly' => true]); ?>
+        </div>
+        <div class="form-group">
+            <label>Jawatan</label>
+            <?= Html::textInput('Panjar[jawatan]', '', ['class' => 'form-control']); ?>
+        </div>
+        <div class="form-group">
+            <label>No. Telefon / Sambungan</label>
+            <?= Html::textInput('Panjar[sambungan]', '', ['class' => 'form-control']); ?>
+        </div>
+        <div class="form-group">
+            <label>Tujuan</label>
+            <?= Html::textarea('Panjar[tujuan]', '', ['class' => 'justifikasi form-control must']) ?>
+        </div>
+        <div class="form-group">
+            <label>Jumlah</label>
+            <?= Html::textInput('Panjar[jumlah_panjar]', yii::$app->user->identity->nama, ['class' => 'harga form-control must', 'size' => '1', 'type' => 'number', 'step' => '0.01']); ?>
+        </div>
     </div>
 
     <div class="form-group" style="display: nonex;">
@@ -183,14 +206,34 @@ use yii\bootstrap\Modal;
 
 <?php
 $this->registerJs('
+    var keutamaan = false;
+    var i = 1, j = 1;
+    var row = "";
+
     $("#pilih-unjuran").on("click", function(){
         $("#modal").modal("show").find("#modalContent").load("'.Url::to(['perolehan/unjuran-list']).'");
         //$("#modal-header").html("Penukaran Kod A");
         return false;
     });
 
-    var i = 1, j = 1;
-    var row = "";
+    $("#pembekal").hide();
+    $("#barangan").hide();
+    $("#panjar").hide();
+
+    $("#perolehan-kaedah_pembayaran").change(function(){
+        if($(this).val() == 3) {
+            $("#pembekal").hide();
+            $("#barangan").hide();
+            $("#panjar").show();
+            keutamaan = true;
+        }
+        else {
+            $("#pembekal").show();
+            $("#barangan").show();
+            $("#panjar").hide();
+            keutamaan = false;
+        }
+    });
 
     $("#btn-barangan").on("click", function(e){
         i++;
@@ -225,14 +268,9 @@ $this->registerJs('
         e.stopPropagation();
         return false;
     });
-    var fire = false
-    $("form#perolehan-form").on("submit", function(e){
 
-        if(fire)
-            return false;
-        fire = true;
+    $("form#perolehan-form").on("beforeSubmit", function(e){
 
-        var keutamaan = false;
         $(".keutamaan").each(function(){
             if($(this).is(":checked"))
                 keutamaan = true;
@@ -253,7 +291,6 @@ $this->registerJs('
                 $(this).css("background", "#f90707");
                 $(this).prop("placeholder", "Input ini tidak boleh dibiarkan kosong");
                 $(this).focus();
-                e.preventDefault();
                 e.stopPropagation();
                 return false;
             }
@@ -263,10 +300,6 @@ $this->registerJs('
             return true;
 
         return false;
-    });
-
-    $("#simpan").click(function(){
-        fire = false;
     });
 ');
 

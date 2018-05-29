@@ -12,24 +12,31 @@ use app\models\Barangan;
 use app\models\Pembekal;
 use app\models\Unjuran;
 use app\models\Agihan;
+use app\models\Panjar;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PerolehanSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Perolehan');
-$this->params['breadcrumbs'][] = $this->title;
 
 $currentYear = date("Y"); 
 $yearList = ['' => ''];
-for($i = $currentYear - 5; $i < $currentYear + 5; $i++) {
+for($i = $currentYear - 5; $i < $currentYear + 1; $i++) {
     $yearList[$i] = $i; 
 }
+if(!isset($_GET['PerolehanSearch']['tahun']))
+    $selectedYear = $currentYear;
+else
+    $selectedYear = $_GET['PerolehanSearch']['tahun'];
+
+Pjax::begin(); 
+$this->title = Yii::t('app', 'Perolehan').' '.Jabatan::findOne(yii::$app->user->identity->id_jabatan)->jabatan.' '.$selectedYear;
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="perolehan-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php Pjax::begin(); ?>
+    <h2><?= Html::encode($this->title) ?></h2>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="alert alert-info">
         <strong>Petunjuk</strong> <p>A: Sedang diproses, B: Lulus, B+: Lulus dengan perubahan, C: Tolak </p>
@@ -75,6 +82,23 @@ for($i = $currentYear - 5; $i < $currentYear + 5; $i++) {
                 'filter' => ArrayHelper::map(Agihan::find()->where(['tahun' => date('Y')])->all(), 'os', 'os'),
             ],
             [
+                'label' => 'Jenis',
+                'attribute' => 'jenis_perolehan',
+                'value' => function($model) {
+                    return RefJenisPerolehan::findOne($model->jenis_perolehan)->jenis;
+                },
+                'filter' => [1 => 'Bekalan', 2 => 'Perkhidmatan', 3 => 'Kerja'],
+            ],
+            [
+                'label' => 'Kaedah',
+                'attribute' => 'kaedah_pembayaran',
+                'value' => function($model) {
+                    return RefKaedahPerolehan::findOne($model->kaedah_pembayaran)->kaedah;
+                },
+                'filter' => [1 => 'Pembelian Terus', 2 => 'Sebutharga', 3 => 'Panjar', 4 => 'Kontrak', 5 => 'Pukal', 6 => 'Lain-lain'],
+
+            ],
+            [
                 'label' => 'Barangan <br>Perkhidmatan',
                 'format' => 'raw',
                 'encodeLabel' => false,
@@ -86,6 +110,9 @@ for($i = $currentYear - 5; $i < $currentYear + 5; $i++) {
                         $list .= '<li>'.$value->justifikasi.'</li>';
                     }
                     $list .= '</ol>';
+                    if($model->kaedah_pembayaran == 3)
+                        return isset(Panjar::findOne(['id_perolehan' => $model->id])->tujuan) ?
+                            Panjar::findOne(['id_perolehan' => $model->id])->tujuan : '-';
                     return $list;
                 }
             ],
@@ -105,23 +132,6 @@ for($i = $currentYear - 5; $i < $currentYear + 5; $i++) {
                     $list .= '</ol>';
                     return $list;
                 }
-            ],
-            [
-                'label' => 'Jenis',
-                'attribute' => 'jenis_perolehan',
-                'value' => function($model) {
-                    return RefJenisPerolehan::findOne($model->jenis_perolehan)->jenis;
-                },
-                'filter' => [1 => 'Bekalan', 2 => 'Perkhidmatan', 3 => 'Kerja'],
-            ],
-            [
-                'label' => 'Kaedah',
-                'attribute' => 'kaedah_pembayaran',
-                'value' => function($model) {
-                    return RefKaedahPerolehan::findOne($model->kaedah_pembayaran)->kaedah;
-                },
-                'filter' => [1 => 'Pembelian Terus', 2 => 'Sebutharga', 3 => 'Panjar', 4 => 'Kontrak', 5 => 'Pukal', 6 => 'Lain-lain'],
-
             ],
             // [
             //     'label' => 'Kontrak Pusat',
@@ -160,19 +170,19 @@ for($i = $currentYear - 5; $i < $currentYear + 5; $i++) {
             //'tarikh_voucher',
             //'nilai_perolehan',
             [
-                'label' => 'Nilai <br>Perolehan',
-                'attribute' => 'nilai_perolehan',
+                'label' => 'Nilai <br>Permohonan',
+                'attribute' => 'nilai_permohonan',
                 'encodeLabel' => false,
                 'contentOptions' => ['class' => 'text-right'],
                 'value' => function($model) {
-                    return number_format(Pembekal::findOne(['id_perolehan' => $model->id, 'utama' => 1])['harga'], 2);
+                    return number_format($model->nilai_permohonan, 2);
                     //return print_r(Pembekal::findOne(['id_perolehan' => $model->id, 'utama' => 1])['harga']);
                 }
             ],
             //'catatan2:ntext',
             [
                 'attribute' => 'tahun',
-                'filter' => Html::dropDownList('PerolehanSearch[tahun]', $searchModel->tahun, $yearList, ['class' => 'form-control'])
+                'filter' => Html::dropDownList('PerolehanSearch[tahun]', $searchModel->tahun, $yearList, ['class' => 'form-control']),
             ],
             [
                 'label' => 'Tarikh <br>(dd-mm-yyyy)',
@@ -192,11 +202,19 @@ for($i = $currentYear - 5; $i < $currentYear + 5; $i++) {
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}{delete}',
+                'template' => '{view}{delete}{file}',
                 'visibleButtons' => [
                     'view' => true,
                     'delete' => function($model) {
                         return is_null($model->nolo) ? true : false;
+                    },
+                    'file' => true,
+                ],
+                'buttons' => [
+                    'file' => function($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-file"></span>', 
+                                [ $model->kaedah_pembayaran != 3 ? 'form' : 'panjar', 'id' => $model->id],
+                                ['title' => 'Borang']);
                     }
                 ]
             ],
@@ -209,9 +227,11 @@ for($i = $currentYear - 5; $i < $currentYear + 5; $i++) {
 <?php
     $this->registerJs('
         $("select option[value=\"\"]").append("Semua");
+        $("select[name*=tahun] > option:first").hide();
 
         $(document).on("pjax:success", function() {
             $("select option[value=\"\"]").append("Semua");
+            $("select[name*=tahun] > option:first").hide();
         });
     ');
 

@@ -20,7 +20,7 @@ use Yii;
  * @property int $status Status kelulusan oleh JK Perolehan PPL
  * @property string $tarikh_lulus1
  * @property string $catatan1
- * @property double $lulus_perolehan
+ * @property double $nilai_permohonan
  * @property int $status_kewangan
  * @property string $tarikh_lulus2
  * @property string $nolo
@@ -59,7 +59,7 @@ class Perolehan extends \yii\db\ActiveRecord
             [['id_jabatan', 'id_jabatan_asal', 'id_unit', 'jenis_perolehan', 'kaedah_pembayaran', 'kontrak_pusat', 'id_syarikat', 'status', 'status_kewangan', 'user'], 'integer'],
             [['tarikh_lulus1', 'tarikh_lulus2', 'tarikhlo', 'tarikh_voucher', 'tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
             [['catatan1', 'catatan2'], 'string'],
-            [['lulus_perolehan', 'nilai_perolehan'], 'number'],
+            [['nilai_permohonan', 'nilai_perolehan'], 'number'],
             [['kod_id', 'kod_unjuran'], 'string', 'max' => 10],
             [['nolo', 'novoucher'], 'string', 'max' => 20],
             [['tahun'], 'string', 'max' => 4],
@@ -86,7 +86,7 @@ class Perolehan extends \yii\db\ActiveRecord
             'status' => Yii::t('app', 'Status'),
             'tarikh_lulus1' => Yii::t('app', 'Tarikh Lulus1'),
             'catatan1' => Yii::t('app', 'Catatan1'),
-            'lulus_perolehan' => Yii::t('app', 'Lulus Perolehan'),
+            'nilai_permohonan' => Yii::t('app', 'Nilai Permohonan'),
             'status_kewangan' => Yii::t('app', 'Status Kewangan'),
             'tarikh_lulus2' => Yii::t('app', 'Tarikh Lulus2'),
             'nolo' => Yii::t('app', 'Nolo'),
