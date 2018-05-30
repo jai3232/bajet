@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="perolehan-search">
+<div class="perolehan-search form-group">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -18,17 +18,17 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?php //= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'kod_id') ?>
+    <?php //= $form->field($model, 'kod_id') ?>
 
-    <?= $form->field($model, 'kod_unjuran') ?>
+    <?php //= $form->field($model, 'kod_unjuran') ?>
 
-    <?= $form->field($model, 'jabatan') ?>
+    <?php //= $form->field($model, 'id_jabatan') ?>
 
-    <?= $form->field($model, 'jabatan_asal') ?>
+    <?php //= $form->field($model, 'id_jabatan_asal') ?>
 
-    <?php // echo $form->field($model, 'unit') ?>
+    <?php // echo $form->field($model, 'id_unit') ?>
 
     <?php // echo $form->field($model, 'jenis_perolehan') ?>
 
@@ -63,6 +63,12 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'catatan2') ?>
 
     <?php // echo $form->field($model, 'tahun') ?>
+    <div class="form-group">
+        <div class="col-xs-4 rowx form-inlinex">
+                <label>Tahun </label>
+        <?= Html::dropDownList('PerolehanSearch[tahun]', $selectedYear, $yearList, ['class' => 'form-control', 'onchange' => '$("#w0").submit()']) ?>
+        </div>
+    </div>
 
     <?php // echo $form->field($model, 'tarikh_jadi') ?>
 
@@ -71,8 +77,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'user') ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
+        <?php //= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?php //= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

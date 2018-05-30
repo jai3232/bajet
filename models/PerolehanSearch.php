@@ -110,7 +110,7 @@ class PerolehanSearch extends Perolehan
         if(isset($this->tarikh_jadi) && $this->tarikh_jadi != '')
             $query->andFilterWhere(['Date(perolehan.tarikh_jadi)' => Yii::$app->formatter->asDate($this->tarikh_jadi, 'Y-MM-dd')]);
 
-        $query->andFilterWhere(['like', 'kod_id', $this->kod_id])
+        $query->andFilterWhere(['like', 'perolehan.kod_id', $this->kod_id])
             ->andFilterWhere(['like', 'kod_unjuran', $this->kod_unjuran])
             ->andFilterWhere(['like', 'barangan.justifikasi', $this->barangan])
             ->andFilterWhere(['like', 'pembekal.pembekal', $this->pembekal])

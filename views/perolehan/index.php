@@ -41,10 +41,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="alert alert-info">
         <strong>Petunjuk</strong> <p>A: Sedang diproses, B: Lulus, B+: Lulus dengan perubahan, C: Tolak </p>
     </div>
-
-    <p>
         <?= Html::a(Yii::t('app', 'Create Perolehan'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+        <?php //= Html::dropDownList('PerolehanSearch[tahun]', null, [2016, 2017, 2018], ['class' => 'form-control', 'onchange' => '$("#w0").yiiGridView("applyFilter");']) ?>
+        <div class="form-group">
+            <?php echo $this->render('_search', ['model' => $searchModel, 'yearList' => $yearList, 'selectedYear' => $selectedYear]); ?>
+        </div>
     <div class="output" style="overflow-x: auto">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -64,6 +65,10 @@ $this->params['breadcrumbs'][] = $this->title;
             //     },
             //     'filter' => ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'),
             // ],
+            [
+                'attribute' => 'tahun',
+                'filter' => Html::dropDownList('PerolehanSearch[tahun]', $searchModel->tahun, $yearList, ['class' => 'form-control']),
+            ],
             [
                 'label' => 'Unit',
                 'attribute' => 'id_unit',
@@ -152,23 +157,6 @@ $this->params['breadcrumbs'][] = $this->title;
             //'tarikh_lulus1',
             //'catatan1:ntext',
             //'lulus_perolehan',
-            //'status_kewangan',
-            [
-                'label' => 'Status <br> Kewangan',
-                'attribute' => 'status_kewangan',
-                'encodeLabel' => false,
-                'value' => function($model) {
-                    $status = ['A', 'B', 'C'];
-                    return $status[$model->status_kewangan];
-                },
-                'filter' => ['A', 'B', 'B+', 'C'],
-            ],
-            //'tarikh_lulus2',
-            //'nolo',
-            //'tarikhlo',
-            //'novoucher',
-            //'tarikh_voucher',
-            //'nilai_perolehan',
             [
                 'label' => 'Nilai <br>Permohonan',
                 'attribute' => 'nilai_permohonan',
@@ -179,10 +167,26 @@ $this->params['breadcrumbs'][] = $this->title;
                     //return print_r(Pembekal::findOne(['id_perolehan' => $model->id, 'utama' => 1])['harga']);
                 }
             ],
-            //'catatan2:ntext',
             [
-                'attribute' => 'tahun',
-                'filter' => Html::dropDownList('PerolehanSearch[tahun]', $searchModel->tahun, $yearList, ['class' => 'form-control']),
+                'label' => 'Status <br> Kewangan',
+                'attribute' => 'status_kewangan',
+                'encodeLabel' => false,
+                'value' => function($model) {
+                    $status = ['A', 'B', 'C'];
+                    return $status[$model->status_kewangan];
+                },
+                'contentOptions' => ['class' => 'text-center'],
+                'filter' => ['A', 'B', 'B+', 'C'],
+            ],
+            //'tarikh_lulus2',
+            'nolo',
+            'tarikhlo',
+            'novoucher',
+            'tarikh_voucher',
+            'nilai_perolehan',
+            [
+                'label' => 'Catatan',
+                'attribute' => 'catatan2',
             ],
             [
                 'label' => 'Tarikh <br>(dd-mm-yyyy)',
