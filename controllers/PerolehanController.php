@@ -94,6 +94,7 @@ class PerolehanController extends Controller
             $barangans = Yii::$app->request->post('Barangan');
             $pembekals = Yii::$app->request->post('Pembekal');
             $panjar = Yii::$app->request->post('Panjar');
+            $harga_utama = 0;
             //return print_r($barangans['justifikasi']);
             //return print_r($pembekals);
             $model->kod_id = self::generateCodeReset('P'.substr($year,2,2), 
@@ -110,6 +111,7 @@ class PerolehanController extends Controller
             $model->kontrak_pusat = $perolehan['kontrak_pusat'];
             $model->tahun = $year;
             $model->user = Yii::$app->user->identity->id;
+
             if($model->save()) {
                 $id_perolehan = $model->id;
                 if(!empty($barangans['justifikasi'][1]))
@@ -133,11 +135,12 @@ class PerolehanController extends Controller
                         $model_pembekal->no_telefon = $pembekals['telefon'][$i];
                         $model_pembekal->email = $pembekals['emel'][$i];
                         $model_pembekal->harga = $pembekals['harga'][$i];
+
                         if($i == $pembekals['keutamaan']) {
                             $model_pembekal->utama = 1;
                             $harga_utama = $pembekals['harga'][$i];
                         }
-                        if(!$model_pembekal->save()) {
+                        if($model_pembekal->save()) {
                             $model = $this->findModel($id_perolehan);
                             $model->nilai_permohonan = $harga_utama;
                             $model->nilai_perolehan = $harga_utama;
@@ -208,6 +211,9 @@ class PerolehanController extends Controller
      */
     public function actionDelete($id)
     {
+        Pembekal::deleteAll(['id_perolehan' => $id]);
+        Barangan::deleteAll(['id_perolehan' => $id]);
+        Panjar::deleteAll(['id_perolehan' => $id]);
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

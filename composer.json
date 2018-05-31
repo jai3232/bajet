@@ -25,7 +25,8 @@
         "yiisoft/yii2-jui": "^2.0",
         "kartik-v/yii2-export": "*",
         "robregonm/yii2-pdf": "*",
-        "yii2tech/html2pdf": "^1.0"
+        "yii2tech/html2pdf": "^1.0",
+        "kartik-v/yii2-dialog": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

@@ -14,6 +14,7 @@ use app\models\Pembekal;
 use app\models\Unjuran;
 use app\models\Agihan;
 use app\models\Panjar;
+use kartik\dialog\Dialog;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PerolehanSearch */
@@ -27,10 +28,11 @@ for($i = $currentYear - 5; $i < $currentYear + 1; $i++) {
     $yearList[$i] = $i; 
 }
 $months = [
+            '' => '',
             '01' => 'Jan', '02' => 'Feb', '03' => 'Mac', '04' => 'Apr', '05' => 'Mei', '06' => 'Jun',
             '07' => 'Jul', '08' => 'Ogo', '09' => 'Sep', '10' => 'Okt', '11' => 'Nov', '12' => 'Dis'
           ];
-$months = [0 => 'Semua', 'Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul','Ogo', 'Sep', 'Okt', 'Nov', 'Dis'];
+//$months = [0 => 'Semua', 'Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul','Ogo', 'Sep', 'Okt', 'Nov', 'Dis'];
 if(!isset($_GET['PerolehanSearch']['tahun']))
     $selectedYear = $currentYear;
 else
@@ -42,10 +44,12 @@ else
     $selectedMonth =  $_GET['PerolehanSearch']['bulan'];
 
 Pjax::begin(); 
-$this->title = Yii::t('app', 'Perolehan').' '.Jabatan::findOne(yii::$app->user->identity->id_jabatan)->jabatan.' '.$selectedYear;
+$this->title = Yii::t('app', 'Perolehan').' '.Jabatan::findOne(yii::$app->user->identity->id_jabatan)->jabatan.' '.$months[$selectedMonth].' '.$selectedYear;
 $this->params['breadcrumbs'][] = $this->title;
 
+echo Dialog::widget();
 ?>
+
 <div class="perolehan-index">
 
     <h2><?= Html::encode($this->title) ?></h2>
@@ -63,6 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'selectedYear' => $selectedYear,
                 'months' => $months,
                 'selectedMonth' => $selectedMonth,
+                'all' => false,
             ]
         ); ?>
         </div>
@@ -104,10 +109,10 @@ $this->params['breadcrumbs'][] = $this->title;
             //     },
             //     'filter' => ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'),
             // ],
-            [
-                'attribute' => 'tahun',
-                'filter' => Html::dropDownList('PerolehanSearch[tahun]', $searchModel->tahun, $yearList, ['class' => 'form-control']),
-            ],
+            // [
+            //     'attribute' => 'tahun',
+            //     'filter' => Html::dropDownList('PerolehanSearch[tahun]', $searchModel->tahun, $yearList, ['class' => 'form-control']),
+            // ],
             [
                 'label' => 'Unit',
                 'attribute' => 'id_unit',
@@ -174,6 +179,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             $list .= '<li>'.$value->pembekal.'</li>';
                     }
                     $list .= '</ol>';
+                    if(!count($pembekals))
+                        return null;
                     return $list;
                 }
             ],
@@ -222,18 +229,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'No LO',
                 'attribute' => 'nolo',
             ],
-            [
-                'attribute' => 'tarikhlo',
-                'label' => 'Tarikh LO',
-            ],
+            // [
+            //     'attribute' => 'tarikhlo',
+            //     'label' => 'Tarikh LO',
+            // ],
             [
                 'attribute' => 'novoucher',
                 'label' => 'No Baucer',
             ],
-            [
-                'attribute' => 'tarikh_voucher',
-                'label' => 'Tarikh Baucer',
-            ],
+            // [
+            //     'attribute' => 'tarikh_voucher',
+            //     'label' => 'Tarikh Baucer',
+            // ],
             [
                 'attribute' => 'nilai_perolehan',
                 'label' => 'Nilai Perolehan',

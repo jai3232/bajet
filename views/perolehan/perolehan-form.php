@@ -59,7 +59,7 @@ use yii\helpers\Html;
     					<td><?= $i++; ?><?=  $value->utama ? "<span class=\"glyphicon glyphicon-asterisk\"></span>" : ""; ?></td>
     					<td><?= $value->pembekal ?></td>
     					<td><?= $value->nama_pembekal ?><br><span class="glyphicon glyphicon-phone-alt">Tel: </span><?= $value->no_telefon ?>, <span class="glyphicon glyphicon-envelope">Email:</span> <?= $value->email ?></td>
-    					<td class="text-right"><?= $value->harga ?> </td>
+    					<td class="text-right"><?= number_format($value->harga, 2) ?> </td>
     				</tr>
     				<?php
     					}

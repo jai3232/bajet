@@ -12,6 +12,8 @@ use app\models\Barangan;
 use app\models\Pembekal;
 use app\models\Unjuran;
 use app\models\Agihan;
+use app\models\Panjar;
+use kartik\dialog\Dialog;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PerolehanSearch */
@@ -19,38 +21,81 @@ use app\models\Agihan;
 
 
 $currentYear = date("Y"); 
+$currentMonth = date("m");
 $yearList = ['' => ''];
 for($i = $currentYear - 5; $i < $currentYear + 1; $i++) {
     $yearList[$i] = $i; 
 }
-if(!isset($_GET['PerolehanSearch']['tahun']))
+$months = [
+            '' => '',
+            '01' => 'Jan', '02' => 'Feb', '03' => 'Mac', '04' => 'Apr', '05' => 'Mei', '06' => 'Jun',
+            '07' => 'Jul', '08' => 'Ogo', '09' => 'Sep', '10' => 'Okt', '11' => 'Nov', '12' => 'Dis'
+          ];
+//$months = [0 => 'Semua', 'Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul','Ogo', 'Sep', 'Okt', 'Nov', 'Dis'];
+if(!isset($_GET['PerolehanAllSearch']['tahun']))
     $selectedYear = $currentYear;
 else
-    $selectedYear = $_GET['PerolehanSearch']['tahun'];
+    $selectedYear = $_GET['PerolehanAllSearch']['tahun'];
+
+if(!isset($_GET['PerolehanAllSearch']['bulan']))
+    $selectedMonth = $currentMonth;
+else
+    $selectedMonth =  $_GET['PerolehanAllSearch']['bulan'];
 
 Pjax::begin(); 
-$this->title = Yii::t('app', 'Perolehan').' '.$selectedYear;
+$this->title = Yii::t('app', 'Perolehan').' '.$months[$selectedMonth].' '.$selectedYear;
 $this->params['breadcrumbs'][] = $this->title;
 
+echo Dialog::widget();
 ?>
 <div class="perolehan-index">
 
     <h2><?= Html::encode($this->title) ?></h2>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <div class="form-group">
+        <?= Html::a(Yii::t('app', 'Create Perolehan'), ['create'], ['class' => 'btn btn-success']) ?>
+    </div>
     <div class="alert alert-info">
         <strong>Petunjuk</strong> <p>A: Sedang diproses, B: Lulus, B+: Lulus dengan perubahan, C: Tolak </p>
     </div>
+    <div class="form-group">
+        <div class="row">
+        <?php echo $this->render('_search', [
+                'model' => $searchModel, 
+                'yearList' => $yearList, 
+                'selectedYear' => $selectedYear,
+                'months' => $months,
+                'selectedMonth' => $selectedMonth,
+                'all' => true,
+            ]
+        ); ?>
+        </div>
+    </div>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Perolehan'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
     <div class="output" style="overflow-x: auto">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}{delete}{file}',
+                'visibleButtons' => [
+                    'view' => true,
+                    'delete' => function($model) {
+                        return is_null($model->nolo) ? true : false;
+                    },
+                    'file' => true,
+                ],
+                'buttons' => [
+                    'file' => function($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-file"></span>', 
+                                [ $model->kaedah_pembayaran != 3 ? 'form' : 'panjar', 'id' => $model->id],
+                                ['title' => 'Borang']);
+                    }
+                ]
+            ],
             //'id',
             'kod_id',
             'kod_unjuran',
@@ -81,6 +126,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => ArrayHelper::map(Agihan::find()->where(['tahun' => date('Y')])->all(), 'os', 'os'),
             ],
             [
+                'label' => 'Jenis',
+                'attribute' => 'jenis_perolehan',
+                'value' => function($model) {
+                    return RefJenisPerolehan::findOne($model->jenis_perolehan)->jenis;
+                },
+                'filter' => [1 => 'Bekalan', 2 => 'Perkhidmatan', 3 => 'Kerja'],
+            ],
+            [
+                'label' => 'Kaedah',
+                'attribute' => 'kaedah_pembayaran',
+                'value' => function($model) {
+                    return RefKaedahPerolehan::findOne($model->kaedah_pembayaran)->kaedah;
+                },
+                'filter' => [1 => 'Pembelian Terus', 2 => 'Sebutharga', 3 => 'Panjar', 4 => 'Kontrak', 5 => 'Pukal', 6 => 'Lain-lain'],
+
+            ],
+            [
                 'label' => 'Barangan <br>Perkhidmatan',
                 'format' => 'raw',
                 'encodeLabel' => false,
@@ -92,6 +154,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         $list .= '<li>'.$value->justifikasi.'</li>';
                     }
                     $list .= '</ol>';
+                    if($model->kaedah_pembayaran == 3)
+                        return isset(Panjar::findOne(['id_perolehan' => $model->id])->tujuan) ?
+                            Panjar::findOne(['id_perolehan' => $model->id])->tujuan : '-';
                     return $list;
                 }
             ],
@@ -109,25 +174,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             $list .= '<li>'.$value->pembekal.'</li>';
                     }
                     $list .= '</ol>';
+                    if(!count($pembekals))
+                        return null;
                     return $list;
                 }
-            ],
-            [
-                'label' => 'Jenis',
-                'attribute' => 'jenis_perolehan',
-                'value' => function($model) {
-                    return RefJenisPerolehan::findOne($model->jenis_perolehan)->jenis;
-                },
-                'filter' => [1 => 'Bekalan', 2 => 'Perkhidmatan', 3 => 'Kerja'],
-            ],
-            [
-                'label' => 'Kaedah',
-                'attribute' => 'kaedah_pembayaran',
-                'value' => function($model) {
-                    return RefKaedahPerolehan::findOne($model->kaedah_pembayaran)->kaedah;
-                },
-                'filter' => [1 => 'Pembelian Terus', 2 => 'Sebutharga', 3 => 'Panjar', 4 => 'Kontrak', 5 => 'Pukal', 6 => 'Lain-lain'],
-
             ],
             // [
             //     'label' => 'Kontrak Pusat',
@@ -150,24 +200,8 @@ $this->params['breadcrumbs'][] = $this->title;
             //'lulus_perolehan',
             //'status_kewangan',
             [
-                'label' => 'Status <br> Kewangan',
-                'attribute' => 'status_kewangan',
-                'encodeLabel' => false,
-                'value' => function($model) {
-                    $status = ['A', 'B', 'C'];
-                    return $status[$model->status_kewangan];
-                },
-                'filter' => ['A', 'B', 'B+', 'C'],
-            ],
-            //'tarikh_lulus2',
-            //'nolo',
-            //'tarikhlo',
-            //'novoucher',
-            //'tarikh_voucher',
-            //'nilai_perolehan',
-            [
-                'label' => 'Nilai <br>Perolehan',
-                'attribute' => 'nilai_perolehan',
+                'label' => 'Nilai <br>permohonan',
+                'attribute' => 'nilai_permohonan',
                 'encodeLabel' => false,
                 'contentOptions' => ['class' => 'text-right'],
                 'value' => function($model) {
@@ -175,11 +209,60 @@ $this->params['breadcrumbs'][] = $this->title;
                     //return print_r(Pembekal::findOne(['id_perolehan' => $model->id, 'utama' => 1])['harga']);
                 }
             ],
-            //'catatan2:ntext',
             [
-                'attribute' => 'tahun',
-                'filter' => Html::dropDownList('PerolehanSearch[tahun]', $searchModel->tahun, $yearList, ['class' => 'form-control'])
+                'label' => 'Status <br> Kewangan',
+                'attribute' => 'status_kewangan',
+                'encodeLabel' => false,
+                'value' => function($model) {
+                    $status = ['A', 'B', 'C'];
+                    return $status[$model->status_kewangan];
+                },
+                'contentOptions' => ['class' => 'text-center'],
+                'filter' => ['A', 'B', 'B+', 'C'],
             ],
+            [
+                'label' => 'No LO',
+                'attribute' => 'nolo',
+                'format' => 'raw',
+                'value' => function($model) {
+                    if(is_null($model->nolo))
+                        return null;
+                    return $model->nolo.'<br>('.$model->tarikhlo.')';
+                }
+            ],
+            // [
+            //     'attribute' => 'tarikhlo',
+            //     'label' => 'Tarikh LO',
+            // ],
+            [
+                'attribute' => 'novoucher',
+                'label' => 'No Baucer',
+                'format' => 'raw',
+                'value' => function($model) {
+                    if(is_null($model->novoucher))
+                        return null;
+                    return $model->novoucher.'<br>('.$model->tarikh_voucher.')';
+                }
+            ],
+            // [
+            //     'attribute' => 'tarikh_voucher',
+            //     'label' => 'Tarikh Baucer',
+            // ],
+            [
+                'attribute' => 'nilai_perolehan',
+                'label' => 'Nilai Perolehan',
+                'value' => function($model) {
+                    return is_null($model->novoucher) ? null : $model->nilai_perolehan;
+                }
+            ],
+            [
+                'label' => 'Catatan',
+                'attribute' => 'catatan2',
+            ],
+            // [
+            //     'attribute' => 'tahun',
+            //     'filter' => Html::dropDownList('PerolehanSearch[tahun]', $searchModel->tahun, $yearList, ['class' => 'form-control'])
+            // ],
             [
                 'label' => 'Tarikh <br>(dd-mm-yyyy)',
                 'attribute' => 'tarikh_jadi',
@@ -196,16 +279,6 @@ $this->params['breadcrumbs'][] = $this->title;
             //'tarikh_kemaskini',
             //'user',
 
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}{delete}',
-                'visibleButtons' => [
-                    'view' => true,
-                    'delete' => function($model) {
-                        return is_null($model->nolo) ? true : false;
-                    }
-                ]
-            ],
         ],
     ]); ?>
     </div>

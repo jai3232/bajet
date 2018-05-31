@@ -82,6 +82,7 @@ class PerolehanSearch extends Perolehan
         ];
 
         $this->tahun = isset($this->tahun) ? $this->tahun : date("Y");
+        $this->bulan = isset($this->bulan) ? $this->bulan : date("m");
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -117,11 +118,11 @@ class PerolehanSearch extends Perolehan
             ->andFilterWhere(['like', 'catatan1', $this->catatan1])
             ->andFilterWhere(['like', 'nolo', $this->nolo])
             ->andFilterWhere(['like', 'novoucher', $this->novoucher])
-            ->andFilterWhere(['like', 'catatan2', $this->catatan2])
-            ->andFilterWhere(['like', 'perolehan.tahun', $this->tahun]);
+            ->andFilterWhere(['like', 'catatan2', $this->catatan2]);
+            //->andFilterWhere(['like', 'perolehan.tahun', $this->tahun]);
 
-        if(isset($this->bulan)) {
-            $query->andFilterWhere(['like', 'tarikh_jadi%', $this->bulan, false]);
+        if(isset($this->bulan) && $this->bulan != '') {
+            $query->andFilterWhere(['like', 'perolehan.tarikh_jadi', $this->tahun.'-'.$this->bulan.'%', false]);
         }
 
         $query->distinct();

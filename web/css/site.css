@@ -96,6 +96,12 @@ a.desc:after {
     border: none;
 }
 
+.lo {
+    width: 10px;
+    height: 10px;
+    background: url('../images/lo.png') no-repeat;
+    background-size: cover; /*contain; /100% 100%; */
+}
 @media(max-width:767px) {
     .nav li > form > button.logout {
         display:block;

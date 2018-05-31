@@ -8,6 +8,7 @@ use app\models\Unit;
 use app\models\RefJenisPerolehan;
 use app\models\RefKaedahPerolehan;
 use yii\bootstrap\Modal;
+use kartik\dialog\Dialog;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Perolehan */
@@ -27,6 +28,8 @@ use yii\bootstrap\Modal;
     echo '<div id="modalContent"></div>';
     Modal::end();
     $id_pengguna = Yii::$app->user->identity->id;
+
+    echo Dialog::widget();
 
 ?>
 <div class="form-group">
