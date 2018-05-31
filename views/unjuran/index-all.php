@@ -53,7 +53,11 @@ $this->params['breadcrumbs'][] = $this->title;
         Modal::end();
 
     ?>
-
+    <div class="form-group">
+        <div class="row">
+            <?php echo $this->render('_search', ['model' => $searchModel, 'yearList' => $yearList, 'selectedYear' => $selectedYear, 'all' => true]); ?>
+        </div>
+    </div>
     <?php
         $gridColumns = [
             ['class' => 'yii\grid\SerialColumn'],
@@ -158,10 +162,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             // //'kongsi',
             // 'public',
-            [
-                'attribute' => 'tahun',
-                'filter' => Html::dropDownList('UnjuranSearch[tahun]', $searchModel->tahun, $yearList, ['class' => 'form-control'])
-            ],
+            // [
+            //     'attribute' => 'tahun',
+            //     'filter' => Html::dropDownList('UnjuranSearch[tahun]', $searchModel->tahun, $yearList, ['class' => 'form-control'])
+            // ],
             'catatan:ntext',
             //'status',
             [

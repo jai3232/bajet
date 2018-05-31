@@ -11,6 +11,7 @@ use yii\widgets\ActiveForm;
 <div class="perolehan-search form-group">
 
     <?php $form = ActiveForm::begin([
+        'id' => 'perolehan_form',
         'action' => ['index'],
         'method' => 'get',
         'options' => [
@@ -64,9 +65,11 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'tahun') ?>
     <div class="form-group">
-        <div class="col-xs-4 rowx form-inlinex">
-                <label>Tahun </label>
-        <?= Html::dropDownList('PerolehanSearch[tahun]', $selectedYear, $yearList, ['class' => 'form-control', 'onchange' => '$("#w0").submit()']) ?>
+        <div class="col-xs-4 form-inline">
+            <label>Tahun </label>
+            <?= Html::dropDownList('PerolehanSearch[tahun]', $selectedYear, $yearList, ['class' => 'form-control', 'onchange' => '$("#perolehan_form").submit()']) ?>
+            <label>Bulan</label>
+            <?= Html::dropDownList('PerolehanSearch[bulan]', $selectedMonth/1, $months, ['class' => 'form-control', 'onchange' => '$("#perolehan_form").submit()']) ?>
         </div>
     </div>
 

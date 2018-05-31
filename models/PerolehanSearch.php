@@ -15,13 +15,13 @@ class PerolehanSearch extends Perolehan
     /**
      * @inheritdoc
      */
-    public $pembekal, $barangan, $os;
+    public $pembekal, $barangan, $os, $bulan;
 
     public function rules()
     {
         return [
             [['id', 'id_jabatan', 'id_jabatan_asal', 'id_unit', 'jenis_perolehan', 'kaedah_pembayaran', 'kontrak_pusat', 'id_syarikat', 'status', 'status_kewangan', 'user'], 'integer'],
-            [['kod_id', 'kod_unjuran', 'tarikh_lulus1', 'catatan1', 'tarikh_lulus2', 'nolo', 'tarikhlo', 'novoucher', 'tarikh_voucher', 'catatan2', 'tahun', 'tarikh_jadi', 'tarikh_kemaskini', 'barangan', 'pembekal', 'os'], 'safe'],
+            [['kod_id', 'kod_unjuran', 'tarikh_lulus1', 'catatan1', 'tarikh_lulus2', 'nolo', 'tarikhlo', 'novoucher', 'tarikh_voucher', 'catatan2', 'tahun', 'tarikh_jadi', 'tarikh_kemaskini', 'barangan', 'pembekal', 'os', 'bulan'], 'safe'],
             [['nilai_permohonan', 'nilai_perolehan'], 'number'],
         ];
     }
@@ -119,6 +119,10 @@ class PerolehanSearch extends Perolehan
             ->andFilterWhere(['like', 'novoucher', $this->novoucher])
             ->andFilterWhere(['like', 'catatan2', $this->catatan2])
             ->andFilterWhere(['like', 'perolehan.tahun', $this->tahun]);
+
+        if(isset($this->bulan)) {
+            $query->andFilterWhere(['like', 'tarikh_jadi%', $this->bulan, false]);
+        }
 
         $query->distinct();
 

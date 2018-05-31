@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\models\Jabatan;
@@ -20,14 +21,25 @@ use app\models\Panjar;
 
 
 $currentYear = date("Y"); 
+$currentMonth = date("m");
 $yearList = ['' => ''];
 for($i = $currentYear - 5; $i < $currentYear + 1; $i++) {
     $yearList[$i] = $i; 
 }
+$months = [
+            '01' => 'Jan', '02' => 'Feb', '03' => 'Mac', '04' => 'Apr', '05' => 'Mei', '06' => 'Jun',
+            '07' => 'Jul', '08' => 'Ogo', '09' => 'Sep', '10' => 'Okt', '11' => 'Nov', '12' => 'Dis'
+          ];
+$months = [0 => 'Semua', 'Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul','Ogo', 'Sep', 'Okt', 'Nov', 'Dis'];
 if(!isset($_GET['PerolehanSearch']['tahun']))
     $selectedYear = $currentYear;
 else
     $selectedYear = $_GET['PerolehanSearch']['tahun'];
+
+if(!isset($_GET['PerolehanSearch']['bulan']))
+    $selectedMonth = $currentMonth;
+else
+    $selectedMonth =  $_GET['PerolehanSearch']['bulan'];
 
 Pjax::begin(); 
 $this->title = Yii::t('app', 'Perolehan').' '.Jabatan::findOne(yii::$app->user->identity->id_jabatan)->jabatan.' '.$selectedYear;
@@ -37,22 +49,49 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="perolehan-index">
 
     <h2><?= Html::encode($this->title) ?></h2>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <div class="form-group">
+        <?= Html::a(Yii::t('app', 'Create Perolehan'), ['create'], ['class' => 'btn btn-success']) ?>
+    </div>
     <div class="alert alert-info">
         <strong>Petunjuk</strong> <p>A: Sedang diproses, B: Lulus, B+: Lulus dengan perubahan, C: Tolak </p>
     </div>
-        <?= Html::a(Yii::t('app', 'Create Perolehan'), ['create'], ['class' => 'btn btn-success']) ?>
-        <?php //= Html::dropDownList('PerolehanSearch[tahun]', null, [2016, 2017, 2018], ['class' => 'form-control', 'onchange' => '$("#w0").yiiGridView("applyFilter");']) ?>
-        <div class="form-group">
-            <?php echo $this->render('_search', ['model' => $searchModel, 'yearList' => $yearList, 'selectedYear' => $selectedYear]); ?>
+    <div class="form-group">
+        <div class="row">
+        <?php echo $this->render('_search', [
+                'model' => $searchModel, 
+                'yearList' => $yearList, 
+                'selectedYear' => $selectedYear,
+                'months' => $months,
+                'selectedMonth' => $selectedMonth,
+            ]
+        ); ?>
         </div>
+    </div>
+       
     <div class="output" style="overflow-x: auto">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}{delete}{file}',
+                'visibleButtons' => [
+                    'view' => true,
+                    'delete' => function($model) {
+                        return is_null($model->nolo) ? true : false;
+                    },
+                    'file' => true,
+                ],
+                'buttons' => [
+                    'file' => function($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-file"></span>', 
+                                [ $model->kaedah_pembayaran != 3 ? 'form' : 'panjar', 'id' => $model->id],
+                                ['title' => 'Borang']);
+                    }
+                ]
+            ],
             //'id',
             'kod_id',
             'kod_unjuran',
@@ -179,11 +218,29 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => ['A', 'B', 'B+', 'C'],
             ],
             //'tarikh_lulus2',
-            'nolo',
-            'tarikhlo',
-            'novoucher',
-            'tarikh_voucher',
-            'nilai_perolehan',
+            [
+                'label' => 'No LO',
+                'attribute' => 'nolo',
+            ],
+            [
+                'attribute' => 'tarikhlo',
+                'label' => 'Tarikh LO',
+            ],
+            [
+                'attribute' => 'novoucher',
+                'label' => 'No Baucer',
+            ],
+            [
+                'attribute' => 'tarikh_voucher',
+                'label' => 'Tarikh Baucer',
+            ],
+            [
+                'attribute' => 'nilai_perolehan',
+                'label' => 'Nilai Perolehan',
+                'value' => function($model) {
+                    return is_null($model->novoucher) ? null : $model->nilai_perolehan;
+                }
+            ],
             [
                 'label' => 'Catatan',
                 'attribute' => 'catatan2',
@@ -203,25 +260,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             //'tarikh_kemaskini',
             //'user',
-
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}{delete}{file}',
-                'visibleButtons' => [
-                    'view' => true,
-                    'delete' => function($model) {
-                        return is_null($model->nolo) ? true : false;
-                    },
-                    'file' => true,
-                ],
-                'buttons' => [
-                    'file' => function($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-file"></span>', 
-                                [ $model->kaedah_pembayaran != 3 ? 'form' : 'panjar', 'id' => $model->id],
-                                ['title' => 'Borang']);
-                    }
-                ]
-            ],
         ],
     ]); ?>
     </div>

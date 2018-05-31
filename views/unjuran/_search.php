@@ -11,22 +11,23 @@ use yii\widgets\ActiveForm;
 <div class="unjuran-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
+        'id' => 'unjuran_form',
+        'action' => isset($all) ? ['index-all'] : ['index', 'id' => yii::$app->user->identity->id_jabatan],
         'method' => 'get',
         'options' => [
             'data-pjax' => 1
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?php //= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'kod_id') ?>
+    <?php //= $form->field($model, 'kod_id') ?>
 
-    <?= $form->field($model, 'os') ?>
+    <?php //= $form->field($model, 'os') ?>
 
-    <?= $form->field($model, 'ol') ?>
+    <?php //= $form->field($model, 'ol') ?>
 
-    <?= $form->field($model, 'id_jabatan') ?>
+    <?php //= $form->field($model, 'id_jabatan') ?>
 
     <?php // echo $form->field($model, 'id_unit') ?>
 
@@ -44,6 +45,13 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'tahun') ?>
 
+    <div class="form-group">
+        <div class="col-xs-4 form-inline">
+            <label>Tahun </label>
+            <?= Html::dropDownList('UnjuranSearch[tahun]', $selectedYear, $yearList, ['class' => 'form-control', 'onchange' => '$("#unjuran_form").submit()']) ?>
+        </div>
+    </div> 
+
     <?php // echo $form->field($model, 'catatan') ?>
 
     <?php // echo $form->field($model, 'status') ?>
@@ -57,8 +65,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'user') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?php //= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?php //= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
