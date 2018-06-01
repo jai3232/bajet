@@ -399,6 +399,25 @@ class PerolehanController extends Controller
         return $pdf->render(); 
     }
 
+    public function actionFinance()
+    {
+        if(!Yii::$app->user->identity->accessLevel([0, 2, 3]))
+            return $this->redirect(['perolehan/index']);
+        $searchModel = new PerolehanAllSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('finance', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionFormLo()
+    {
+        return $this->renderPartial('_form-lo', [
+        ]);
+    }
+
     public function actionTest()
     {
         //print_r(substr(Perolehan::find()->where(['LIKE', 'kod_id', 'P'.date('y').'%', false])->max('kod_id'), 3)/1);
