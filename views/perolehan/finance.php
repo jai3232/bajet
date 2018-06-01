@@ -5,6 +5,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\widgets\ActiveForm;
 use app\models\Jabatan;
 use app\models\Unit;
 use app\models\RefJenisPerolehan;
@@ -48,11 +49,11 @@ Modal::begin([
     'header' => '<h3 id="modal-header">Lulus LO</h3>',
     'id' => 'modal',
     'clientOptions' => ['backdrop' => 'static'],
-    'size' => 'modal-lg',
+    'size' => '',
     'footer' => '<button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>',
 ]);
 
-echo '<div id="modalContent"></div>';
+echo '<div id="modalContent">'.yii\jui\DatePicker::widget(['name' => 'attributeName']).'</div>';
 Modal::end();
 $id_pengguna = Yii::$app->user->identity->id;
 
@@ -63,27 +64,42 @@ $this->params['breadcrumbs'][] = $this->title;
 
 echo Dialog::widget();
 ?>
+<?= yii\jui\DatePicker::widget(['name' => 'attributeName']) ?>
 <div class="perolehan-index">
 
     <h2><?= Html::encode($this->title) ?></h2>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="form-group">
-        <?= Html::a(Yii::t('app', 'Create Perolehan'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?php //= Html::a(Yii::t('app', 'Create Perolehan'), ['create'], ['class' => 'btn btn-success']) ?>
     </div>
     <div class="alert alert-info">
         <strong>Petunjuk</strong> <p>A: Sedang diproses, B: Lulus, B+: Lulus dengan perubahan, C: Tolak </p>
     </div>
     <div class="form-group">
         <div class="row">
-        <?php echo $this->render('_search', [
-                'model' => $searchModel, 
-                'yearList' => $yearList, 
-                'selectedYear' => $selectedYear,
-                'months' => $months,
-                'selectedMonth' => $selectedMonth,
-                'all' => true,
-            ]
-        ); ?>
+            <div class="perolehan-search form-group">
+                <?php $form = ActiveForm::begin([
+                    'id' => 'perolehan_form',
+                    'action' =>['finance'],
+                    'method' => 'get',
+                    'options' => [
+                        'data-pjax' => 1
+                    ],
+                ]); ?>
+                <div class="form-group">
+                    <div class="col-xs-4 form-inline">
+                        <label>Tahun </label>
+                        <?= Html::dropDownList('PerolehanAllSearch[tahun]', $selectedYear, $yearList, 
+                                ['class' => 'form-control', 'onchange' => '$("#perolehan_form").submit()']) 
+                        ?>
+                        <label>Bulan</label>
+                        <?= Html::dropDownList('PerolehanAllSearch[bulan]', $selectedMonth, $months, 
+                            ['class' => 'form-control', 'onchange' => '$("#perolehan_form").submit()']) 
+                        ?>
+                    </div>
+                </div>
+                <?php ActiveForm::end(); ?>
+            </div>
         </div>
     </div>
 
@@ -103,9 +119,13 @@ echo Dialog::widget();
                 'format' => 'raw',
                 'value' => function($model) {
                     if(is_null($model->nolo))
-                        return Html::button('Lulus LO', ['class' => 'btn btn-warning lor']);
-                    return $model->nolo.'<br>('.$model->tarikhlo.')';
-                }
+                        return Html::button('Lulus LO', [
+                                'class' => 'btn btn-warning lor', 
+                                'id' => $model->kod_id, 
+                                'value' => Url::to(['perolehan/form-lo', 'id' => $model->id])
+                            ]);
+                    return $model->nolo.'<br>('.Yii::$app->formatter->asDate($model->tarikhlo).')';
+                },
             ],
             [
                 'attribute' => 'novoucher',
@@ -113,7 +133,7 @@ echo Dialog::widget();
                 'format' => 'raw',
                 'value' => function($model) {
                     if(is_null($model->novoucher))
-                        return Html::button('Lulus Baucer', ['class' => 'btn btn-danger baucer']);
+                        return Html::button('Baucer', ['class' => 'btn btn-danger baucer', 'id' => $model->kod_id]);
                     return $model->novoucher.'<br>('.$model->tarikh_voucher.')';
                 }
             ],
@@ -297,18 +317,30 @@ echo Dialog::widget();
 </div>
 
 <?php
-    $this->registerJs('
+$this->registerJs('
+    $("select option[value=\"\"]").append("Semua");
+
+    $(document).on("pjax:success", function() {
         $("select option[value=\"\"]").append("Semua");
+        lo_ba_click();
+    });
+    
+    lo_ba_click();
 
-        $(document).on("pjax:success", function() {
-            $("select option[value=\"\"]").append("Semua");
-        });
-
+    function lo_ba_click() {
         $(".lor").on("click", function(){
-            $("#modal").modal("show").find("#modalContent").load("'.Url::to(['perolehan/form-lo']).'");
+            $("#modal").modal("show").find("#modalContent").load($(this).val());
+            $("#kod_perolehan").html($(this).attr("id"));
+            $("#modal").modal("show").find("#kod_perolehan").html("XXX");
             //$("#modal-header").html("Penukaran Kod A");
             return false;
         });
-    ');
+    }
+');
+
+$this->registerCss('
+    .datepicker{ z-index:99999 !important; }
+');
 
 ?>
+

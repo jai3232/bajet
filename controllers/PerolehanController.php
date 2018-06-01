@@ -412,11 +412,25 @@ class PerolehanController extends Controller
         ]);
     }
 
-    public function actionFormLo()
+    public function actionFormLo($id)
     {
-        return $this->renderPartial('_form-lo', [
+        $model = $this->findModel($id);
+        return $this->renderAjax('_form-lo', [
+            'model' => $model,
         ]);
     }
+
+    public function actionUpdateLo()
+    {
+        $perolehan = yii::$app->request->post('Perolehan');
+        $model = $this->findModel($perolehan['id']);
+        $model->nilai_perolehan = $perolehan['nilai_perolehan'];
+        $model->nolo = $perolehan['nolo'];
+        $model->tarikhlo = $perolehan['tarikhl'];
+        $model->catatan2 = $perolehan['catatan2'];
+        //return print_r(yii::$app->request->post('Perolehan'));
+       // return Yii::$app->formatter->asDate($perolehan['tarikhlo'], 'yyyy-MM-dd');
+    }    
 
     public function actionTest()
     {
