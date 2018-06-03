@@ -1,24 +1,6 @@
 <?php
 use app\models\Unjuran;
 use app\models\Jabatan;
-use app\models\Perolehan;
-use app\models\Perbelanjaan;
-use app\models\Ot;
-use app\models\Penceramah;
-use app\models\Perjalanan;
-
-
-// function bakiUnjuran($kod_unjuran)
-// {
-// 	$perolehan = Perolehan::find()->where(['kod_unjuran' => $kod_unjuran])->sum('nilai_perolehan');
-// 	$perbelanjaan = Perbelanjaan::find()->where(['kod_unjuran' => $kod_unjuran])->sum('jumlah_bayaran');
-// 	$ot = Ot::find()->where(['kod_unjuran' => $kod_unjuran])->sum('jumlah_kew');
-// 	$penceramah = Penceramah::find()->where(['kod_unjuran' => $kod_unjuran])->sum('jumlah_kew');
-// 	$perjalanan = Perjalanan::find()->where(['kod_unjuran' => $kod_unjuran])->sum('jumlah_kew');
-// 	$unjuran = Unjuran::find()->where(['kod_id' => $kod_unjuran])->sum('jumlah_unjuran');
-
-// 	return $unjuran - ($perolehan + $perbelanjaan + $ot + $penceramah + $perjalanan);
-// }
 
 ?>
 
@@ -49,7 +31,7 @@ $unjurans = Yii::$app->db->createCommand($sql)->queryAll();
 			foreach ($unjurans as $key => $value) {
 				echo '<tr data-dismiss="modal"><td>'.$i++.'</td><td>'.$value['kod_id'].'</td><td>'.$value['os']
 					.'</td><td>'.$value['butiran'].'</td><td class="text-right">'.number_format($value['jumlah_unjuran'], 2)
-					.'</td><td class="text-right">'.number_format(Unjuran::bakiUnjuran($value['kod_id']), ).'</td><td><span id="'.$value['id_jabatan'].'" title="'
+					.'</td><td>'.'Baki??'.'</td><td><span id="'.$value['id_jabatan'].'" title="'
 					.Jabatan::findOne($value['id_jabatan'])->jabatan.'">'
 					.Jabatan::findOne($value['id_jabatan'])->ringkasan.'</span></td><td class="text-center">'
 					.'<input type="radio" name="pilih" class="pilih" data-dismiss="modal">'.'</td></tr>';
@@ -76,7 +58,6 @@ $this->registerJs('
 	$("#myTable tr").on("click", function(){
 		var td = $(this).children();
 		$("#perolehan-kod_unjuran").val(td.eq(1).html());
-		$("#perbelanjaan-kod_unjuran").val(td.eq(1).html());
 		$("#kod-unjuran").html(td.eq(1).html());
 		$("#os").html(td.eq(2).html());
 		$("#butiran").html(td.eq(3).html());
@@ -86,7 +67,6 @@ $this->registerJs('
 		$("#perolehan-id_jabatan").val(td.eq(6).children().prop("id"));
 		$("#unjuran_info").slideDown(150);
 		$(".perolehan-form").slideDown(200);
-		$(".perbelanjaan-form").slideDown(200);
 	});
 ');
 

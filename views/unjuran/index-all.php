@@ -152,13 +152,20 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'jumlah_unjuran',
-                'label' => 'Unjuran',
+                'label' => 'Jumlah',
                 // 'format' => 'raw',
                 //'encodeLabel' => false,
                 'contentOptions' => ['class' => 'text-right'],
                 'value' => function($model) {
-                    return number_format($model->jumlah_unjuran);  
+                    return number_format($model->jumlah_unjuran, 2);  
                 } 
+            ],
+            [
+                'label' => 'Baki',
+                'contentOptions' => ['class' => 'text-right'],
+                'value' => function($model) {
+                    return number_format($model->bakiUnjuran($model->kod_id), 2);
+                }
             ],
             // //'kongsi',
             // 'public',

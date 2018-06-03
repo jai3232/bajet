@@ -25,7 +25,21 @@ else
     $selectedYear = $_GET['UnjuranSearch']['tahun'];
 
 //print_r(Yii::$app->request->get('UnjuranSearch')['tahun']);
+
+Modal::begin([
+    'header' => '<h3 id="modal-header">Penukaran Kod A</h3>',
+    'id' => 'modal',
+    //'clientOptions' => ['backdrop' => 'static'],
+    'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>',
+]);
+
+echo '<div id="modalContent"></div>';
+Modal::end();
+
+$id_pengguna = Yii::$app->user->identity->id;
+
 Pjax::begin(['id' => 'unjuran-grid']);
+
 $this->title = 'Unjuran Jabatan/Bahagian '.Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan.' '.$selectedYear;
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -42,21 +56,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="alert alert-info">
         A: Diluluskan, B: Wajib, C: Keutamaan, D: Kurang Utama
     </div>
-
-    <?php
-
-        Modal::begin([
-            'header' => '<h3 id="modal-header">Penukaran Kod A</h3>',
-            'id' => 'modal',
-            'clientOptions' => ['backdrop' => 'static'],
-            'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>',
-        ]);
-
-        echo '<div id="modalContent"></div>';
-        Modal::end();
-        $id_pengguna = Yii::$app->user->identity->id;
-
-    ?>
 
     <div class="form-group">
         <div class="row">
@@ -111,8 +110,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
         ]);
-    ?>    
-    
+    ?>   
+    <?php  ?> 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -151,13 +150,20 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'jumlah_unjuran',
-                'label' => 'Unjuran',
+                'label' => 'Jumlah',
                 // 'format' => 'raw',
                 //'encodeLabel' => false,
                 'contentOptions' => ['class' => 'text-right'],
                 'value' => function($model) {
-                    return number_format($model->jumlah_unjuran);  
+                    return number_format($model->jumlah_unjuran, 2);  
                 } 
+            ],
+            [
+                'label' => 'Baki',
+                'contentOptions' => ['class' => 'text-right'],
+                'value' => function($model) {
+                    return number_format($model->bakiUnjuran($model->kod_id), 2);
+                }
             ],
             [
                 'label' => 'Kongsi',

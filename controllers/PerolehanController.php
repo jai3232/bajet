@@ -22,6 +22,9 @@ class PerolehanController extends Controller
     /**
      * @inheritdoc
      */
+
+    private $status = ['A', 'B', 'B+', 'C'];
+
     public function behaviors()
     {
         return [
@@ -424,13 +427,53 @@ class PerolehanController extends Controller
     {
         $perolehan = yii::$app->request->post('Perolehan');
         $model = $this->findModel($perolehan['id']);
-        $model->nilai_perolehan = $perolehan['nilai_perolehan'];
-        $model->nolo = $perolehan['nolo'];
-        $model->tarikhlo = $perolehan['tarikhl'];
-        $model->catatan2 = $perolehan['catatan2'];
-        //return print_r(yii::$app->request->post('Perolehan'));
-       // return Yii::$app->formatter->asDate($perolehan['tarikhlo'], 'yyyy-MM-dd');
+        if($perolehan['lulus_lo'] != 'C') {
+            $model->nilai_perolehan = $perolehan['nilai_perolehan'];
+            $model->nolo = $perolehan['nolo'];
+            $model->tarikhlo = Yii::$app->formatter->asDate($perolehan['tarikhlo'], 'yyyy-MM-dd');
+            $model->catatan2 = $perolehan['catatan2'];
+            $model->status_kewangan = array_search($perolehan['lulus_lo'], $this->status);
+            //return print_r(yii::$app->request->post('Perolehan'));
+            //return Yii::$app->formatter->asDate($perolehan['tarikhlo'], 'yyyy-MM-dd');
+        }
+        else {
+            $model->nilai_perolehan = 0;
+            $model->catatan2 = $perolehan['catatan2'];
+            $model->status_kewangan = array_search($perolehan['lulus_lo'], $this->status);  
+        }
+        if(!$model->save())
+            return print_r($model->getErrors());
+        else
+            return true;
     }    
+
+    public function actionFormVo($id)
+    {
+        $model = $this->findModel($id);
+        return $this->renderAjax('_form-vo', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionUpdateVo()
+    {
+        $perolehan = yii::$app->request->post('Perolehan');
+        $model = $this->findModel($perolehan['id']);
+        if($perolehan['lulus_vo'] != 'C') {
+            $model->nilai_perolehan = $perolehan['nilai_perolehan'];
+            $model->novoucher = $perolehan['novoucher'];
+            $model->tarikh_voucher = Yii::$app->formatter->asDate($perolehan['tarikh_voucher'], 'yyyy-MM-dd');
+            $model->status_kewangan = array_search($perolehan['lulus_vo'], $this->status);
+        }
+        else {
+            $model->nilai_perolehan = 0;
+            $model->status_kewangan = array_search($perolehan['lulus_vo'], $this->status);  
+        }
+        if(!$model->save())
+            return print_r($model->getErrors());
+        else
+            return true;
+    }
 
     public function actionTest()
     {

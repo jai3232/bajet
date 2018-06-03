@@ -87,7 +87,8 @@ AppAsset::register($this);
                         'url' => ['/perolehan/index-all'], 
                         'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([0, 2, 3, 4]) : false,
                     ],
-                    ['label' => 'Kelulusan Kewangan', 'url' => ['/perolehan/finance']]
+                    ['label' => 'Kelulusan Kewangan', 'url' => ['/perolehan/finance']],
+                    ['label' => 'Perbelanjaan Lain', 'url' => ['/perbelanjaan/index']]
                 ],
                 'visible' => !Yii::$app->user->isGuest,
             ],

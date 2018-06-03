@@ -10,38 +10,34 @@ use yii\jui\DatePicker;
 
 ?>
 
-<div class="lulus_lo">
+<div class="lulus_vo">
 
-    <?= Html::beginForm('', 'post', ['id' => 'lulus_lo_form'])?>
+    <?= Html::beginForm('', 'post', ['id' => 'lulus_vo_form'])?>
         <div class="form-group">
             <label>Kod Perolehan: <span id="kod_perolehan"><?= $model->kod_id ?></span></label><br>
             <label>Nilai Permohonan: <span id="kod_perolehan">RM<?= number_format($model->nilai_permohonan, 2)  ?></span></label>
             <?= Html::hiddenInput('Perolehan[id]', $model->id) ?>
         </div>
         <div class="form-group">
-            <label>Kelulusan</label>
-            <?= Html::radioList('Perolehan[lulus_lo]', null, ['B' => 'Lulus', 'B+' => 'Lulus Dengan Perubahan Harga', 'C' => 'Ditolak']) ?>
+            <label>Nilai Baucer</label>
+            <?= Html::radioList('Perolehan[lulus_vo]', null, ['B' => 'Sama', 'B+' => 'Perubahan Nilai', 'C' => 'Ditolak']) ?>
         </div>
         <div class="form-group">
-            <label>Nilai LO (RM)</label>
-            <?= Html::textInput('Perolehan[nilai_perolehan]', number_format($model->nilai_permohonan, 2), ['class' => 'form-control must', 'readonly' => true, 'id' => 'nilai_lo']) ?>
+            <label>Nilai Baucer(RM)</label>
+            <?= Html::textInput('Perolehan[nilai_perolehan]', number_format($model->nilai_permohonan, 2), ['class' => 'form-control must', 'readonly' => true, 'id' => 'nilai_vo']) ?>
         </div>
         <div class="form-group">
-            <label>No LO</label>
-            <?= Html::textInput('Perolehan[nolo]', null, ['class' => 'form-control must']) ?>
+            <label>No Baucer</label>
+            <?= Html::textInput('Perolehan[novoucher]', null, ['class' => 'form-control must']) ?>
         </div>
         <div class="form-group">
-            <label>Tarikh LO</label>
+            <label>Tarikh Baucer</label>
            <?= DatePicker::widget([
-                    'name' => 'Perolehan[tarikhlo]', 
+                    'name' => 'Perolehan[tarikh_voucher]', 
                     'dateFormat' => 'dd-MM-yyyy', 
                     'options' => ['class' => 'form-control must date', 'readonly' => true]
                 ]) 
             ?>
-        </div>
-        <div class="form-group">
-            <label>Catatan</label>
-            <?= Html::textarea('Perolehan[catatan2]', null, ['class' => 'form-control']) ?>
         </div>
 
         <?= Html::submitButton('Simpan', ['class' => 'btn btn-success']) ?>
@@ -50,12 +46,12 @@ use yii\jui\DatePicker;
 
 <?php
 $this->registerJs('
-    $("input[name=\"Perolehan[lulus_lo]\"]").on("click", function(){
+    $("input[name=\"Perolehan[lulus_vo]\"]").on("click", function(){
         if($(this).val() == "B+") {
-            $("#nilai_lo").attr("readonly", false);
+            $("#nilai_vo").attr("readonly", false);
         }
         else
-            $("#nilai_lo").attr("readonly", true);
+            $("#nilai_vo").attr("readonly", true);
     });
 
     $(".must").on("keyup", function(){
@@ -78,10 +74,10 @@ $this->registerJs('
         }
     });
 
-    $("form#lulus_lo_form").on("submit", function(){
+    $("form#lulus_vo_form").on("submit", function(){
         var form = $(this);
-        if(!$("input[name=\"Perolehan[lulus_lo]\"]").is(":checked")) {
-            alert("Sila pilih kelulusan perolehan");
+        if(!$("input[name=\"Perolehan[lulus_vo]\"]").is(":checked")) {
+            alert("Sila pilih nilai baucer");
             return false;
         }
         
@@ -96,7 +92,7 @@ $this->registerJs('
             }
         }        
 
-        $.post("'.Url::to(['perolehan/update-lo']).'", $(this).serialize(), function(data) {
+        $.post("'.Url::to(['perolehan/update-vo']).'", $(this).serialize(), function(data) {
             if(data) {
                 form.trigger("reset");
                 $("#modal").modal("hide");

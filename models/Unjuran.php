@@ -58,7 +58,7 @@ class Unjuran extends \yii\db\ActiveRecord
             [['os'], 'string', 'max' => 16],
             [['ol'], 'string', 'max' => 50],
             [['kod'], 'string', 'max' => 1],
-            [['kongsi'], 'string', 'max' => 30],
+            //[['kongsi'], 'string', 'max' => 30],
             [['tahun'], 'string', 'max' => 4],
             [['kod_id'], 'unique'],
         ];
@@ -95,6 +95,18 @@ class Unjuran extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function bakiUnjuran($kod_unjuran)
+    {
+        $perolehan = Perolehan::find()->where(['kod_unjuran' => $kod_unjuran])->sum('nilai_perolehan');
+        $perbelanjaan = Perbelanjaan::find()->where(['kod_unjuran' => $kod_unjuran])->sum('jumlah_bayaran');
+        $ot = Ot::find()->where(['kod_unjuran' => $kod_unjuran])->sum('jumlah_kew');
+        $penceramah = Penceramah::find()->where(['kod_unjuran' => $kod_unjuran])->sum('jumlah_kew');
+        $perjalanan = Perjalanan::find()->where(['kod_unjuran' => $kod_unjuran])->sum('jumlah_kew');
+        $unjuran = self::find()->where(['kod_id' => $kod_unjuran])->sum('jumlah_unjuran');
+
+        return $unjuran - ($perolehan + $perbelanjaan + $ot + $penceramah + $perjalanan);
+    }
+    
     public function getOts()
     {
         return $this->hasMany(Ot::className(), ['kod_unjuran' => 'kod_id']);

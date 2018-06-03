@@ -17,19 +17,19 @@ use kartik\dialog\Dialog;
 
 <?php
 
-    Modal::begin([
-        'header' => '<h3 id="modal-header">Senarai Unjuran</h3>',
-        'id' => 'modal',
-        'clientOptions' => ['backdrop' => 'static'],
-        'size' => 'modal-lg',
-        'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>',
-    ]);
+Modal::begin([
+    'header' => '<h3 id="modal-header">Senarai Unjuran</h3>',
+    'id' => 'modal',
+    'clientOptions' => ['backdrop' => 'static'],
+    'size' => 'modal-lg',
+    'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>',
+]);
 
-    echo '<div id="modalContent"></div>';
-    Modal::end();
-    $id_pengguna = Yii::$app->user->identity->id;
+echo '<div id="modalContent"></div>';
+Modal::end();
+$id_pengguna = Yii::$app->user->identity->id;
 
-    echo Dialog::widget();
+echo Dialog::widget();
 
 ?>
 <div class="form-group">

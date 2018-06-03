@@ -58,13 +58,13 @@ Modal::end();
 $id_pengguna = Yii::$app->user->identity->id;
 
 
-Pjax::begin(); 
+Pjax::begin(['id' => 'finance-grid']); 
 $this->title = Yii::t('app', 'Perolehan').' '.$months[$selectedMonth].' '.$selectedYear;
 $this->params['breadcrumbs'][] = $this->title;
 
 echo Dialog::widget();
 ?>
-<?= yii\jui\DatePicker::widget(['name' => 'attributeName']) ?>
+
 <div class="perolehan-index">
 
     <h2><?= Html::encode($this->title) ?></h2>
@@ -118,7 +118,9 @@ echo Dialog::widget();
                 'attribute' => 'nolo',
                 'format' => 'raw',
                 'value' => function($model) {
-                    if(is_null($model->nolo))
+                    if($model->kaedah_pembayaran >= 3)
+                        return null;
+                    if($model->status_kewangan == 0)
                         return Html::button('Lulus LO', [
                                 'class' => 'btn btn-warning lor', 
                                 'id' => $model->kod_id, 
@@ -132,8 +134,15 @@ echo Dialog::widget();
                 'label' => 'No Baucer',
                 'format' => 'raw',
                 'value' => function($model) {
-                    if(is_null($model->novoucher))
-                        return Html::button('Baucer', ['class' => 'btn btn-danger baucer', 'id' => $model->kod_id]);
+                    if((is_null($model->novoucher) && ($model->status_kewangan == 1 || $model->status_kewangan == 2)) || ($model->kaedah_pembayaran >= 3 && is_null($model->novoucher)))
+                        return Html::button('Baucer', [
+                                'class' => 'btn btn-danger voucher', 
+                                'id' => $model->kod_id,
+                                'value' => Url::to(['perolehan/form-vo', 'id' => $model->id])
+                            ]);
+                    if($model->status_kewangan == 3 || $model->status_kewangan == 0)
+                        return null;
+
                     return $model->novoucher.'<br>('.$model->tarikh_voucher.')';
                 }
             ],
@@ -242,8 +251,8 @@ echo Dialog::widget();
                 'encodeLabel' => false,
                 'contentOptions' => ['class' => 'text-right'],
                 'value' => function($model) {
-                    return number_format(Pembekal::findOne(['id_perolehan' => $model->id, 'utama' => 1])['harga'], 2);
-                    //return print_r(Pembekal::findOne(['id_perolehan' => $model->id, 'utama' => 1])['harga']);
+                    return number_format($model->nilai_permohonan, 2);
+                    //return number_format(Pembekal::findOne(['id_perolehan' => $model->id, 'utama' => 1])['harga'], 2);
                 }
             ],
             [
@@ -251,7 +260,7 @@ echo Dialog::widget();
                 'attribute' => 'status_kewangan',
                 'encodeLabel' => false,
                 'value' => function($model) {
-                    $status = ['A', 'B', 'C'];
+                    $status = ['A', 'B', 'B+', 'C'];
                     return $status[$model->status_kewangan];
                 },
                 'contentOptions' => ['class' => 'text-center'],
@@ -265,7 +274,7 @@ echo Dialog::widget();
                 'attribute' => 'nilai_perolehan',
                 'label' => 'Nilai Perolehan',
                 'value' => function($model) {
-                    return is_null($model->novoucher) ? null : $model->nilai_perolehan;
+                    return number_format($model->nilai_perolehan, 2);
                 }
             ],
             [
@@ -322,17 +331,24 @@ $this->registerJs('
 
     $(document).on("pjax:success", function() {
         $("select option[value=\"\"]").append("Semua");
-        lo_ba_click();
+        lo_vo_click();
     });
     
-    lo_ba_click();
+    lo_vo_click();
 
-    function lo_ba_click() {
+    function lo_vo_click() {
         $(".lor").on("click", function(){
             $("#modal").modal("show").find("#modalContent").load($(this).val());
             $("#kod_perolehan").html($(this).attr("id"));
-            $("#modal").modal("show").find("#kod_perolehan").html("XXX");
             //$("#modal-header").html("Penukaran Kod A");
+            return false;
+        });
+
+        $(".voucher").on("click", function(){
+            $("#modal").modal("show").find("#modalContent").load($(this).val());
+            $("#kod_perolehan").html($(this).attr("id"));
+            $("#modal-header").html("Kemaskini Baucer");
+            
             return false;
         });
     }
