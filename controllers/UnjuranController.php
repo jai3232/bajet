@@ -188,7 +188,10 @@ class UnjuranController extends Controller
     {
         $model = $this->findModel($id);
         if(Yii::$app->request->post()) {
-            $model->kongsi = implode(',', Yii::$app->request->post('kongsi-jabatan'));
+            if(count(Yii::$app->request->post()) < 2)
+                $model->kongsi = null;
+            else
+                $model->kongsi = implode(',', Yii::$app->request->post('kongsi-jabatan'));
             if($model->save())
                 return true;
             return print_r($model->getErrors());

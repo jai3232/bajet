@@ -68,8 +68,7 @@ $id_jabatan_personal = Yii::$app->user->identity->id_jabatan;
     <?= $form->field($model, 'tahun')->dropdownList($yearList,  
                                                     [
                                                         'prompt' => '- Sila Pilih -', 
-                                                        'options' => [ $model->isNewRecord ? ($currentYear+1) : $model->tahun => ['selected' => true]
-                                                        ]
+                                                        'options' => [ $model->isNewRecord ? ($currentYear+1) : $model->tahun => ['selected' => true]]
                                                     ]                                                     
                                                     ) ?>
 

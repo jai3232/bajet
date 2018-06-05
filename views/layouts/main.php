@@ -93,8 +93,8 @@ AppAsset::register($this);
                 'visible' => !Yii::$app->user->isGuest,
             ],
             ['label' => 'Tuntutan', 'items' => [
-                    ['label' => 'Senarai Waran', 'url' => ['/waran/index']],
-                    ['label' => 'Tambah Waran', 'url' => ['/waran/create']],
+                    ['label' => 'Tuntutan Perjalanan', 'url' => ['/perjalanan/create']],
+                    ['label' => 'Senarai Tuntutan Perjalanan', 'url' => ['/perjalanan/index']],
                     ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
                 ],
                 'visible' => !Yii::$app->user->isGuest,

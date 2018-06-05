@@ -9,7 +9,7 @@ use app\models\Jabatan;
 $currentYear = date("Y");
 $id_jabatan = Yii::$app->user->identity->id_jabatan;
 
-$sql = "SELECT * FROM unjuran WHERE (os != '11000' AND os != '12000' AND os != '13000' AND os != '14000' AND os != '15000' AND sah=1 AND tahun='2018' AND kod='A' AND (id_jabatan=$id_jabatan OR FIND_IN_SET('$id_jabatan', unjuran.kongsi) ))";
+$sql = "SELECT * FROM unjuran WHERE (sah=1 AND tahun='$currentYear' AND kod='A' AND (id_jabatan=$id_jabatan OR FIND_IN_SET('$id_jabatan', unjuran.kongsi) ))";
 
 $unjurans = Yii::$app->db->createCommand($sql)->queryAll();				  					  
 ?>
@@ -31,7 +31,7 @@ $unjurans = Yii::$app->db->createCommand($sql)->queryAll();
 			foreach ($unjurans as $key => $value) {
 				echo '<tr data-dismiss="modal"><td>'.$i++.'</td><td>'.$value['kod_id'].'</td><td>'.$value['os']
 					.'</td><td>'.$value['butiran'].'</td><td class="text-right">'.number_format($value['jumlah_unjuran'], 2)
-					.'</td><td>'.'Baki??'.'</td><td><span id="'.$value['id_jabatan'].'" title="'
+					.'</td><td>'.number_format(Unjuran::bakiUnjuran($value['kod_id']), 2).'</td><td><span id="'.$value['id_jabatan'].'" title="'
 					.Jabatan::findOne($value['id_jabatan'])->jabatan.'">'
 					.Jabatan::findOne($value['id_jabatan'])->ringkasan.'</span></td><td class="text-center">'
 					.'<input type="radio" name="pilih" class="pilih" data-dismiss="modal">'.'</td></tr>';
@@ -66,7 +66,7 @@ $this->registerJs('
 		$("#jabatan").html(td.eq(6).children().prop("title"));
 		$("#perolehan-id_jabatan").val(td.eq(6).children().prop("id"));
 		$("#unjuran_info").slideDown(150);
-		$(".perolehan-form").slideDown(200);
+		$(".perbelanjaan-form").slideDown(200);
 	});
 ');
 

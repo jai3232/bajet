@@ -167,13 +167,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'label' => 'Kongsi',
+                'format' => 'raw',
                 'value' => function($model) {
                     $jabatans_id= explode(',', $model->kongsi);
                     $jabatans = '';
                     foreach ($jabatans_id as $key => $value) {
                         $value = $value / 1;
                         if($value == 0) continue;
-                        $jabatans .= Jabatan::findOne($value)->jabatan.', ';
+                        $jabatans .= '<span title="'.Jabatan::findOne($value)->jabatan.'">'.Jabatan::findOne($value)->ringkasan.'</span>, ';
                     }
                     //return (Jabatan::findOne(11)->jabatan);
                     if($value != 0)

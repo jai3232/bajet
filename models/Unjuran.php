@@ -95,7 +95,7 @@ class Unjuran extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function bakiUnjuran($kod_unjuran)
+    public static function bakiUnjuran($kod_unjuran)
     {
         $perolehan = Perolehan::find()->where(['kod_unjuran' => $kod_unjuran])->sum('nilai_perolehan');
         $perbelanjaan = Perbelanjaan::find()->where(['kod_unjuran' => $kod_unjuran])->sum('jumlah_bayaran');

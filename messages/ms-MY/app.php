@@ -20,6 +20,7 @@ return [
     'Aktif' => '',
     'Are you sure you want to delete this item?' => '',
     'Create Perbelanjaan' => 'Tambah Perbelanjaan',
+    'Create Perjalanan' => 'Tuntutan Perjalanan',
     'Create Perolehan' => 'Borang Perolehan',
     'Confirmation' => 'Pengesahan',
     'Butiran' => '',

@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Perbelanjaan;
-use app\models\PerbelanjaanSearch;
+use app\models\Perjalanan;
+use app\models\PerjalananSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * PerbelanjaanController implements the CRUD actions for Perbelanjaan model.
+ * PerjalananController implements the CRUD actions for Perjalanan model.
  */
-class PerbelanjaanController extends Controller
+class PerjalananController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,12 +30,12 @@ class PerbelanjaanController extends Controller
     }
 
     /**
-     * Lists all Perbelanjaan models.
+     * Lists all Perjalanan models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new PerbelanjaanSearch();
+        $searchModel = new PerjalananSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class PerbelanjaanController extends Controller
     }
 
     /**
-     * Displays a single Perbelanjaan model.
+     * Displays a single Perjalanan model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,23 +58,16 @@ class PerbelanjaanController extends Controller
     }
 
     /**
-     * Creates a new Perbelanjaan model.
+     * Creates a new Perjalanan model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Perbelanjaan();
+        $model = new Perjalanan();
 
-        if ($model->load(Yii::$app->request->post())) {
-            //return (self::generateCodeReset('L', $model));
-            $model->user = yii::$app->user->identity->id;
-            $model->kod_id = self::generateCodeReset('L', $model);
-            if($model->save())
-                return $this->redirect(['index']);
-            else
-                return print_r($model->getErrors());
-            //return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -83,7 +76,7 @@ class PerbelanjaanController extends Controller
     }
 
     /**
-     * Updates an existing Perbelanjaan model.
+     * Updates an existing Perjalanan model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -103,7 +96,7 @@ class PerbelanjaanController extends Controller
     }
 
     /**
-     * Deletes an existing Perbelanjaan model.
+     * Deletes an existing Perjalanan model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -118,34 +111,19 @@ class PerbelanjaanController extends Controller
 
     public function actionUnjuranList()
     {
-        return $this->renderAjax('unjuran');
-    }
-
-    static function generateCodeReset($c, $model) {
-        
-        $c = $c.date('y');
-        $data = empty($model->find()->where(['LIKE', 'kod_id', $c.'%', false])->max('kod_id')) ? 
-                    '0000000' : $model->find()->where(['LIKE', 'kod_id', $c.'%', false])->max('kod_id');
-        $data = substr($data, 3) / 1;
-        $data++;
-        $dLength = strlen($data);
-        $str = $c;
-        $sLength = strlen($c);
-        for($i = 0; $i < (10 - $dLength - $sLength); $i++)
-            $str .= "0";
-        return ($str.$data);
+         return $this->renderAjax('unjuran');
     }
 
     /**
-     * Finds the Perbelanjaan model based on its primary key value.
+     * Finds the Perjalanan model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Perbelanjaan the loaded model
+     * @return Perjalanan the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Perbelanjaan::findOne($id)) !== null) {
+        if (($model = Perjalanan::findOne($id)) !== null) {
             return $model;
         }
 

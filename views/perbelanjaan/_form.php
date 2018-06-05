@@ -84,7 +84,7 @@ Modal::end();
 $this->registerJs('
 
     $("#pilih-unjuran").on("click", function(){
-        $("#modal").modal("show").find("#modalContent").load("'.Url::to(['perolehan/unjuran-list']).'");
+        $("#modal").modal("show").find("#modalContent").load("'.Url::to(['perbelanjaan/unjuran-list']).'");
         //$("#modal-header").html("Penukaran Kod A");
         return false;
     });

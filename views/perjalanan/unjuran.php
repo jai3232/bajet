@@ -27,7 +27,7 @@ use app\models\Perjalanan;
 $currentYear = date("Y");
 $id_jabatan = Yii::$app->user->identity->id_jabatan;
 
-$sql = "SELECT * FROM unjuran WHERE (os != '11000' AND os != '12000' AND os != '13000' AND os != '14000' AND os != '15000' AND os != '21000' AND sah=1 AND tahun='$currentYear' AND kod='A' AND (id_jabatan=$id_jabatan OR FIND_IN_SET('$id_jabatan', unjuran.kongsi) ))";
+$sql = "SELECT * FROM unjuran WHERE ((os = '21000' OR os = 'AMANAH' OR os LIKE '4%' OR os LIKE 'P%' OR os LIKE 'B%')  AND sah=1 AND tahun='$currentYear' AND kod='A' AND (id_jabatan=$id_jabatan OR FIND_IN_SET('$id_jabatan', unjuran.kongsi) ))";
 
 $unjurans = Yii::$app->db->createCommand($sql)->queryAll();				  					  
 ?>
@@ -49,8 +49,7 @@ $unjurans = Yii::$app->db->createCommand($sql)->queryAll();
 			foreach ($unjurans as $key => $value) {
 				echo '<tr data-dismiss="modal"><td>'.$i++.'</td><td>'.$value['kod_id'].'</td><td>'.$value['os']
 					.'</td><td>'.$value['butiran'].'</td><td class="text-right">'.number_format($value['jumlah_unjuran'], 2)
-					.'</td><td class="text-right">'.number_format(Unjuran::bakiUnjuran($value['kod_id']), 2)
-					.'</td><td><span id="'.$value['id_jabatan'].'" title="'
+					.'</td><td class="text-right">'.number_format(Unjuran::bakiUnjuran($value['kod_id']), 2).'</td><td><span id="'.$value['id_jabatan'].'" title="'
 					.Jabatan::findOne($value['id_jabatan'])->jabatan.'">'
 					.Jabatan::findOne($value['id_jabatan'])->ringkasan.'</span></td><td class="text-center">'
 					.'<input type="radio" name="pilih" class="pilih" data-dismiss="modal">'.'</td></tr>';
@@ -77,7 +76,8 @@ $this->registerJs('
 	$("#myTable tr").on("click", function(){
 		var td = $(this).children();
 		$("#perolehan-kod_unjuran").val(td.eq(1).html());
-		$("#perbelanjaan-kod_unjuran").val(td.eq(1).html());
+		$("#perjalanan-kod_unjuran").val(td.eq(1).html());
+		$("#perjalanan-bahagian").val(td.eq(6).children().attr("id"));
 		$("#kod-unjuran").html(td.eq(1).html());
 		$("#os").html(td.eq(2).html());
 		$("#butiran").html(td.eq(3).html());

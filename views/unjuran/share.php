@@ -17,7 +17,7 @@ use kartik\select2\Select2;
     <?php echo Select2::widget([
             'name' => 'kongsi-jabatan',
             'id' => 'kongsi-jabatan',
-            'data' => ArrayHelper::map(Jabatan::find()->select("id, jabatan")->asArray()->all(), 'id', 'jabatan'),
+            'data' => ArrayHelper::map(Jabatan::find()->select("id, jabatan")->where(['!=', 'id', yii::$app->user->identity->id_jabatan])->all(), 'id', 'jabatan'),
             'language' => 'ms-MY',
             'options' => ['placeholder' => '- Sila Pilih -', 'multiple' => true, 'id' => 'kongsi-jabatan'],
             'pluginOptions' => [
@@ -43,24 +43,24 @@ use kartik\select2\Select2;
 
 <?php
     $opt = '';
-    $shared_jabatans = explode(',', Unjuran::find()->where(['id' => $_GET['id']])->one()->kongsi);
-    $jabatans = ArrayHelper::map(Jabatan::find()->select("id, jabatan")->asArray()->all(), 'id', 'id');
-    if(count($shared_jabatans) > 0) {
-        foreach ($jabatans as $key => $value) {
-            if(in_array($value, $shared_jabatans))
-                $opt .= '<option value=\"'.$value.'\" selected>'.Jabatan::findOne($value)->jabatan.'</option>';
-            else
-                $opt .= '<option value=\"'.$value.'\">'.Jabatan::findOne($value)->jabatan.'</option>';
-        }
+    // $shared_jabatans = explode(',', Unjuran::find()->where(['id' => $_GET['id']])->one()->kongsi);
+    // $jabatans = ArrayHelper::map(Jabatan::find()->select("id, jabatan")->asArray()->all(), 'id', 'id');
+    // if(count($shared_jabatans) > 0) {
+    //     foreach ($jabatans as $key => $value) {
+    //         if(in_array($value, $shared_jabatans))
+    //             $opt .= '<option value=\"'.$value.'\" selected>'.Jabatan::findOne($value)->jabatan.'</option>';
+    //         else
+    //             $opt .= '<option value=\"'.$value.'\">'.Jabatan::findOne($value)->jabatan.'</option>';
+    //     }
         
-    }
+    // }
 ?>
 
 
 <?php
 
 $this->registerJs('
-    $("#kongsi-jabatan").html("'.$opt.'");
+    // $("#kongsi-jabatan").html("'.$opt.'");
     $("form#kongsi").on("submit", function() {
         var form = $(this);
         // alert($("#kongsi-jabatan").val());

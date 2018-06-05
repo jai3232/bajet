@@ -100,7 +100,7 @@ use app\models\Unjuran;
 <?php
     }
     else
-        echo "<h5 style=\"color: red; font-weight: bold;\">Penukaran Kod A tidak boleh dilakukan kerana bagi agihan adalah kosong.</h5>";
+        echo "<h5 style=\"color: red; font-weight: bold;\">Penukaran Kod A tidak boleh dilakukan kerana baki agihan adalah kosong.</h5>";
 ?>
 
 
