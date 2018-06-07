@@ -165,4 +165,22 @@ return array (
       '@yii2tech/html2pdf' => $vendorDir . '/yii2tech/html2pdf/src',
     ),
   ),
+  '2amigos/yii2-date-time-picker-widget' => 
+  array (
+    'name' => '2amigos/yii2-date-time-picker-widget',
+    'version' => '1.0.4.0',
+    'alias' => 
+    array (
+      '@dosamigos/datetimepicker' => $vendorDir . '/2amigos/yii2-date-time-picker-widget/src',
+    ),
+  ),
+  'kartik-v/yii2-widget-timepicker' => 
+  array (
+    'name' => 'kartik-v/yii2-widget-timepicker',
+    'version' => '1.0.3.0',
+    'alias' => 
+    array (
+      '@kartik/time' => $vendorDir . '/kartik-v/yii2-widget-timepicker',
+    ),
+  ),
 );

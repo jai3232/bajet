@@ -8,6 +8,7 @@ use yii\bootstrap\Modal;
 use kartik\dialog\Dialog;
 use app\models\Unit;
 use yii\jui\DatePicker;
+use kartik\time\TimePicker;
 
 
 /* @var $this yii\web\View */
@@ -178,6 +179,13 @@ $months = [
         <fieldset>
             <legend>Maklumat Perjalanan</legend>
             <div class="form-group">
+                <?= DatePicker::widget(['options' => ['class' => 'hidden']]); ?>
+                <?= TimePicker::widget([
+                        'name' => 'start_time', 
+                        'value' => '11:24 AM',
+                        'options' => ['class' => 'hiddens'],
+                        'pluginOptions' => []
+                    ]); ?>
                 <table id="maklumat-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
                     <thead bgcolor="#eee">
                         <tr>
@@ -195,20 +203,33 @@ $months = [
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr class="tr_clone">
                             <td class="text-center">1</td>
-                            <td class="text-center"><?= DatePicker::widget(['name'  => 'from_date', 'value'  => '', 'dateFormat' => 'yyyy-MM-dd', 'options' => ['numberOfMonths' => 2, 'showButtonPanel'=> true,]]); ?></td>
-                            <td class="text-center">1</td>
-                            <td class="text-center">1</td>
-                            <td class="text-center">1</td>
-                            <td class="text-center">1</td>
-                            <td class="text-center">1</td>
-                            <td class="text-center">1</td>
+                            <td class="text-center">
+                                <?= Html::textInput('PerjalananDetails[tarikh]', null, ['class' => 'form-control datepicker']) ?>
+                            </td>
+                            <td class="text-center">
+                                <div class="bootstrap-timepicker input-group">
+                                    <input type="text" class="form-control time-picker">
+                                    <span class="input-group-addon picker"><i class="glyphicon glyphicon-time"></i></span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="bootstrap-timepicker input-group">
+                                    <input type="text" class="form-control time-picker">
+                                    <span class="input-group-addon picker"><i class="glyphicon glyphicon-time"></i></span>
+                                </div>
+                            </td>
+                            <td class="text-center"><?= Html::textarea('PerjalananDetails[tujuan][1]', null,['class' => 'form-control', 'cols' => 60]) ?></td>
+                            <td class="text-center"><?= Html::textInput('PerjalananDetails[jarak][1]', null,['class' => 'form-control', 'type' => 'number']) ?></td>
+                            <td class="text-center"><?= Html::textInput('PerjalananDetails[kos][1]', null,['class' => 'form-control', 'type' => 'number', 'step' => 0.01]) ?></td>
+                            <td class="text-center"><button class="tr_clone_add">Click</button></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </fieldset>
+
         <?php //= $form->field($model, 'jumlah_jarak')->textInput() ?>
 
         <?php //= $form->field($model, 'jarak_telah_dituntut')->textInput() ?>
@@ -452,6 +473,29 @@ $this->registerJs('
         else
             return kelas1;  
     }
+
+    $( ".datepicker" ).datepicker({
+          numberOfMonths: 2,
+          minDate: "-2M",
+          maxDate: new Date(),
+          dateFormat: "dd-mm-yy",
+          showButtonPanel: true
+    });
+
+    $(".time-picker").timepicker({
+        // template: true,
+        // showInputs: true,
+        // minuteStep: 5
+    });
+
+    $("button.tr_clone_add").on("click", function() {
+        var $tr    = $(this).closest(".tr_clone");
+        var $clone = $tr.clone();
+        $clone.find(":text").val("");
+        $tr.after($clone);
+        return false;
+    });
+
 
 ');
 

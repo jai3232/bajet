@@ -26,7 +26,9 @@
         "kartik-v/yii2-export": "*",
         "robregonm/yii2-pdf": "*",
         "yii2tech/html2pdf": "^1.0",
-        "kartik-v/yii2-dialog": "*"
+        "kartik-v/yii2-dialog": "*",
+        "2amigos/yii2-date-time-picker-widget": "~1.0",
+        "kartik-v/yii2-widget-timepicker": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
