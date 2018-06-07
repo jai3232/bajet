@@ -114,6 +114,17 @@ class PerjalananController extends Controller
          return $this->renderAjax('unjuran');
     }
 
+    public function actionCarianPerjalanan()
+    {
+         //return print_r(yii::$app->request->post());
+        $no_kp = yii::$app->request->post('no_kp');
+        $bulan = yii::$app->request->post('bulan');
+        $tahun = yii::$app->request->post('tahun');
+        $os = yii::$app->request->post('os');
+
+        return Perjalanan::find()->joinWith('kodUnjuran')->where(['no_kp' => $no_kp, 'bulan' => $bulan, 'perjalanan.tahun' => $tahun, 'unjuran.os' => $os])->count();
+    }    
+
     /**
      * Finds the Perjalanan model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

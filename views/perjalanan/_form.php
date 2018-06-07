@@ -29,6 +29,12 @@ $id_pengguna = Yii::$app->user->identity->id;
 
 echo Dialog::widget();
 
+$currentYear = date("Y"); 
+$yearList = ['' => ''];
+for($i = $currentYear - 1; $i < $currentYear + 2; $i++) {
+    $yearList[$i] = $i; 
+}
+
 $months = [
             '01' => 'Jan', '02' => 'Feb', '03' => 'Mac', '04' => 'Apr', '05' => 'Mei', '06' => 'Jun',
             '07' => 'Jul', '08' => 'Ogo', '09' => 'Sep', '10' => 'Okt', '11' => 'Nov', '12' => 'Dis'
@@ -75,7 +81,7 @@ $months = [
 
         <?= $form->field($model, 'bahagian_asal')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_jabatan])->label(false) ?>
 
-        <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true])->label('No. KP tanpa (-)') ?>
+        <?= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(Unit::find()->where(['id_jabatan' => yii::$app->user->identity->id_jabatan])->all(), 'id', 'unit'),['prompt' => '- Sila Pilih -']) ?>
 
         <div class="row">
             <div class="col-6 col-sm-6">
@@ -86,15 +92,26 @@ $months = [
                         ]) ?>                
             </div>
             <div class="col-6 col-sm-6">
-                <?= $form->field($model, 'tahun')->textInput(['maxlength' => true, 'value' => date("Y")]) ?>        
+                <?= $form->field($model, 'tahun')->dropDownList($yearList, 
+                        [
+                            'prompt' => '- Sila Pilih -',
+                            'options' => [date("Y") => ['selected' => true]],
+                        ]) ?>               
             </div>
         </div>
 
-        <?= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(Unit::find()->where(['id_jabatan' => yii::$app->user->identity->id_jabatan])->all(), 'id', 'unit'),['prompt' => '- Sila Pilih -']) ?>
+        <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true, 'value' => '111111'])->label('No. KP tanpa (-)') ?>
+        <div class="row row-loader form-group" style="display: none;">
+            <div class="loader col-sm-4"></div>
+            <div class="col-sm-8" style="height:60px; display:flex; align-items:center; font-weight: bold;">Carian data ....</div>
+        </div>
+         <div class="form-group">
+            <?= Html::button(Yii::t('app', 'Periksa Data'), ['class' => 'btn btn-success', 'id' => 'periksa-data']) ?>
+        </div>
 
     </div>
 
-    <div class="second">
+    <div class="second" style="display: none;">
         <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'no_hp')->textInput(['maxlength' => true]) ?>
@@ -282,6 +299,57 @@ $this->registerJs('
         //$("#modal-header").html("Penukaran Kod A");
         return false;
     });
+
+    $("#perjalanan-no_kp").keyup(function(){
+          
+    });
+
+    $("#periksa-data").on("click", function(){
+        if($("#perjalanan-no_kp").val().length > 5) {
+            $(".row-loader").show();
+            var nokp = $("#perjalanan-no_kp").val();
+            var bulan = $("#perjalanan-bulan").val();
+            var tahun = $("#perjalanan-tahun").val();
+            var os = $("#os").text();
+            var data = {no_kp: nokp, bulan: bulan, tahun: tahun, os: os};
+            $.post("'.Url::to(['perjalanan/carian-perjalanan']).'", data)
+                .done(function(msg){
+                    var x = msg;
+                    //alert("a:"+x);
+                    $(document).ajaxComplete(function(){
+                        //alert("b:"+x);
+                        if($.trim(msg)/1 < 1) {
+                            //alert("c:"+x);
+                            $(".loader").hide();
+                            $(".col-sm-8").html(" <span class=\"glyphicon glyphicon-ok\"></span><h5> &nbsp;Tiada tuntutan dibuat pada bulan ini.</h5>");
+                        }
+                        else {
+                            $(".loader").hide();
+                            $(".col-sm-8").html(" <span class=\"glyphicon glyphicon-remove\"></span> Sudah Claim");
+                        }
+                    });
+                    return false;
+                });
+        }
+        else
+            $(".row-loader").hide(); 
+    });
+');
+
+$this->registerCss('
+    .loader {
+        border: 10px solid #f3f3f3; /* Light grey */
+        border-top: 10px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 ');
 
 ?>
