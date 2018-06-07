@@ -7,6 +7,8 @@ use yii\widgets\ActiveForm;
 use yii\bootstrap\Modal;
 use kartik\dialog\Dialog;
 use app\models\Unit;
+use yii\jui\DatePicker;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Perjalanan */
@@ -30,7 +32,7 @@ $id_pengguna = Yii::$app->user->identity->id;
 echo Dialog::widget();
 
 $currentYear = date("Y"); 
-$yearList = ['' => ''];
+$yearList = [];
 for($i = $currentYear - 1; $i < $currentYear + 2; $i++) {
     $yearList[$i] = $i; 
 }
@@ -81,8 +83,6 @@ $months = [
 
         <?= $form->field($model, 'bahagian_asal')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_jabatan])->label(false) ?>
 
-        <?= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(Unit::find()->where(['id_jabatan' => yii::$app->user->identity->id_jabatan])->all(), 'id', 'unit'),['prompt' => '- Sila Pilih -']) ?>
-
         <div class="row">
             <div class="col-6 col-sm-6">
                 <?= $form->field($model, 'bulan')->dropDownList($months, 
@@ -100,56 +100,118 @@ $months = [
             </div>
         </div>
 
-        <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true, 'value' => '111111'])->label('No. KP tanpa (-)') ?>
+        <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true, 'value' => '777777777777'])->label('No. KP tanpa (-)') ?>
         <div class="row row-loader form-group" style="display: none;">
             <div class="loader col-sm-4"></div>
             <div class="col-sm-8" style="height:60px; display:flex; align-items:center; font-weight: bold;">Carian data ....</div>
         </div>
          <div class="form-group">
             <?= Html::button(Yii::t('app', 'Periksa Data'), ['class' => 'btn btn-success', 'id' => 'periksa-data']) ?>
+            <?= Html::button(Yii::t('app', 'Buat Tuntutan'), ['class' => 'btn btn-warning', 'id' => 'buat-tuntutan', 'style' => 'display: none;']) ?>
         </div>
 
     </div>
 
-    <div class="second" style="display: none;">
+    <div class="second" style="display: nonex;">
+        <fieldset><legend>Maklumat Personal</legend>
+        <?= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(Unit::find()->where(['id_jabatan' => yii::$app->user->identity->id_jabatan])->all(), 'id', 'unit'),['prompt' => '- Sila Pilih -']) ?>
+
         <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'no_hp')->textInput(['maxlength' => true]) ?>
+        <div class="row">
+            <div class="col-6 col-sm-6">
+            <?= $form->field($model, 'no_hp')->textInput(['maxlength' => true]) ?>
+            </div>
 
-        <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-
-        
+            <div class="col-6 col-sm-6">
+            <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+            </div>
+        </div>
+       
         <?= $form->field($model, 'jawatan')->textInput(['maxlength' => true]) ?>
+        
+        <div class="row">
+            <div class="col-6 col-sm-6">
+            <?= $form->field($model, 'no_gaji')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-6 col-sm-6">
+            <?= $form->field($model, 'gaji_asas')->textInput(['type' => 'number', 'step' => '0.01']) ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-6">
+            <?= $form->field($model, 'elaun')->textInput(['type' => 'number', 'step' => '0.01'])->label('Jumlah Elaun') ?>
+            </div>
+            <div class="col-6 col-sm-6">
+            <?= $form->field($model, 'elaun_mangku')->textInput(['type' => 'number', 'step' => '0.01'])->label('Jumlah Elaun Memangku') ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-4">
+            <?= $form->field($model, 'bank')->textInput(['maxlength' => true])->label('Nama Bank') ?>
+            </div>
+            <div class="col-6 col-sm-4">
+            <?= $form->field($model, 'cawangan_bank')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-6 col-sm-4">
+            <?= $form->field($model, 'akaun_bank')->textInput(['maxlength' => true])->label('Nombor Akaun Bank') ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 col-sm-4">
+            <?= $form->field($model, 'model_kereta')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-6 col-sm-4">
+            <?= $form->field($model, 'no_plate')->textInput(['maxlength' => true])->label('Nombor Pendaftaran Kenderaan') ?>
+            </div>
+            <div class="col-6 col-sm-4">
+            <?= $form->field($model, 'cc')->textInput(['type' => 'number', 'step' => '1', 'onkeypress' => 'return event.charCode >= 48 && event.charCode <= 57'])->label('CC Kenderaan') ?>
+            </div>
+        </div>
 
-        <?= $form->field($model, 'no_gaji')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'gaji_asas')->textInput() ?>
-
-        <?= $form->field($model, 'elaun')->textInput() ?>
-
-        <?= $form->field($model, 'elaun_mangku')->textInput() ?>
-
-        <?= $form->field($model, 'bank')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'cawangan_bank')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'akaun_bank')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'model_kereta')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'no_plate')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'cc')->textInput() ?>
-
-        <?= $form->field($model, 'kelas_tuntutan')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'kelas_tuntutan')->radioList(['A' => 'A', 'B' => 'B', 'C' => 'C', 'D' => 'D', 'E' => 'E'], ['class' => 'kelas']) ?>
 
         <?= $form->field($model, 'alamat_pejabat')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'alamat_rumah')->textInput(['maxlength' => true]) ?>
+        </fieldset>
+        <fieldset>
+            <legend>Maklumat Perjalanan</legend>
+            <div class="form-group">
+                <table id="maklumat-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
+                    <thead bgcolor="#eee">
+                        <tr>
+                            <th rowspan="2" scope="col" class="text-center">No</th>
+                            <th colspan="3" scope="col" class="text-center">Waktu</th>
+                            <th rowspan="2" scope="col" class="text-center">Tujuan / Tempat</th>
+                            <th rowspan="2" scope="col" class="text-center">Jarak (KM)</th>
+                            <th rowspan="2" scope="col" class="text-center">Kos Tol (RM)</th>
+                            <th rowspan="2" scope="col" class="text-center">Padam</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center">Tarikh</th>
+                            <th class="text-center">Bertolak</th>
+                            <th class="text-center">Sampai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td class="text-center"><?= DatePicker::widget(['name'  => 'from_date', 'value'  => '', 'dateFormat' => 'yyyy-MM-dd', 'options' => ['numberOfMonths' => 2, 'showButtonPanel'=> true,]]); ?></td>
+                            <td class="text-center">1</td>
+                            <td class="text-center">1</td>
+                            <td class="text-center">1</td>
+                            <td class="text-center">1</td>
+                            <td class="text-center">1</td>
+                            <td class="text-center">1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+        <?php //= $form->field($model, 'jumlah_jarak')->textInput() ?>
 
-        <?= $form->field($model, 'jumlah_jarak')->textInput() ?>
-
-        <?= $form->field($model, 'jarak_telah_dituntut')->textInput() ?>
+        <?php //= $form->field($model, 'jarak_telah_dituntut')->textInput() ?>
 
         <?= $form->field($model, 'kali_makan')->textInput() ?>
 
@@ -322,10 +384,13 @@ $this->registerJs('
                             //alert("c:"+x);
                             $(".loader").hide();
                             $(".col-sm-8").html(" <span class=\"glyphicon glyphicon-ok\"></span><h5> &nbsp;Tiada tuntutan dibuat pada bulan ini.</h5>");
+                            $("#buat-tuntutan").show();
+                            $(".second").show();
                         }
                         else {
                             $(".loader").hide();
                             $(".col-sm-8").html(" <span class=\"glyphicon glyphicon-remove\"></span> Sudah Claim");
+                            $("#buat-tuntutan").hide();
                         }
                     });
                     return false;
@@ -334,6 +399,60 @@ $this->registerJs('
         else
             $(".row-loader").hide(); 
     });
+
+    $("#perjalanan-no_kp, #perjalanan-bulan, #perjalanan-tahun").change(function(){
+        $("#buat-tuntutan").hide();
+    });
+
+    $("#buat-tuntutan").click(function(){
+         $("#perjalanan-no_kp, #perjalanan-bulan, #perjalanan-tahun").attr("readonly", true);
+    });
+
+    $("input[name=\"Perjalanan[kelas_tuntutan]\"]").addClass("kelass");
+
+    $("#perjalanan-gaji_asas, #perjalanan-cc").blur(function(){
+        k = setKelasTuntutan($("#perjalanan-gaji_asas").val()/1, $("#perjalanan-cc").val()/1);
+        //alert(k);
+        console.log(k);
+        $(".kelass").prop("checked", false);
+        if(k == "A")
+            $(".kelass").eq(1).prop("checked", true);
+        if(k == "B")
+            $(".kelass").eq(2).prop("checked", true);
+        if(k == "C")
+            $(".kelass").eq(3).prop("checked", true);
+        if(k == "D")
+            $(".kelass").eq(4).prop("checked", true);
+        if(k == "E")
+            $(".kelass").eq(5).prop("checked", true);
+        $(".kelass:checked").trigger("click");
+    }); 
+
+    function setKelasTuntutan(gaji, cc){
+        if(gaji >= 2625.45)
+            kelas1 = "A";
+        if(gaji >= 2333 && gaji < 2625.45)
+            kelas1 = "B";
+        if(gaji >= 1820.75 && gaji < 2333)
+            kelas1 = "C";
+        if(gaji  < 1820.75)
+            kelas1 = "D";    
+        if(cc >= 1400) 
+            kelas2 = "A";
+        if(cc >= 1000 && cc < 1400)
+            kelas2 = "B";
+        if(cc >= 175 && cc < 1000)
+            kelas2 = "C";
+        if(cc < 175)
+            kelas2 = "D";
+        if(gaji < 1820.75 && cc < 175)
+            return "E";
+        if(kelas2.charCodeAt(0) > kelas1.charCodeAt(0))
+            return kelas2;
+        else
+            return kelas1;  
+    }
+
 ');
 
 $this->registerCss('
