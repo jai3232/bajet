@@ -71,18 +71,16 @@ $months = [
 
 
 <div class="perjalanan-form">
-
+    <?php $form = ActiveForm::begin(["id" => "perjalanan-form"]); ?>
     <div class="first">
-
-        <?php $form = ActiveForm::begin(); ?>
 
         <?= $form->field($model, 'kod_unjuran')->hiddenInput(['maxlength' => true])->label(false) ?>
 
         <?php //= $form->field($model, 'kod_id')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'bahagian')->hiddenInput(['maxlength' => true])->label(false) ?>
+        <?= $form->field($model, 'id_jabatan')->hiddenInput(['maxlength' => true])->label(false) ?>
 
-        <?= $form->field($model, 'bahagian_asal')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_jabatan])->label(false) ?>
+        <?= $form->field($model, 'id_jabatan_asal')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_jabatan])->label(false) ?>
 
         <div class="row">
             <div class="col-6 col-sm-6">
@@ -115,7 +113,9 @@ $months = [
 
     <div class="second" style="display: nonex;">
         <fieldset><legend>Maklumat Personal</legend>
-        <?= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(Unit::find()->where(['id_jabatan' => yii::$app->user->identity->id_jabatan])->all(), 'id', 'unit'),['prompt' => '- Sila Pilih -']) ?>
+        <?php //= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(Unit::find()->where(['id_jabatan' => yii::$app->user->identity->id_jabatan])->all(), 'id', 'unit'),['prompt' => '- Sila Pilih -']) ?>
+
+        <?= $form->field($model, 'id_unit')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_unit])->label(false) ?>
 
         <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>
 
@@ -183,7 +183,7 @@ $months = [
                 <?= TimePicker::widget([
                         'name' => 'start_time', 
                         'value' => '11:24 AM',
-                        'options' => ['class' => 'hiddens'],
+                        'options' => ['class' => 'hidden'],
                         'pluginOptions' => []
                     ]); ?>
                 <table id="maklumat-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
@@ -202,31 +202,37 @@ $months = [
                             <th class="text-center">Sampai</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="tr_clone">
+                    <tbody id="perjalanan-body">
+                        <tr>
                             <td class="text-center">1</td>
                             <td class="text-center">
-                                <?= Html::textInput('PerjalananDetails[tarikh]', null, ['class' => 'form-control datepicker']) ?>
+                                <?= Html::textInput('PerjalananDetails[tarikh][1]', null, ['class' => 'form-control datepicker']) ?>
                             </td>
                             <td class="text-center">
                                 <div class="bootstrap-timepicker input-group">
-                                    <input type="text" class="form-control time-picker">
+                                    <input type="text" class="form-control time-picker" name="PerjalananDetails[bertolak][1]">
                                     <span class="input-group-addon picker"><i class="glyphicon glyphicon-time"></i></span>
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div class="bootstrap-timepicker input-group">
-                                    <input type="text" class="form-control time-picker">
+                                    <input type="text" class="form-control time-picker" name="PerjalananDetails[sampai][1]">
                                     <span class="input-group-addon picker"><i class="glyphicon glyphicon-time"></i></span>
                                 </div>
                             </td>
-                            <td class="text-center"><?= Html::textarea('PerjalananDetails[tujuan][1]', null,['class' => 'form-control', 'cols' => 60]) ?></td>
-                            <td class="text-center"><?= Html::textInput('PerjalananDetails[jarak][1]', null,['class' => 'form-control', 'type' => 'number']) ?></td>
-                            <td class="text-center"><?= Html::textInput('PerjalananDetails[kos][1]', null,['class' => 'form-control', 'type' => 'number', 'step' => 0.01]) ?></td>
-                            <td class="text-center"><button class="tr_clone_add">Click</button></td>
+                            <td class="text-center"><?= Html::textarea('PerjalananDetails[tujuan][1]', null,['class' => 'form-control', 'cols' => 55]) ?></td>
+                            <td class="text-center col-lg-1"><?= Html::textInput('PerjalananDetails[jarak][1]', null,['class' => 'form-control jarak', 'type' => 'number']) ?></td>
+                            <td class="text-center col-lg-1"><?= Html::textInput('PerjalananDetails[kos][1]', null,['class' => 'form-control tol', 'type' => 'number', 'step' => 0.01]) ?></td>
+                            <td class="text-center"></td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr><th colspan="5"></th><th id="jumlah-jarak" class="text-center">0</th><th id="jumlah-tol" class="text-right">0.00</th><th></th></tr>
+                    </tfoot>
                 </table>
+                <div class="form-group">
+                    <button class="btn btn-success" id="btn-perjalanan"><span class="glyphicon glyphicon-plus-sign icon-size"></span></button>
+                </div>
             </div>
         </fieldset>
 
@@ -352,25 +358,26 @@ $months = [
 
         <?= $form->field($model, 'jumlah_kew')->textInput() ?>
 
-        <?= $form->field($model, 'status')->textInput() ?>
+        <?php //= $form->field($model, 'status')->textInput() ?>
 
-        <?= $form->field($model, 'cetak')->textInput() ?>
+        <?php //= $form->field($model, 'cetak')->textInput() ?>
 
-        <?= $form->field($model, 'catatan')->textarea(['rows' => 6]) ?>
+        <?php //= $form->field($model, 'catatan')->textarea(['rows' => 6]) ?>
 
-        <?= $form->field($model, 'user')->textInput() ?>
+        <?php //= $form->field($model, 'user')->textInput() ?>
 
-        <?= $form->field($model, 'tarikh_jadi')->textInput() ?>
+        <?php //= $form->field($model, 'tarikh_jadi')->textInput() ?>
 
-        <?= $form->field($model, 'tarikh_kemaskini')->textInput() ?>
+        <?php //= $form->field($model, 'tarikh_kemaskini')->textInput() ?>
 
         <div class="form-group">
-            <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success', 'id' => 'simpan-perjalanan']) ?>
         </div>
 
-        <?php ActiveForm::end(); ?>
+    </div>    
+    <?php ActiveForm::end(); ?>
 
-    </div>
+    
 
 </div>
 
@@ -482,21 +489,142 @@ $this->registerJs('
           showButtonPanel: true
     });
 
+    // $("table").on("click", ".datepicker", function(){
+    //     var $this = $(this);
+    //     if(!$this.data("datepicker")) {
+    //         $this.removeClass("hasDatepicker");
+    //         // $this.datepicker();
+    //         // $this.datepicker("show");
+    //         $this.datepicker({    
+    //             numberOfMonths: 2,
+    //             minDate: "-2M",
+    //             maxDate: new Date(),
+    //             dateFormat: "dd-mm-yy",
+    //             showButtonPanel: true
+    //         }).datepicker("show");
+    //     }    
+    // });
+
+    // Dynamic datepicker
+    $(document).on("focus",".datepicker", function(){
+        $(this).removeClass("hasDatepicker").datepicker({
+            numberOfMonths: 2,
+            minDate: "-2M",
+            maxDate: new Date(),
+            dateFormat: "dd-mm-yy",
+            showButtonPanel: true
+        });
+    });
+
+    $(".datepicker").css({
+                        "position": "relative",
+                        "z-index": 999999
+                    } );
+    
+    $(document).on("focus", ".time-picker", function(){
+        $(this).timepicker({});
+    });
+
+    // $( ".datepicker" ).on("click", function(){
+    //     $(this).datepicker({    
+    //         numberOfMonths: 2,
+    //         minDate: "-2M",
+    //         maxDate: new Date(),
+    //         dateFormat: "dd-mm-yy",
+    //         showButtonPanel: true
+    //     }).datepicker("show");
+    // });
+
     $(".time-picker").timepicker({
         // template: true,
         // showInputs: true,
         // minuteStep: 5
     });
 
-    $("button.tr_clone_add").on("click", function() {
-        var $tr    = $(this).closest(".tr_clone");
+    // $("button.tr_clone_add").on("click", function() {
+    //     var $tr    = $(this).closest(".tr_clone");
+    //     var $clone = $tr.clone();
+    //     $clone.find(":text").val("");
+    //     $tr.after($clone);
+    //     return false;
+    // });
+
+    $("table").on("click", "button.tr_clone_add", function(){
+         var $tr    = $(this).closest(".tr_clone");
         var $clone = $tr.clone();
         $clone.find(":text").val("");
         $tr.after($clone);
         return false;
     });
 
+    var i = 1, j = 1;
+    $("#btn-perjalanan").on("click", function(){
+        
+        i++;
+        row = "<tr>" +
+                "<td class=\"text-center\">" + i + "</td>" +
+                "<td class=\"text-center\">" +
+                    "<input type=\"text\" class=\"form-control datepicker\" name=\"PerjalananDetails[tarikh][" + i + "]\"></td>" +
+                "<td class=\"text-center\">" +
+                    "<div class=\"bootstrap-timepicker input-group\">" +
+                        "<input type=\"text\" class=\"form-control time-picker\" name=\"PerjalananDetails[bertolak][" + i + "]\">" +
+                        "<span class=\"input-group-addon picker\"><i class=\"glyphicon glyphicon-time\"></i></span>" +
+                    "</div>" +
+                "</td>" +
+                "<td class=\"text-center\">" +
+                    "<div class=\"bootstrap-timepicker input-group\">" +
+                        "<input type=\"text\" class=\"form-control time-picker\" name=\"PerjalananDetails[sampai][" + i + "]\">" +
+                        "<span class=\"input-group-addon picker\"><i class=\"glyphicon glyphicon-time\"></i></span>" +
+                    "</div>" +
+                "</td>" +
+                "<td class=\"text-center\"><textarea class=\"form-control\" name=\"PerjalananDetails[tujuan][" + i + "]\" cols=\"55\"></textarea></td>" +
+                "<td class=\"text-center col-lg-1\"><input type=\"number\" class=\"form-control jarak\" name=\"PerjalananDetails[jarak][" + i + "]\"></td>" +
+                "<td class=\"text-center col-lg-1\"><input type=\"number\" class=\"form-control tol\" name=\"PerjalananDetails[kos][" + i + "]\" step=\"0.01\"></td>" +
+                 "<td class=\"text-center\"><button class=\"btn btn-warning btn-minus\"><span class=\"glyphicon glyphicon-minus-sign icon-size\"></span></button></td>" +
+            "</tr>";
+        $("tbody#perjalanan-body").append(row);
+        return false;
+    });
 
+    $(document).on("click", ".btn-minus", function(e){
+        if(confirm("Padam maklumat ini?")) {
+            $(this).parent().parent().remove();
+        }
+        e.stopPropagation();
+        return false;
+    });
+
+    // $("form#perjalanan-form").on("beforeSubmit", function(){
+    //     $.post("'.Url::to(['perjalanan/create']).'", $("#perjalanan-form").serialize(), function(data){
+    //         //alert(data)
+    //         console.log(data);
+    //     })
+    //     return false;
+    // });
+
+    $("#simpan-perjalanan").on("click", function(){
+        $.post("'.Url::to(['perjalanan/create']).'", $("form#perjalanan-form").serialize(), function(data){
+            //alert(data)
+            console.log(data);
+        });
+        return false;
+    });
+
+    $("table").on("keyup", ".jarak", function(){
+        var sum_jarak = 0;
+        $(".jarak").each(function(){
+            sum_jarak += $(this).val() / 1;
+        });
+        $("#jumlah-jarak").html(sum_jarak);
+    });
+
+    $("table").on("keyup", ".tol", function(){
+        var sum_tol = 0;
+        $(".tol").each(function(){
+            sum_tol += $(this).val() / 1;
+        });
+        $("#jumlah-tol").html(sum_tol.toFixed(2));
+    });
 ');
 
 $this->registerCss('

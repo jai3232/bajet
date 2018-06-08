@@ -84,9 +84,9 @@ $this->registerJs('
 		$("#jumlah-unjuran").html(td.eq(4).html());
 		$("#baki").html(td.eq(5).html());
 		$("#jabatan").html(td.eq(6).children().prop("title"));
-		$("#perolehan-id_jabatan").val(td.eq(6).children().prop("id"));
+		$("#perjalanan-id_jabatan").val(td.eq(6).children().prop("id"));
 		$("#unjuran_info").slideDown(150);
-		$(".perolehan-form").slideDown(200);
+		$(".perjalanan-form").slideDown(200);
 		$(".perbelanjaan-form").slideDown(200);
 	});
 ');

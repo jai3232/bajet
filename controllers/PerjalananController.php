@@ -66,7 +66,9 @@ class PerjalananController extends Controller
     {
         $model = new Perjalanan();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            return print_r(Yii::$app->request->post());
+            //$model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
