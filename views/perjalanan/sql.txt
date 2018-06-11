@@ -1,0 +1,125 @@
+-- phpMyAdmin SQL Dump
+-- version 4.1.14
+-- http://www.phpmyadmin.net
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jun 11, 2018 at 10:33 AM
+-- Server version: 5.6.17
+-- PHP Version: 5.5.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `bajet2`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `perjalanan`
+--
+
+CREATE TABLE IF NOT EXISTS `perjalanan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `kod_unjuran` varchar(10) NOT NULL,
+  `kod_id` varchar(10) NOT NULL,
+  `id_jabatan` int(3) NOT NULL,
+  `id_jabatan_asal` int(3) DEFAULT NULL,
+  `id_unit` int(3) NOT NULL,
+  `nama` varchar(100) NOT NULL,
+  `no_kp` varchar(12) NOT NULL,
+  `no_hp` varchar(12) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `bulan` varchar(2) NOT NULL,
+  `tahun` varchar(4) NOT NULL,
+  `jawatan` varchar(25) NOT NULL,
+  `no_gaji` varchar(15) NOT NULL,
+  `gaji_asas` double NOT NULL,
+  `elaun` double NOT NULL,
+  `elaun_mangku` double DEFAULT '0',
+  `bank` varchar(50) NOT NULL,
+  `cawangan_bank` varchar(50) NOT NULL,
+  `akaun_bank` varchar(20) NOT NULL,
+  `model_kereta` varchar(25) NOT NULL,
+  `no_plate` varchar(15) NOT NULL,
+  `cc` int(4) NOT NULL,
+  `kelas_tuntutan` varchar(1) NOT NULL,
+  `alamat_pejabat` varchar(150) NOT NULL,
+  `alamat_rumah` varchar(150) NOT NULL,
+  `jumlah_jarak` int(5) DEFAULT '0',
+  `jarak_telah_dituntut` int(5) DEFAULT NULL,
+  `kali_makan` int(2) DEFAULT NULL,
+  `kali_makan_sabah` int(2) DEFAULT NULL,
+  `kali_harian` int(2) DEFAULT NULL,
+  `kali_harian_sabah` int(2) DEFAULT NULL,
+  `kali_elaun_luar` int(2) DEFAULT NULL,
+  `elaun_makan` double DEFAULT NULL,
+  `elaun_makan_sabah` double DEFAULT NULL,
+  `elaun_harian` double DEFAULT NULL,
+  `elaun_harian_sabah` double DEFAULT NULL,
+  `elaun_luar` double DEFAULT NULL,
+  `peratus_elaun_makan` double DEFAULT '1',
+  `peratus_elaun_makan_sabah` double DEFAULT '1',
+  `peratus_elaun_harian` double DEFAULT '1',
+  `peratus_elaun_harian_sabah` double DEFAULT '1',
+  `peratus_elaun_luar` double DEFAULT '1',
+  `kali_lojing` int(2) DEFAULT NULL,
+  `cukai` double DEFAULT NULL,
+  `lojing` double DEFAULT NULL,
+  `teksi` double DEFAULT NULL,
+  `resit_teksi` int(1) DEFAULT '0',
+  `bas` double DEFAULT NULL,
+  `resit_bas` int(1) DEFAULT '0',
+  `keretapi` double DEFAULT NULL,
+  `resit_keretapi` int(1) DEFAULT '0',
+  `terbang` double DEFAULT NULL,
+  `resit_terbang` int(1) DEFAULT '0',
+  `feri` double DEFAULT NULL,
+  `resit_feri` int(1) DEFAULT '0',
+  `lain` double DEFAULT NULL,
+  `resit_lain` int(1) DEFAULT '0',
+  `tol` double DEFAULT NULL,
+  `resit_tol` int(1) DEFAULT '0',
+  `no_tg` varchar(10) DEFAULT NULL,
+  `pakir` double DEFAULT NULL,
+  `resit_pakir` int(1) DEFAULT '0',
+  `dobi` double DEFAULT NULL,
+  `resit_dobi` int(1) DEFAULT '0',
+  `pos` double DEFAULT NULL,
+  `resit_pos` int(1) DEFAULT '0',
+  `telefon` double DEFAULT NULL,
+  `resit_telefon` int(1) DEFAULT '0',
+  `tukaran` double DEFAULT NULL,
+  `resit_tukaran` int(1) DEFAULT '0',
+  `pendahuluan` double DEFAULT NULL,
+  `tuntutan_lain` int(1) DEFAULT '0',
+  `jumlah_tuntutan` double NOT NULL,
+  `jumlah_kew` double DEFAULT NULL,
+  `status` int(1) DEFAULT '0',
+  `cetak` int(1) DEFAULT '0',
+  `catatan` text,
+  `user` int(5) NOT NULL,
+  `tarikh_jadi` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tarikh_kemaskini` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `kod_id` (`kod_id`),
+  KEY `kod_unjuran` (`kod_unjuran`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `perjalanan`
+--
+
+INSERT INTO `perjalanan` (`id`, `kod_unjuran`, `kod_id`, `id_jabatan`, `id_jabatan_asal`, `id_unit`, `nama`, `no_kp`, `no_hp`, `email`, `bulan`, `tahun`, `jawatan`, `no_gaji`, `gaji_asas`, `elaun`, `elaun_mangku`, `bank`, `cawangan_bank`, `akaun_bank`, `model_kereta`, `no_plate`, `cc`, `kelas_tuntutan`, `alamat_pejabat`, `alamat_rumah`, `jumlah_jarak`, `jarak_telah_dituntut`, `kali_makan`, `kali_makan_sabah`, `kali_harian`, `kali_harian_sabah`, `kali_elaun_luar`, `elaun_makan`, `elaun_makan_sabah`, `elaun_harian`, `elaun_harian_sabah`, `elaun_luar`, `peratus_elaun_makan`, `peratus_elaun_makan_sabah`, `peratus_elaun_harian`, `peratus_elaun_harian_sabah`, `peratus_elaun_luar`, `kali_lojing`, `cukai`, `lojing`, `teksi`, `resit_teksi`, `bas`, `resit_bas`, `keretapi`, `resit_keretapi`, `terbang`, `resit_terbang`, `feri`, `resit_feri`, `lain`, `resit_lain`, `tol`, `resit_tol`, `no_tg`, `pakir`, `resit_pakir`, `dobi`, `resit_dobi`, `pos`, `resit_pos`, `telefon`, `resit_telefon`, `tukaran`, `resit_tukaran`, `pendahuluan`, `tuntutan_lain`, `jumlah_tuntutan`, `jumlah_kew`, `status`, `cetak`, `catatan`, `user`, `tarikh_jadi`, `tarikh_kemaskini`) VALUES
+(1, 'U180000014', 'J000000001', 8, 8, 61, 'John Bagero', '777777777777', '', NULL, '06', '2018', '', '', 0, 0, 0, '', '', '', '', '', 0, '', '', '', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, 0, NULL, 0, 0, NULL, 0, '2018-06-07 04:20:19', '2018-06-07 04:21:30');
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `perjalanan`
+--
+ALTER TABLE `perjalanan`
+  ADD CONSTRAINT `perjalanan_ibfk_1` FOREIGN KEY (`kod_unjuran`) REFERENCES `unjuran` (`kod_id`);

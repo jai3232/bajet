@@ -26,7 +26,7 @@ Modal::begin([
     'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>',
 ]);
 
-echo '<div id="modalContent"></div>';
+echo '<div id="modalContent"><div class="loader col-sm-4" style="margin: 40px 50%;"></div></div>';
 Modal::end();
 $id_pengguna = Yii::$app->user->identity->id;
 
@@ -72,7 +72,7 @@ $months = [
 
 <div class="perjalanan-form">
     <?php $form = ActiveForm::begin(["id" => "perjalanan-form"]); ?>
-    <div class="first">
+    <div class="first" style="display: none;">
 
         <?= $form->field($model, 'kod_unjuran')->hiddenInput(['maxlength' => true])->label(false) ?>
 
@@ -111,7 +111,7 @@ $months = [
 
     </div>
 
-    <div class="second" style="display: nonex;">
+    <div class="second" style="display: none;">
         <fieldset><legend>Maklumat Personal</legend>
         <?php //= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(Unit::find()->where(['id_jabatan' => yii::$app->user->identity->id_jabatan])->all(), 'id', 'unit'),['prompt' => '- Sila Pilih -']) ?>
 
@@ -121,16 +121,15 @@ $months = [
 
         <div class="row">
             <div class="col-6 col-sm-6">
-            <?= $form->field($model, 'no_hp')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'no_hp')->textInput(['maxlength' => true])->label('No Telefon/Hp') ?>
             </div>
-
             <div class="col-6 col-sm-6">
             <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
             </div>
+            <div class="col-6 col-sm-6">
+            <?= $form->field($model, 'jawatan')->textInput(['maxlength' => true]) ?>
+            </div>
         </div>
-       
-        <?= $form->field($model, 'jawatan')->textInput(['maxlength' => true]) ?>
-        
         <div class="row">
             <div class="col-6 col-sm-6">
             <?= $form->field($model, 'no_gaji')->textInput(['maxlength' => true]) ?>
@@ -257,8 +256,8 @@ $months = [
                     <tr><th colspan="5" class="text-right">Jumlah Sebenar (RM)</th><th id="jumlah_kadar_jarak2">0.00</th></tr>
                 </tfoot>
             </table>
-            <?= $form->field($model, 'jumlah_jarak')->textInput() ?>
-            <?= $form->field($model, 'jarak_telah_dituntut')->textInput() ?>
+            <?= $form->field($model, 'jumlah_jarak')->hiddenInput() ?>
+            <?= $form->field($model, 'jarak_telah_dituntut')->hiddenInput() ?>
         </fieldset>
         <fieldset>
             <legend>D. Tuntukan elaun makan dan harian (OL21101)</legend>
@@ -415,7 +414,7 @@ $months = [
                             </div>
                         </td>
                         <td><?= $form->field($model, 'resit_tol')->dropdownList(['Tanpa Resit', 'Dilampirkan', 'Touch n Go'])->label(false) ?></td>
-                        <td><?= $form->field($model, 'tol')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control pelbagai'])->label(false) ?></td>
+                        <td><?= $form->field($model, 'tol')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control pelbagai', 'readonly' => true])->label(false) ?></td>
                     </tr>
                     <tr>
                         <td>Tempat Letak Kereta</td>
@@ -472,13 +471,13 @@ dilakukan dan dibayar oleh saya;</li>
             </div>
         </fieldset>
 
-        <?= $form->field($model, 'pendahuluan')->hiddenInput() ?>
+        <?= $form->field($model, 'pendahuluan')->hiddenInput()->label(false) ?>
 
-        <?= $form->field($model, 'tuntutan_lain')->textInput() ?>
+        <?= $form->field($model, 'tuntutan_lain')->hiddenInput(['value' => 0])->label(false) ?>
 
-        <?= $form->field($model, 'jumlah_tuntutan')->textInput() ?>
+        <?= $form->field($model, 'jumlah_tuntutan')->hiddenInput() ?>
 
-        <?= $form->field($model, 'jumlah_kew')->textInput() ?>
+        <?= $form->field($model, 'jumlah_kew')->hiddenInput() ?>
 
         <?php //= $form->field($model, 'status')->textInput() ?>
 
@@ -535,7 +534,6 @@ $this->registerJs('
                             $(".loader").hide();
                             $(".col-sm-8").html(" <span class=\"glyphicon glyphicon-ok\"></span><h5> &nbsp;Tiada tuntutan dibuat pada bulan ini.</h5>");
                             $("#buat-tuntutan").show();
-                            $(".second").show();
                         }
                         else {
                             $(".loader").hide();
@@ -556,6 +554,9 @@ $this->registerJs('
 
     $("#buat-tuntutan").click(function(){
          $("#perjalanan-no_kp, #perjalanan-bulan, #perjalanan-tahun").attr("readonly", true);
+         $(".second").show();
+         $("#periksa-data").hide();
+         $(this).hide();
     });
 
     $("input[name=\"Perjalanan[kelas_tuntutan]\"]").addClass("kelass");
@@ -665,29 +666,29 @@ $this->registerJs('
         // minuteStep: 5
     });
 
-    var i = 1;
+    var ii = 1;
     $("#btn-perjalanan").on("click", function(){
         
-        i++;
+        ii++;
         row = "<tr>" +
-                "<td class=\"text-center\">" + i + "</td>" +
+                "<td class=\"text-center\">" + ii + "</td>" +
                 "<td class=\"text-center\">" +
-                    "<input type=\"text\" class=\"form-control datepicker\" name=\"PerjalananDetails[tarikh][" + i + "]\"></td>" +
+                    "<input type=\"text\" class=\"form-control datepicker\" name=\"PerjalananDetails[tarikh][" + ii + "]\"></td>" +
                 "<td class=\"text-center\">" +
                     "<div class=\"bootstrap-timepicker input-group\">" +
-                        "<input type=\"text\" class=\"form-control time-picker\" name=\"PerjalananDetails[bertolak][" + i + "]\">" +
+                        "<input type=\"text\" class=\"form-control time-picker\" name=\"PerjalananDetails[bertolak][" + ii + "]\">" +
                         "<span class=\"input-group-addon picker\"><i class=\"glyphicon glyphicon-time\"></i></span>" +
                     "</div>" +
                 "</td>" +
                 "<td class=\"text-center\">" +
                     "<div class=\"bootstrap-timepicker input-group\">" +
-                        "<input type=\"text\" class=\"form-control time-picker\" name=\"PerjalananDetails[sampai][" + i + "]\">" +
+                        "<input type=\"text\" class=\"form-control time-picker\" name=\"PerjalananDetails[sampai][" + ii + "]\">" +
                         "<span class=\"input-group-addon picker\"><i class=\"glyphicon glyphicon-time\"></i></span>" +
                     "</div>" +
                 "</td>" +
-                "<td class=\"text-center\"><textarea class=\"form-control\" name=\"PerjalananDetails[tujuan][" + i + "]\" cols=\"55\"></textarea></td>" +
-                "<td class=\"text-center col-lg-1\"><input type=\"number\" class=\"form-control jarak\" name=\"PerjalananDetails[jarak][" + i + "]\"></td>" +
-                "<td class=\"text-center col-lg-1\"><input type=\"number\" class=\"form-control kos\" name=\"PerjalananDetails[kos][" + i + "]\" step=\"0.01\"></td>" +
+                "<td class=\"text-center\"><textarea class=\"form-control\" name=\"PerjalananDetails[tujuan][" + ii + "]\" cols=\"55\"></textarea></td>" +
+                "<td class=\"text-center col-lg-1\"><input type=\"number\" class=\"form-control jarak\" name=\"PerjalananDetails[jarak][" + ii + "]\"></td>" +
+                "<td class=\"text-center col-lg-1\"><input type=\"number\" class=\"form-control kos\" name=\"PerjalananDetails[kos][" + ii + "]\" step=\"0.01\"></td>" +
                  "<td class=\"text-center\"><button class=\"btn btn-warning btn-minus\"><span class=\"glyphicon glyphicon-minus-sign icon-size\"></span></button></td>" +
             "</tr>";
         $("tbody#perjalanan-body").append(row);
@@ -708,20 +709,22 @@ $this->registerJs('
         return false;
     });
 
-    // $("form#perjalanan-form").on("beforeSubmit", function(){
-    //     $.post("'.Url::to(['perjalanan/create']).'", $("#perjalanan-form").serialize(), function(data){
-    //         //alert(data)
-    //         console.log(data);
-    //     })
-    //     return false;
-    // });
+    $("form#perjalanan-form").on("beforeSubmit", function(){
+        // $.post("'.Url::to(['perjalanan/create']).'", $("#perjalanan-form").serialize(), function(data){
+        //     //alert(data)
+        //     console.log(data);
+        // })
+        if(confirm("Hantar tuntutan perjalanan ini?"))
+            return true;
+        return false;
+    });
 
     $("#simpan-perjalanan").on("click", function(){
-        $.post("'.Url::to(['perjalanan/create']).'", $("form#perjalanan-form").serialize(), function(data){
-            //alert(data)
-            console.log(data);
-        });
-        return false;
+        // $.post("'.Url::to(['perjalanan/create']).'", $("form#perjalanan-form").serialize(), function(data){
+        //     //alert(data)
+        //     console.log(data);
+        // });
+        // return false;
     });
 
     $("table").on("keyup", ".jarak", function(){
@@ -819,15 +822,15 @@ $this->registerJs('
         $(".kali").trigger("change");   
     });
 
-    var k = 1;
+    var kk = 1;
     $("#btn-hotel").on("click", function(){
-        k++;
-        var row = "<tr><td class=\"text-center\"><div class=\"form-group form-inline\"><label>Hotel " + k + "</label> <select class=\"kali_hotel form-control\" name=\"PerjalananHotel[kali_hotel][" + k + "]\"><option value=\"0\">Pilih</option><option value=\"1\">1</option><option value=\"2\">2</option><option value=\"3\">3</option><option value=\"4\">4</option><option value=\"5\">5</option><option value=\"6\">6</option><option value=\"7\">7</option><option value=\"8\">8</option><option value=\"9\">9</option><option value=\"10\">10</option><option value=\"11\">11</option><option value=\"12\">12</option><option value=\"13\">13</option><option value=\"14\">14</option><option value=\"15\">15</option><option value=\"16\">16</option><option value=\"17\">17</option><option value=\"18\">18</option><option value=\"19\">19</option><option value=\"20\">20</option><option value=\"21\">21</option><option value=\"22\">22</option><option value=\"23\">23</option><option value=\"24\">24</option><option value=\"25\">25</option><option value=\"26\">26</option><option value=\"27\">27</option><option value=\"28\">28</option><option value=\"29\">29</option><option value=\"30\">30</option><option value=\"31\">31</option></select></div></td>" +
+        kk++;
+        var row = "<tr><td class=\"text-center\"><div class=\"form-group form-inline\"><label>Hotel " + kk + "</label> <select class=\"kali_hotel form-control\" name=\"PerjalananHotel[kali_hotel][" + k + "]\"><option value=\"0\">Pilih</option><option value=\"1\">1</option><option value=\"2\">2</option><option value=\"3\">3</option><option value=\"4\">4</option><option value=\"5\">5</option><option value=\"6\">6</option><option value=\"7\">7</option><option value=\"8\">8</option><option value=\"9\">9</option><option value=\"10\">10</option><option value=\"11\">11</option><option value=\"12\">12</option><option value=\"13\">13</option><option value=\"14\">14</option><option value=\"15\">15</option><option value=\"16\">16</option><option value=\"17\">17</option><option value=\"18\">18</option><option value=\"19\">19</option><option value=\"20\">20</option><option value=\"21\">21</option><option value=\"22\">22</option><option value=\"23\">23</option><option value=\"24\">24</option><option value=\"25\">25</option><option value=\"26\">26</option><option value=\"27\">27</option><option value=\"28\">28</option><option value=\"29\">29</option><option value=\"30\">30</option><option value=\"31\">31</option></select></div></td>" +
         "<td class=\"text-center\">hari x Bayaran Sewa Hotel sebanyak</td>" +
-        "<td><input type=\"number\" class=\"hotel form-control\" name=\"PerjalananHotel[kos_hotel][" + k + "]\" step=\"0.01\"></td>" +
+        "<td><input type=\"number\" class=\"hotel form-control\" name=\"PerjalananHotel[kos_hotel][" + kk + "]\" step=\"0.01\"></td>" +
         "<td class=\"penginapan text-right\">0.00</td></tr>";
         $("table#bhs-perjalanan tbody").append(row);
-        console.log("K:"+k);
+        console.log("K:"+kk);
         return false;
 
     });
@@ -908,7 +911,7 @@ function setJarak() {
     $("#km3").text("");
     $("#km4").text("");
     jumlah_jarak += $(".perjalanan_lalu").eq(0).text()/1;
-    if(jumlah_jarak/1 < 500)
+    if(jumlah_jarak/1 <= 500)
         $("#km1").text(jumlah_jarak);
     else if(jumlah_jarak/1 > 500 && jumlah_jarak/1 <= 1000) {
         $("#km1").text("500");
@@ -982,6 +985,7 @@ function jarakDuit(jarak) {
 
 function setTotal() {
     $("#jumlah_tuntutan").text(($("#jumlah_kadar_jarak2").text()/1 + $("#jumlah_elaun_makan").text()/1 + $("#jumlah_elaun_penginapan").text()/1 + $("#jumlah_tambang").text()/1 + $("#jumlah_pelbagai").text()/1).toFixed(2));
+    $("#perjalanan-jumlah_tuntutan, #perjalanan-jumlah_kew").val($("#jumlah_tuntutan").text());
     $("#pendahuluan").html(($("#jumlah_tambang").text()/1 + $("#jumlah_pelbagai").text()/1 + $("#jumlah_elaun_penginapan").text()/1 - $("#jumlah_lojing").text()/1 - $("#perjalanan-telefon").val()/1).toFixed(2));
     $("#perjalanan-pendahuluan").val($("#pendahuluan").html());
     $("#telefon2").html(($("#perjalanan-telefon").val()/1).toFixed(2));
@@ -1051,4 +1055,29 @@ $this->registerCss('
     }
 ');
 
+
+//TEST SCRIPT 
+$this->registerJs('
+    $("#perjalanan-nama").val(Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-no_hp").val((Math.random() * 40000000).toFixed(0));
+    $("#perjalanan-email").val(Math.random().toString(36).substr(2, 5) + "@" + Math.random().toString(36).substr(2, 5) + ".com");
+    $("#perjalanan-jawatan").val(Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-no_gaji").val(Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-gaji_asas").val((Math.random()* 10000).toFixed(2));
+    $("#perjalanan-elaun").val((Math.random() * 10000).toFixed(2));
+    $("#perjalanan-bank").val(Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-cawangan_bank").val(Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-akaun_bank").val((Math.random() * 100000000000).toFixed(0));
+    $("#perjalanan-model_kereta").val("Citroen " + Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-no_plate").val("TL " + Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-cc").val((Math.random() * 3000).toFixed(0));
+    $("#perjalanan-alamat_pejabat").val(Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-alamat_rumah").val(Math.random() * 10 + Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-cc").trigger("keyup");
+    $("#perjalanan-cc").trigger("blur");
+
+');
 ?>
+
+
+

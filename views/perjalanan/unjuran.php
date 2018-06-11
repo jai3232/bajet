@@ -88,6 +88,7 @@ $this->registerJs('
 		$("#unjuran_info").slideDown(150);
 		$(".perjalanan-form").slideDown(200);
 		$(".perbelanjaan-form").slideDown(200);
+		$(".first").show(100);
 	});
 ');
 

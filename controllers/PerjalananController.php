@@ -8,6 +8,7 @@ use app\models\PerjalananSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * PerjalananController implements the CRUD actions for Perjalanan model.
@@ -20,6 +21,16 @@ class PerjalananController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['*'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -67,8 +78,28 @@ class PerjalananController extends Controller
         $model = new Perjalanan();
 
         if ($model->load(Yii::$app->request->post())) {
-            return print_r(Yii::$app->request->post());
-            //$model->save();
+            //return print_r(Yii::$app->request->post());
+            $perjalanan = Yii::$app->request->post('Perjalanan');
+            $details = Yii::$app->request->post('PerjalananDetails');
+            $hotels = Yii::$app->request->post('PerjalananHotel');
+            print_r($perjalanan);
+            echo "<br><br><br>";
+            foreach ($details as $key => $value) {
+                print_r($key);
+                echo ":";
+                print_r($value);
+                echo "<br>";
+            }
+            return;
+            // if($model->save()) {
+            //     $id_perjalanan = $model->id;
+            //     if(!empty($details['tarikh'][1])) {
+
+            //     }
+                
+            // }
+            // else
+            //     return print_r($model->getErrors());
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

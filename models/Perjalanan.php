@@ -50,19 +50,7 @@ use Yii;
  * @property double $peratus_elaun_harian
  * @property double $peratus_elaun_harian_sabah
  * @property double $peratus_elaun_luar
- * @property int $kali_hotel
- * @property int $kali_hotel2
- * @property int $kali_hotel3
- * @property int $kali_hotel4
- * @property int $kali_hotel5
- * @property int $kali_hotel6
  * @property int $kali_lojing
- * @property double $hotel
- * @property double $hotel2
- * @property double $hotel3
- * @property double $hotel4
- * @property double $hotel5
- * @property double $hotel6
  * @property double $cukai
  * @property double $lojing
  * @property double $teksi
@@ -89,7 +77,7 @@ use Yii;
  * @property double $telefon
  * @property int $resit_telefon
  * @property double $tukaran
- * @property int $resit_tukaran
+ * @property int $resit_tukara
  * @property double $pendahuluan
  * @property int $tuntutan_lain
  * @property double $jumlah_tuntutan
@@ -121,9 +109,9 @@ class Perjalanan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['kod_unjuran', 'kod_id', 'id_jabatan', 'id_unit', 'nama', 'no_kp', 'no_hp', 'bulan', 'tahun', 'jawatan', 'no_gaji', 'gaji_asas', 'elaun', 'elaun_mangku', 'bank', 'cawangan_bank', 'akaun_bank', 'model_kereta', 'no_plate', 'cc', 'kelas_tuntutan', 'alamat_pejabat', 'alamat_rumah', 'jumlah_jarak', 'hotel6', 'jumlah_tuntutan', 'user', 'tarikh_kemaskini'], 'required'],
-            [['id_jabatan', 'id_jabatan_asal', 'id_unit', 'cc', 'jumlah_jarak', 'jarak_telah_dituntut', 'kali_makan', 'kali_makan_sabah', 'kali_harian', 'kali_harian_sabah', 'kali_elaun_luar', 'kali_hotel', 'kali_hotel2', 'kali_hotel3', 'kali_hotel4', 'kali_hotel5', 'kali_hotel6', 'kali_lojing', 'resit_teksi', 'resit_bas', 'resit_keretapi', 'resit_terbang', 'resit_feri', 'resit_lain', 'resit_tol', 'resit_pakir', 'resit_dobi', 'resit_pos', 'resit_telefon', 'resit_tukaran', 'tuntutan_lain', 'status', 'cetak', 'user'], 'integer'],
-            [['gaji_asas', 'elaun', 'elaun_mangku', 'elaun_makan', 'elaun_makan_sabah', 'elaun_harian', 'elaun_harian_sabah', 'elaun_luar', 'peratus_elaun_makan', 'peratus_elaun_makan_sabah', 'peratus_elaun_harian', 'peratus_elaun_harian_sabah', 'peratus_elaun_luar', 'hotel', 'hotel2', 'hotel3', 'hotel4', 'hotel5', 'hotel6', 'cukai', 'lojing', 'teksi', 'bas', 'keretapi', 'terbang', 'feri', 'lain', 'tol', 'pakir', 'dobi', 'pos', 'telefon', 'tukaran', 'pendahuluan', 'jumlah_tuntutan', 'jumlah_kew'], 'number'],
+            [['kod_unjuran', 'kod_id', 'id_jabatan', 'id_unit', 'nama', 'no_kp', 'no_hp', 'bulan', 'tahun', 'jawatan', 'no_gaji', 'gaji_asas', 'elaun', 'bank', 'cawangan_bank', 'akaun_bank', 'model_kereta', 'no_plate', 'cc', 'kelas_tuntutan', 'alamat_pejabat', 'alamat_rumah', 'jumlah_tuntutan', 'user', 'tarikh_kemaskini'], 'required'],
+            [['id_jabatan', 'id_jabatan_asal', 'id_unit', 'cc', 'jumlah_jarak', 'jarak_telah_dituntut', 'kali_makan', 'kali_makan_sabah', 'kali_harian', 'kali_harian_sabah', 'kali_elaun_luar', 'kali_lojing', 'resit_teksi', 'resit_bas', 'resit_keretapi', 'resit_terbang', 'resit_feri', 'resit_lain', 'resit_tol', 'resit_pakir', 'resit_dobi', 'resit_pos', 'resit_telefon', 'resit_tukara', 'tuntutan_lain', 'status', 'cetak', 'user'], 'integer'],
+            [['gaji_asas', 'elaun', 'elaun_mangku', 'elaun_makan', 'elaun_makan_sabah', 'elaun_harian', 'elaun_harian_sabah', 'elaun_luar', 'peratus_elaun_makan', 'peratus_elaun_makan_sabah', 'peratus_elaun_harian', 'peratus_elaun_harian_sabah', 'peratus_elaun_luar', 'cukai', 'lojing', 'teksi', 'bas', 'keretapi', 'terbang', 'feri', 'lain', 'tol', 'pakir', 'dobi', 'pos', 'telefon', 'tukaran', 'pendahuluan', 'jumlah_tuntutan', 'jumlah_kew'], 'number'],
             [['catatan'], 'string'],
             [['tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
             [['kod_unjuran', 'kod_id', 'no_tg'], 'string', 'max' => 10],
@@ -191,19 +179,7 @@ class Perjalanan extends \yii\db\ActiveRecord
             'peratus_elaun_harian' => Yii::t('app', 'Peratus Elaun Harian'),
             'peratus_elaun_harian_sabah' => Yii::t('app', 'Peratus Elaun Harian Sabah'),
             'peratus_elaun_luar' => Yii::t('app', 'Peratus Elaun Luar'),
-            'kali_hotel' => Yii::t('app', 'Kali Hotel'),
-            'kali_hotel2' => Yii::t('app', 'Kali Hotel2'),
-            'kali_hotel3' => Yii::t('app', 'Kali Hotel3'),
-            'kali_hotel4' => Yii::t('app', 'Kali Hotel4'),
-            'kali_hotel5' => Yii::t('app', 'Kali Hotel5'),
-            'kali_hotel6' => Yii::t('app', 'Kali Hotel6'),
             'kali_lojing' => Yii::t('app', 'Kali Lojing'),
-            'hotel' => Yii::t('app', 'Hotel'),
-            'hotel2' => Yii::t('app', 'Hotel2'),
-            'hotel3' => Yii::t('app', 'Hotel3'),
-            'hotel4' => Yii::t('app', 'Hotel4'),
-            'hotel5' => Yii::t('app', 'Hotel5'),
-            'hotel6' => Yii::t('app', 'Hotel6'),
             'cukai' => Yii::t('app', 'Cukai'),
             'lojing' => Yii::t('app', 'Lojing'),
             'teksi' => Yii::t('app', 'Teksi'),
@@ -230,7 +206,7 @@ class Perjalanan extends \yii\db\ActiveRecord
             'telefon' => Yii::t('app', 'Telefon'),
             'resit_telefon' => Yii::t('app', 'Resit Telefon'),
             'tukaran' => Yii::t('app', 'Tukaran'),
-            'resit_tukaran' => Yii::t('app', 'Resit Tukaran'),
+            'resit_tukara' => Yii::t('app', 'Resit Tukara'),
             'pendahuluan' => Yii::t('app', 'Pendahuluan'),
             'tuntutan_lain' => Yii::t('app', 'Tuntutan Lain'),
             'jumlah_tuntutan' => Yii::t('app', 'Jumlah Tuntutan'),
