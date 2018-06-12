@@ -82,14 +82,25 @@ class PerjalananController extends Controller
             $perjalanan = Yii::$app->request->post('Perjalanan');
             $details = Yii::$app->request->post('PerjalananDetails');
             $hotels = Yii::$app->request->post('PerjalananHotel');
-            print_r($perjalanan);
-            echo "<br><br><br>";
-            foreach ($details as $key => $value) {
-                print_r($key);
-                echo ":";
-                print_r($value);
-                echo "<br>";
+
+            $model->user = yii::$app->user->identity->id;
+            $model->kod_id = self::generateCodeReset('J', $model);
+
+            $nth_perjalanans = [];
+            foreach ($details['tarikh'] as $key => $value) {
+                $nth_perjalanans [] = $key;
             }
+            $data_perjalanans = [];
+            foreach ($details as $key => $value) {
+                $data_perjalanans[] = $value;
+            }
+            foreach ($nth_perjalanans as $key1 => $value1) {
+                foreach ($data_perjalanans as $key2 => $value2) {
+                    //new perjalanandetails and save here
+                }
+            }
+            if(!$model->save())
+                return print_r($model->getErrors());
             return;
             // if($model->save()) {
             //     $id_perjalanan = $model->id;
@@ -156,6 +167,21 @@ class PerjalananController extends Controller
         $os = yii::$app->request->post('os');
 
         return Perjalanan::find()->joinWith('kodUnjuran')->where(['no_kp' => $no_kp, 'bulan' => $bulan, 'perjalanan.tahun' => $tahun, 'unjuran.os' => $os])->count();
+    }
+
+    static function generateCodeReset($c, $model) {
+        
+        $c = $c.date('y');
+        $data = empty($model->find()->where(['LIKE', 'kod_id', $c.'%', false])->max('kod_id')) ? 
+                    '0000000' : $model->find()->where(['LIKE', 'kod_id', $c.'%', false])->max('kod_id');
+        $data = substr($data, 3) / 1;
+        $data++;
+        $dLength = strlen($data);
+        $str = $c;
+        $sLength = strlen($c);
+        for($i = 0; $i < (10 - $dLength - $sLength); $i++)
+            $str .= "0";
+        return ($str.$data);
     }    
 
     /**

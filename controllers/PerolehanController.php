@@ -520,8 +520,6 @@ class PerolehanController extends Controller
         return ($str.$data);
     }
 
-
-
     protected function findModel($id)
     {
         if (($model = Perolehan::findOne($id)) !== null) {
