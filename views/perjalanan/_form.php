@@ -111,7 +111,7 @@ $months = [
 
     </div>
 
-    <div class="second" style="display: none;">
+    <div class="second" style="display: nonex;">
         <fieldset><legend>Maklumat Personal</legend>
         <?php //= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(Unit::find()->where(['id_jabatan' => yii::$app->user->identity->id_jabatan])->all(), 'id', 'unit'),['prompt' => '- Sila Pilih -']) ?>
 
@@ -207,21 +207,21 @@ $months = [
                         <tr>
                             <td class="text-center">1</td>
                             <td class="text-center">
-                                <?= Html::textInput('PerjalananDetails[tarikh][1]', null, ['class' => 'form-control datepicker']) ?>
+                                <?= Html::textInput('PerjalananDetails[tarikh][1]', null, ['class' => 'form-control datepicker must']) ?>
                             </td>
                             <td class="text-center">
                                 <div class="bootstrap-timepicker input-group">
-                                    <input type="text" class="form-control time-picker" name="PerjalananDetails[bertolak][1]">
+                                    <input type="text" class="form-control time-picker must" name="PerjalananDetails[bertolak][1]">
                                     <span class="input-group-addon picker"><i class="glyphicon glyphicon-time"></i></span>
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div class="bootstrap-timepicker input-group">
-                                    <input type="text" class="form-control time-picker" name="PerjalananDetails[sampai][1]">
+                                    <input type="text" class="form-control time-picker must" name="PerjalananDetails[sampai][1]">
                                     <span class="input-group-addon picker"><i class="glyphicon glyphicon-time"></i></span>
                                 </div>
                             </td>
-                            <td class="text-center"><?= Html::textarea('PerjalananDetails[tujuan][1]', null,['class' => 'form-control', 'cols' => 55]) ?></td>
+                            <td class="text-center"><?= Html::textarea('PerjalananDetails[tujuan][1]', null,['class' => 'form-control must', 'cols' => 55]) ?></td>
                             <td class="text-center col-lg-1"><?= Html::textInput('PerjalananDetails[jarak][1]', null,['class' => 'form-control jarak', 'type' => 'number']) ?></td>
                             <td class="text-center col-lg-1"><?= Html::textInput('PerjalananDetails[kos][1]', null,['class' => 'form-control kos', 'type' => 'number', 'step' => 0.01]) ?></td>
                             <td class="text-center"></td>
@@ -321,7 +321,7 @@ $months = [
             <legend>E. Tuntutan Bayaran Sewa Hotel (BSH) / Elaun Lojing (OL21102)</legend>
             <table id="bhs-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
                 <thead>
-                    <tr><th>Jumlah Malam</th><th>Kadar</th><th>Harga Semalam (RM)</th><th>Jumlah (RM)</th></tr>
+                    <tr><th>Jumlah Malam</th><th>Kadar</th><th>Harga Semalam (RM)</th><th>Jumlah (RM)</th><th>Tindakan</th></tr>
                 </thead>
                 <tbody>
                     <tr>
@@ -334,6 +334,7 @@ $months = [
                         <td class="text-center">hari x Bayaran Sewa Hotel sebanyak</td>
                         <td><?= Html::textInput('PerjalananHotel[kos_hotel][1]', null, ['class' => 'hotel form-control', 'type' => 'number', 'step' => 0.01]) ?></td>
                         <td class="penginapan text-right">0.00</td>
+                        <td></td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -342,14 +343,16 @@ $months = [
                         <td class="text-center">Bayaran Perkhidmatan dan Cukai Perkhidmatan(OL21199)</td>
                         <td><?= $form->field($model, 'cukai')->textInput(['type' => 'number', 'step' => 0.01])->label(false) ?></td>
                         <td class="penginapan text-right">0.00</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td><?= $form->field($model, 'kali_lojing')->dropdownList($kali_makan)->label(false) ?></td>
                         <td class="text-center">hari x Elaun Lojing sebanyak</td>
                         <td><?= $form->field($model, 'lojing')->textInput(['type' => 'number', 'step' => 0.01])->label(false) ?></td>
                         <td class="penginapan text-right" id="jumlah_lojing">0.00</td>
+                        <td></td>
                     </tr>
-                    <tr><th colspan="3" class="text-right">Jumlah (RM)</th><th class="text-right" id="jumlah_elaun_penginapan">0.00</th></tr>
+                    <tr><th colspan="3" class="text-right">Jumlah (RM)</th><th class="text-right" id="jumlah_elaun_penginapan">0.00</th><th></th></tr>
                 </tfoot>
             </table>
             <div class="form-group">
@@ -475,9 +478,9 @@ dilakukan dan dibayar oleh saya;</li>
 
         <?= $form->field($model, 'tuntutan_lain')->hiddenInput(['value' => 0])->label(false) ?>
 
-        <?= $form->field($model, 'jumlah_tuntutan')->hiddenInput() ?>
+        <?= $form->field($model, 'jumlah_tuntutan')->hiddenInput()->label(false) ?>
 
-        <?= $form->field($model, 'jumlah_kew')->hiddenInput() ?>
+        <?= $form->field($model, 'jumlah_kew')->hiddenInput()->label(false) ?>
 
         <?php //= $form->field($model, 'status')->textInput() ?>
 
@@ -492,7 +495,8 @@ dilakukan dan dibayar oleh saya;</li>
         <?php //= $form->field($model, 'tarikh_kemaskini')->textInput() ?>
 
         <div class="form-group">
-            <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success', 'id' => 'simpan-perjalanan']) ?>
+            <?= Html::button(Yii::t('app', 'Save'), ['class' => 'btn btn-success', 'id' => 'simpan-perjalanan']) ?>
+            <?= Html::submitButton(Yii::t('app', 'Hantar & Cetak'), ['class' => 'btn btn-warning', 'id' => 'cetak-perjalanan', 'style' => 'display: none;']) ?>
         </div>
 
     </div>    
@@ -673,20 +677,20 @@ $this->registerJs('
         row = "<tr>" +
                 "<td class=\"text-center\">" + ii + "</td>" +
                 "<td class=\"text-center\">" +
-                    "<input type=\"text\" class=\"form-control datepicker\" name=\"PerjalananDetails[tarikh][" + ii + "]\"></td>" +
+                    "<input type=\"text\" class=\"form-control datepicker must\" name=\"PerjalananDetails[tarikh][" + ii + "]\"></td>" +
                 "<td class=\"text-center\">" +
                     "<div class=\"bootstrap-timepicker input-group\">" +
-                        "<input type=\"text\" class=\"form-control time-picker\" name=\"PerjalananDetails[bertolak][" + ii + "]\">" +
+                        "<input type=\"text\" class=\"form-control time-picker must\" name=\"PerjalananDetails[bertolak][" + ii + "]\">" +
                         "<span class=\"input-group-addon picker\"><i class=\"glyphicon glyphicon-time\"></i></span>" +
                     "</div>" +
                 "</td>" +
                 "<td class=\"text-center\">" +
                     "<div class=\"bootstrap-timepicker input-group\">" +
-                        "<input type=\"text\" class=\"form-control time-picker\" name=\"PerjalananDetails[sampai][" + ii + "]\">" +
+                        "<input type=\"text\" class=\"form-control time-picker must\" name=\"PerjalananDetails[sampai][" + ii + "]\">" +
                         "<span class=\"input-group-addon picker\"><i class=\"glyphicon glyphicon-time\"></i></span>" +
                     "</div>" +
                 "</td>" +
-                "<td class=\"text-center\"><textarea class=\"form-control\" name=\"PerjalananDetails[tujuan][" + ii + "]\" cols=\"55\"></textarea></td>" +
+                "<td class=\"text-center\"><textarea class=\"form-control must\" name=\"PerjalananDetails[tujuan][" + ii + "]\" cols=\"55\"></textarea></td>" +
                 "<td class=\"text-center col-lg-1\"><input type=\"number\" class=\"form-control jarak\" name=\"PerjalananDetails[jarak][" + ii + "]\"></td>" +
                 "<td class=\"text-center col-lg-1\"><input type=\"number\" class=\"form-control kos\" name=\"PerjalananDetails[kos][" + ii + "]\" step=\"0.01\"></td>" +
                  "<td class=\"text-center\"><button class=\"btn btn-warning btn-minus\"><span class=\"glyphicon glyphicon-minus-sign icon-size\"></span></button></td>" +
@@ -698,7 +702,7 @@ $this->registerJs('
     $(document).on("click", ".btn-minus", function(e){
         if(confirm("Padam maklumat ini?")) {
             $(this).parent().parent().remove();
-            $(".jarak, .kos").trigger("keyup");
+            $(".jarak, .kos, .hotel").trigger("keyup");
             setJarak();
             jumlahKadarJarak();
             setJarak();
@@ -709,22 +713,22 @@ $this->registerJs('
         return false;
     });
 
+
+
     $("form#perjalanan-form").on("beforeSubmit", function(){
-        // $.post("'.Url::to(['perjalanan/create']).'", $("#perjalanan-form").serialize(), function(data){
-        //     //alert(data)
-        //     console.log(data);
-        // })
-        if(confirm("Hantar tuntutan perjalanan ini?"))
+        if(checkMust() && confirm("Hantar tuntutan perjalanan ini?"))
             return true;
         return false;
     });
 
     $("#simpan-perjalanan").on("click", function(){
-        // $.post("'.Url::to(['perjalanan/create']).'", $("form#perjalanan-form").serialize(), function(data){
-        //     //alert(data)
-        //     console.log(data);
-        // });
-        // return false;
+        if(checkMust() && confirm("Hantar tuntutan perjalanan ini?")) {
+            $.post("'.Url::to(['perjalanan/create']).'", $("form#perjalanan-form").serialize(), function(data){
+                alert(data)
+                //console.log(data);
+            });
+        }
+        return false;
     });
 
     $("table").on("keyup", ".jarak", function(){
@@ -825,10 +829,10 @@ $this->registerJs('
     var kk = 1;
     $("#btn-hotel").on("click", function(){
         kk++;
-        var row = "<tr><td class=\"text-center\"><div class=\"form-group form-inline\"><label>Hotel " + kk + "</label> <select class=\"kali_hotel form-control\" name=\"PerjalananHotel[kali_hotel][" + k + "]\"><option value=\"0\">Pilih</option><option value=\"1\">1</option><option value=\"2\">2</option><option value=\"3\">3</option><option value=\"4\">4</option><option value=\"5\">5</option><option value=\"6\">6</option><option value=\"7\">7</option><option value=\"8\">8</option><option value=\"9\">9</option><option value=\"10\">10</option><option value=\"11\">11</option><option value=\"12\">12</option><option value=\"13\">13</option><option value=\"14\">14</option><option value=\"15\">15</option><option value=\"16\">16</option><option value=\"17\">17</option><option value=\"18\">18</option><option value=\"19\">19</option><option value=\"20\">20</option><option value=\"21\">21</option><option value=\"22\">22</option><option value=\"23\">23</option><option value=\"24\">24</option><option value=\"25\">25</option><option value=\"26\">26</option><option value=\"27\">27</option><option value=\"28\">28</option><option value=\"29\">29</option><option value=\"30\">30</option><option value=\"31\">31</option></select></div></td>" +
+        var row = "<tr><td class=\"text-center\"><div class=\"form-group form-inline\"><label>Hotel " + kk + "</label> <select class=\"kali_hotel form-control\" name=\"PerjalananHotel[kali_hotel][" + kk + "]\"><option value=\"0\">Pilih</option><option value=\"1\">1</option><option value=\"2\">2</option><option value=\"3\">3</option><option value=\"4\">4</option><option value=\"5\">5</option><option value=\"6\">6</option><option value=\"7\">7</option><option value=\"8\">8</option><option value=\"9\">9</option><option value=\"10\">10</option><option value=\"11\">11</option><option value=\"12\">12</option><option value=\"13\">13</option><option value=\"14\">14</option><option value=\"15\">15</option><option value=\"16\">16</option><option value=\"17\">17</option><option value=\"18\">18</option><option value=\"19\">19</option><option value=\"20\">20</option><option value=\"21\">21</option><option value=\"22\">22</option><option value=\"23\">23</option><option value=\"24\">24</option><option value=\"25\">25</option><option value=\"26\">26</option><option value=\"27\">27</option><option value=\"28\">28</option><option value=\"29\">29</option><option value=\"30\">30</option><option value=\"31\">31</option></select></div></td>" +
         "<td class=\"text-center\">hari x Bayaran Sewa Hotel sebanyak</td>" +
         "<td><input type=\"number\" class=\"hotel form-control\" name=\"PerjalananHotel[kos_hotel][" + kk + "]\" step=\"0.01\"></td>" +
-        "<td class=\"penginapan text-right\">0.00</td></tr>";
+        "<td class=\"penginapan text-right\">0.00</td><td class=\"text-center\"><button class=\"btn btn-warning btn-minus\"><span class=\"glyphicon glyphicon-minus-sign icon-size\"></span></button></td></tr>";
         $("table#bhs-perjalanan tbody").append(row);
         console.log("K:"+kk);
         return false;
@@ -892,7 +896,17 @@ $this->registerJs('
         setTotal();
     });
 
+    $("#akuan").on("click", function(){
+        if($(this).is(":checked")) {
+            $("#simpan-perjalanan").hide();
+            $("#cetak-perjalanan").show();
+        }
+        else {
+            $("#simpan-perjalanan").show();
+            $("#cetak-perjalanan").hide();
+        }
 
+    });
 ');
 
 // FUNCTIONS
@@ -1035,6 +1049,21 @@ function setPelbagai(){
     }
     $("#jumlah_pelbagai").text(tempVal.toFixed(2));
 }
+
+
+function checkMust() {
+    for(var i = 0; i < $(".must").length; i++) {
+        $(".must").eq(i).css("background-color", "");
+        if($(".must").eq(i).val() == "") {
+            $(".must").eq(i).css("background-color", "red");    
+            alert("Sila lengkapkan ruangan berwarna merah ");
+            $(".must").eq(i).focus();
+            return false;
+        }
+    }
+    return true;    
+}
+
 
 
 ');

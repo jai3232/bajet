@@ -5,6 +5,8 @@ namespace app\controllers;
 use Yii;
 use app\models\Perjalanan;
 use app\models\PerjalananSearch;
+use app\models\PerjalananHotel;
+use app\models\PerjalananDetails;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -86,6 +88,10 @@ class PerjalananController extends Controller
             $model->user = yii::$app->user->identity->id;
             $model->kod_id = self::generateCodeReset('J', $model);
 
+            if(!$model->save())
+                return print_r($model->getErrors());
+            $model_id = $model->id;
+
             $nth_perjalanans = [];
             foreach ($details['tarikh'] as $key => $value) {
                 $nth_perjalanans [] = $key;
@@ -94,24 +100,40 @@ class PerjalananController extends Controller
             foreach ($details as $key => $value) {
                 $data_perjalanans[] = $value;
             }
+            
             foreach ($nth_perjalanans as $key1 => $value1) {
-                foreach ($data_perjalanans as $key2 => $value2) {
-                    //new perjalanandetails and save here
-                }
+                $model_details = new PerjalananDetails();
+                $model_details->id_perjalanan = $model_id;
+                $model_details->tarikh =  Yii::$app->formatter->asDate($data_perjalanans[0][$value1], 'yyyy-MM-dd');
+                $model_details->bertolak = date('H:i', strtotime($data_perjalanans[1][$value1]));
+                $model_details->sampai = date('H:i', strtotime($data_perjalanans[2][$value1]));
+                $model_details->tujuan = $data_perjalanans[3][$value1];
+                $model_details->jarak = $data_perjalanans[4][$value1];
+                $model_details->kos = $data_perjalanans[5][$value1];
+                if(!$model_details->save())
+                    return print_r($model_details->getErrors());
             }
-            if(!$model->save())
-                return print_r($model->getErrors());
-            return;
-            // if($model->save()) {
-            //     $id_perjalanan = $model->id;
-            //     if(!empty($details['tarikh'][1])) {
 
-            //     }
-                
-            // }
-            // else
-            //     return print_r($model->getErrors());
-            return $this->redirect(['view', 'id' => $model->id]);
+            $nth_hotels = [];
+            foreach ($hotels['kali_hotel'] as $key => $value) {
+                $nth_hotels[] = $key;
+            }
+            $data_hotels = [];
+            foreach ($hotels as $key => $value) {
+                $data_hotels[] = $value;
+            }
+
+            foreach ($nth_hotels as $key => $value) {
+                $model_hotel = new PerjalananHotel();
+                $model_hotel->id_perjalanan = $model_id;
+                $model_hotel->kali_hotel = $data_hotels[0][$value];
+                $model_hotel->kos_hotel = $data_hotels[1][$value];
+                if(!$model_hotel->save())
+                    return print_r($model_details->getErrors());
+            }
+
+            return true;
+            //return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [

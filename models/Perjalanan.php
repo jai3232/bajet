@@ -72,7 +72,6 @@ use Yii;
  * @property int $resit_pakir
  * @property double $dobi
  * @property int $resit_dobi
- * @property double $pos
  * @property int $resit_pos
  * @property double $telefon
  * @property int $resit_telefon
