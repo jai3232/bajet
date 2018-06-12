@@ -724,7 +724,8 @@ $this->registerJs('
     $("#simpan-perjalanan").on("click", function(){
         if(checkMust() && confirm("Hantar tuntutan perjalanan ini?")) {
             $.post("'.Url::to(['perjalanan/create']).'", $("form#perjalanan-form").serialize(), function(data){
-                alert(data)
+                if(data)
+                    alert("Data berjaya disimpan");
                 //console.log(data);
             });
         }
