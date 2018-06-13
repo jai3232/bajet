@@ -95,7 +95,7 @@ class PerolehanController extends Controller
      * @return mixed
      */
     public function actionCreate()
-    {
+    {   
         $model = new Perolehan();
         $year = date("Y");
 // if ($model->load(Yii::$app->request->post()))
@@ -109,6 +109,7 @@ class PerolehanController extends Controller
             $pembekals = Yii::$app->request->post('Pembekal');
             $panjar = Yii::$app->request->post('Panjar');
             $harga_utama = 0;
+
             //return print_r($barangans['justifikasi']);
             //return print_r($pembekals);
             $model->kod_id = self::generateCodeReset('P'.substr($year,2,2), 
@@ -128,7 +129,8 @@ class PerolehanController extends Controller
 
             if($model->save()) {
                 $id_perolehan = $model->id;
-                if(!empty($barangans['justifikasi'][1]))
+                if(!empty($barangans['justifikasi'][1])) {
+                    array_splice($barangans['justifikasi'], 0, 0); // rearrange from 0
                     for($i = 1; $i <= count($barangans['justifikasi']); $i++) 
                     {
                         $model_barangan = new Barangan();
@@ -140,7 +142,9 @@ class PerolehanController extends Controller
                         }
                         
                     }
-                if(!empty($pembekals['pembekal'][1]))
+                }
+                if(!empty($pembekals['pembekal'][1])) {
+                    array_splice($pembekals['pembekal'], 0, 0);
                     for($i = 1; $i <= count($pembekals['pembekal']); $i++) {
                         $model_pembekal = new Pembekal();
                         $model_pembekal->id_perolehan = $id_perolehan;
@@ -164,6 +168,7 @@ class PerolehanController extends Controller
                         else
                             return print_r($model_pembekal->getErrors());
                     }
+                }
                 if($perolehan['kaedah_pembayaran'] == 3) {     
                     $model_panjar = new Panjar();
                     $model_panjar->id_perolehan = $id_perolehan;
@@ -241,6 +246,8 @@ class PerolehanController extends Controller
     public function actionForm($id = 0)
     {
         $model = Perolehan::findOne($id);
+        if(count($model) == 0)
+            return $this->render('perolehan-form', ['error' => 404]);
         $model_barangan = Barangan::find()->where(['id_perolehan' => $id])->all();
         $model_pembekal = Pembekal::find()->where(['id_perolehan' => $id])->all();
 

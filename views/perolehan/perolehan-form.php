@@ -6,6 +6,12 @@ use app\models\RefJenisPerolehan;
 use app\models\RefKaedahPerolehan;
 use yii\helpers\Html;
 
+
+if(isset($error)) {
+	if($error == 404)
+		echo '<div class="alert alert-danger"><strong>Kesilapan!</strong> Rekod tidak ditemui.</div>';
+	return false;
+}
 ?>
 
 <div class="panel panel-default">

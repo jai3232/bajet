@@ -191,6 +191,22 @@ class PerjalananController extends Controller
         return Perjalanan::find()->joinWith('kodUnjuran')->where(['no_kp' => $no_kp, 'bulan' => $bulan, 'perjalanan.tahun' => $tahun, 'unjuran.os' => $os])->count();
     }
 
+    public function actionForm($id = 0)
+    {
+        $model = Perjalanan::findOne($id);
+        if(count($model) == 0)
+            return $this->render('perjalanan-form', ['error' => 404]);
+        $model_details = PerjalananDetails::find()->where(['id_perjalanan' => $id])->all();
+        $model_hotels = PerjalananHotel::find()->where(['id_perjalanan' => $id])->all();
+
+        return $this->render('perjalanan-form', [
+            'model' => $model,
+            'model_details' => $model_details,
+            'model_hotels' => $model_hotels
+        ]);
+    }
+
+
     static function generateCodeReset($c, $model) {
         
         $c = $c.date('y');
