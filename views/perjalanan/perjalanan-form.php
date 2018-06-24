@@ -236,56 +236,128 @@ $months = [
 			</tr>
 		</tbody></table>
 </div>
+<div class="panel panel-default">
+	<table width="898" border="1" align="center" class="semakan table table-bordered print">
+		<thead>
+			<tr><th colspan="7" class="text-center">D. TUNTUTAN ELAUN MAKAN DAN HARIAN(OL21101)</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<table width="100%" border="0">
+						<tbody>
+							<tr>
+								<td width="5%" id="kali1">0</td>
+								<td width="28%">X Elaun Makan sebanyak</td>
+								<td width="1%">RM</td>
+								<td width="2%" align="right" id="elaun_sehari1"></td>
+								<td width="1%">(<span id="kadar_elaun1">100</span>%)</td>
+								<td width="33%">sehari di semananjung</td>
+								<td width="8%" align="right" id="jumlah_elaun1">0.00</td>
+							</tr>
+							<tr>
+								<td id="kali2">0</td>
+								<td>X Elaun Makan sebanyak</td>
+								<td>RM</td>
+								<td align="right" id="elaun_sehari2"></td>
+								<td>(<span id="kadar_elaun2">100</span>%)</td>
+								<td> sehari di Sabah / Sarawak</td>
+								<td align="right" id="jumlah_elaun2">0.00</td>
+							</tr>
+							<tr>
+								<td id="kali3">0</td>
+								<td>X Elaun Harian sebanyak</td>
+								<td>RM</td>
+								<td align="right" id="elaun_sehari3"></td>
+								<td>(<span id="kadar_elaun3">100</span>%)</td>
+								<td> sehari di semananjung</td>
+								<td align="right" id="jumlah_elaun3">0.00</td>
+							</tr>
+							<tr>
+								<td id="kali4">0</td>
+								<td>X Elaun Harian sebanyak</td>
+								<td>RM</td>
+								<td align="right" id="elaun_sehari4"></td>
+								<td>(<span id="kadar_elaun4">100</span>%)</td>
+								<td> sehari di Sabah / Sarawak</td>
+								<td align="right" id="jumlah_elaun4">0.00</td>
+							</tr>
+							<tr>
+								<td id="kali5">0</td>
+								<td>X Elaun Makan sebanyak</td>
+								<td>RM</td>
+								<td align="right" id="elaun_sehari5"></td>
+								<td>(<span id="kadar_elaun5">100</span>%)</td>
+								<td>sehari luar negara</td>
+								<td align="right" id="jumlah_elaun5">0.00</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="panel panel-default">
+	<table width="898" border="1" align="center" class="semakan table table-bordered print">
+	</table>
+</div>
+<div class="panel panel-default">
+	<table width="898" border="1" align="center" class="semakan table table-bordered print">
+	</table>
+</div>
 <?= Html::a('Papar PDF', ['/perolehan/form-pdf', 'id' => yii::$app->request->get('id')], ['class'=>'btn btn-primary']) ?>
 <?php
 
 $this->registerJs('
 	setClass("'.$model->kelas_tuntutan.'");	
 	setJarak('.$model->jumlah_jarak.');
+	jumlahKadarJarak();
+
 ');
 
 $this->registerJs('
-	function setClass(c){
+function setClass(c){
 	var kadar1 = 0.7;
 	var kadar2 = 0.65;
 	var kadar3 = 0.55;
 	var kadar4 = 0.5;
-		switch(c) {
-			case "A":
-				kadar1 = 0.7;
-				kadar2 = 0.65;
-				kadar3 = 0.55;
-				kadar4 = 0.5;
-				break;
-			case "B":
-				kadar1 = 0.6;
-				kadar2 = 0.55;
-				kadar3 = 0.5;
-				kadar4 = 0.45;
-				break;
-			case "C":
-				kadar1 = 0.5;
-				kadar2 = 0.45;
-				kadar3 = 0.4;
-				kadar4 = 0.35;
-				break;
-			case "D":
-				kadar1 = 0.45;
-				kadar2 = 0.4;
-				kadar3 = 0.35;
-				kadar4 = 0.3;
-				break;
-			case "E":
-				kadar1 = 0.4;
-				kadar2 = 0.35;
-				kadar3 = 0.3;
-				kadar4 = 0.25;
-				break;
-		}
-		$("#kadar1").text(kadar1.toFixed(2));
-		$("#kadar2").text(kadar2.toFixed(2));
-		$("#kadar3").text(kadar3.toFixed(2));
-		$("#kadar4").text(kadar4.toFixed(2));
+	switch(c) {
+		case "A":
+			kadar1 = 0.7;
+			kadar2 = 0.65;
+			kadar3 = 0.55;
+			kadar4 = 0.5;
+			break;
+		case "B":
+			kadar1 = 0.6;
+			kadar2 = 0.55;
+			kadar3 = 0.5;
+			kadar4 = 0.45;
+			break;
+		case "C":
+			kadar1 = 0.5;
+			kadar2 = 0.45;
+			kadar3 = 0.4;
+			kadar4 = 0.35;
+			break;
+		case "D":
+			kadar1 = 0.45;
+			kadar2 = 0.4;
+			kadar3 = 0.35;
+			kadar4 = 0.3;
+			break;
+		case "E":
+			kadar1 = 0.4;
+			kadar2 = 0.35;
+			kadar3 = 0.3;
+			kadar4 = 0.25;
+			break;
+	}
+	$("#kadar1").text(kadar1.toFixed(2));
+	$("#kadar2").text(kadar2.toFixed(2));
+	$("#kadar3").text(kadar3.toFixed(2));
+	$("#kadar4").text(kadar4.toFixed(2));
 }
 
 function jumlahKadarJarak(){
@@ -332,6 +404,32 @@ function setJarak(j) {
 		$("#km3").text("700");
 		$("#km4").text(jumlah_jarak-1700);
 	}		
+}
+
+function jarakDuit(jarak) {
+    jarak = jarak/1;
+    temp = 0;
+    if(jarak <= 500)
+        return (jarak * $("#kadar1").text()/1);
+    else if(jarak > 500 && jarak <= 1000) {
+        temp = 500 * $("#kadar1").text()/1;
+        temp += (jarak - 500) * $("#kadar2").text()/1;
+        return temp;
+    }
+    else if(jarak > 1000 && jarak <= 1700) {
+        temp = 500 * $("#kadar1").text()/1;
+        temp += 500 * $("#kadar2").text()/1;
+        temp += (jarak - 1000) * $("#kadar3").text()/1;
+        return temp;
+    }
+    else {
+        temp = 500 * $("#kadar1").text()/1;
+        temp += 500 * $("#kadar2").text()/1;
+        temp += 700 * $("#kadar3").text()/1;
+        temp += (jarak - 1700) * $("#kadar4").text()/1;
+        return temp;
+        
+    }
 }
 
 ');
