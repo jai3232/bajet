@@ -171,70 +171,75 @@ $months = [
 </div>
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
-		<tbody><tr>
-			<td colspan="2" align="center"><strong>C. TUNTUTAN  ELAUN PERJALANAN KENDERAAN(OL 21104)</strong></td>
-		</tr>
-		<tr>
-			<td colspan="2" align="center">Jumlah Kilometer X Sen / Kilometer</td>
-		</tr>
-		<tr>
-			<td colspan="2" align="right"><table width="100%" border="0" align="center">
-				<tbody><tr>
-					<td width="27%">500 KM Pertama </td>
-					<td width="14%" align="center" id="km1">0</td>
-					<td width="14%" align="center">KM X</td>
-					<td width="19%" align="center" id="kadar1">0</td>
-					<td width="13%" align="center">sen/KM</td>
-					<td width="13%" align="right" id="kadar_jarak1">0</td>
-				</tr>
-				<tr>
-					<td>501 KM - 1000 KM</td>
-					<td align="center" id="km2"></td>
-					<td align="center">KM X</td>
-					<td align="center" id="kadar2">0</td>
-					<td align="center">sen/KM</td>
-					<td align="right" id="kadar_jarak2">0.00</td>
-				</tr>
-				<tr>
-					<td>1001 KM - 1700 KM</td>
-					<td align="center" id="km3"></td>
-					<td align="center">KM X</td>
-					<td align="center" id="kadar3">0</td>
-					<td align="center">sen/KM</td>
-					<td align="right" id="kadar_jarak3">0.00</td>
-				</tr>
-				<tr>
-					<td>1701 KM ke atas</td>
-					<td align="center" id="km4"></td>
-					<td align="center">KM X</td>
-					<td align="center" id="kadar4">0</td>
-					<td align="center">sen/KM</td>
-					<td align="right" id="kadar_jarak4">0.00</td>
-				</tr>
-				<tr>
-					<td><strong>Jumlah (KM)</strong></td>
-					<td align="center" id="jumlah_km">0</td>
-					<td align="center"><br></td>
-					<td align="center" id="kadar5">&nbsp;</td>
-					<td align="center"><strong>Jumlah (RM)</strong></td>
-					<td align="right" id="jumlah_kadar_jarak"></td>
-				</tr>
-				<tr>
-					<td colspan="5" align="right"><strong>Perjalanan yang telah dilakukan pada bulan yang sedang dituntut sebanyak <span class="perjalanan_lalu">0</span> Km</strong>:</td>
-					<td align="right" id="tolak_kadar_jarak">0.00</td>
-				</tr>
-			</tbody></table></td>
-		</tr>
-		<tr>
-			<td colspan="2" width="888" align="right" id="jumlah_kadar_jarak4" style="font-weight:bold;">
-				<table width="200" border="0">
+		<tbody>
+			<tr>
+				<td colspan="2" align="center"><strong>C. TUNTUTAN  ELAUN PERJALANAN KENDERAAN(OL 21104)</strong></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">Jumlah Kilometer X Sen / Kilometer</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="right"><table width="100%" border="0" align="center">
 					<tbody><tr>
-						<td align="right">Jumlah (RM)</td>
-						<td align="right" id="jumlah_kadar_jarak2"></td>
+						<td width="27%">500 KM Pertama </td>
+						<td width="14%" align="center" id="km1">0</td>
+						<td width="14%" align="center">KM X</td>
+						<td width="19%" align="center" id="kadar1">0</td>
+						<td width="13%" align="center">sen/KM</td>
+						<td width="13%" align="right" id="kadar_jarak1">0</td>
+					</tr>
+					<tr>
+						<td>501 KM - 1000 KM</td>
+						<td align="center" id="km2"></td>
+						<td align="center">KM X</td>
+						<td align="center" id="kadar2">0</td>
+						<td align="center">sen/KM</td>
+						<td align="right" id="kadar_jarak2">0.00</td>
+					</tr>
+					<tr>
+						<td>1001 KM - 1700 KM</td>
+						<td align="center" id="km3"></td>
+						<td align="center">KM X</td>
+						<td align="center" id="kadar3">0</td>
+						<td align="center">sen/KM</td>
+						<td align="right" id="kadar_jarak3">0.00</td>
+					</tr>
+					<tr>
+						<td>1701 KM ke atas</td>
+						<td align="center" id="km4"></td>
+						<td align="center">KM X</td>
+						<td align="center" id="kadar4">0</td>
+						<td align="center">sen/KM</td>
+						<td align="right" id="kadar_jarak4">0.00</td>
+					</tr>
+					<tr>
+						<td><strong>Jumlah (KM)</strong></td>
+						<td align="center" id="jumlah_km">0</td>
+						<td align="center"><br></td>
+						<td align="center" id="kadar5">&nbsp;</td>
+						<td align="center"><strong>Jumlah (RM)</strong></td>
+						<td align="right" id="jumlah_kadar_jarak"></td>
+					</tr>
+					<tr>
+						<td colspan="5" align="right"><strong>Perjalanan yang telah dilakukan pada bulan yang sedang dituntut sebanyak <span class="perjalanan_lalu">0</span> Km</strong>:</td>
+						<td align="right" id="tolak_kadar_jarak">0.00</td>
 					</tr>
 				</tbody></table></td>
 			</tr>
-		</tbody></table>
+			<tr>
+				<td colspan="2" width="888" align="right" id="jumlah_kadar_jarak4" style="font-weight:bold;">
+					<table width="200" border="0">
+						<tbody>
+							<tr>
+								<td align="right">Jumlah (RM)</td>
+								<td align="right" id="jumlah_kadar_jarak2"></td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </div>
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
@@ -247,49 +252,63 @@ $months = [
 					<table width="100%" border="0">
 						<tbody>
 							<tr>
-								<td width="5%" id="kali1">0</td>
+								<td width="5%" id="kali1"><?= $model->kali_makan ?></td>
 								<td width="28%">X Elaun Makan sebanyak</td>
-								<td width="1%">RM</td>
-								<td width="2%" align="right" id="elaun_sehari1"></td>
+								<td width="1%" class="text-right">RM</td>
+								<td width="2%" align="left" id="elaun_sehari1"><?= $model->elaun_makan ?></td>
 								<td width="1%">(<span id="kadar_elaun1">100</span>%)</td>
 								<td width="33%">sehari di semananjung</td>
-								<td width="8%" align="right" id="jumlah_elaun1">0.00</td>
+								<td width="8%" align="right" id="jumlah_elaun1"><?= number_format(($model->kali_makan * $model->elaun_makan), 2) ?></td>
 							</tr>
 							<tr>
-								<td id="kali2">0</td>
-								<td>X Elaun Makan sebanyak</td>
-								<td>RM</td>
-								<td align="right" id="elaun_sehari2"></td>
+								<td id="kali2"><?= $model->kali_harian ?></td>
+								<td>X Elaun Harian sebanyak</td>
+								<td class="text-right">RM</td>
+								<td align="left" id="elaun_sehari2"><?= $model->elaun_harian ?></td>
 								<td>(<span id="kadar_elaun2">100</span>%)</td>
-								<td> sehari di Sabah / Sarawak</td>
-								<td align="right" id="jumlah_elaun2">0.00</td>
-							</tr>
-							<tr>
-								<td id="kali3">0</td>
-								<td>X Elaun Harian sebanyak</td>
-								<td>RM</td>
-								<td align="right" id="elaun_sehari3"></td>
-								<td>(<span id="kadar_elaun3">100</span>%)</td>
 								<td> sehari di semananjung</td>
-								<td align="right" id="jumlah_elaun3">0.00</td>
+								<td align="right" id="jumlah_elaun2"><?= number_format(($model->kali_harian * $model->elaun_harian), 2) ?></td>
 							</tr>
 							<tr>
-								<td id="kali4">0</td>
+								<td id="kali3"><?= $model->kali_makan_sabah ?></td>
+								<td>X Elaun Makan sebanyak</td>
+								<td class="text-right">RM</td>
+								<td align="left" id="elaun_sehari3"><?= $model->elaun_makan_sabah ?></td>
+								<td>(<span id="kadar_elaun3">100</span>%)</td>
+								<td> sehari di Sabah / Sarawak</td>
+								<td align="right" id="jumlah_elaun3"><?= number_format(($model->kali_makan_sabah * $model->elaun_makan_sabah), 2) ?></td>
+							</tr>
+							<tr>
+								<td id="kali4"><?= $model->kali_harian_sabah ?></td>
 								<td>X Elaun Harian sebanyak</td>
-								<td>RM</td>
-								<td align="right" id="elaun_sehari4"></td>
+								<td class="text-right">RM</td>
+								<td align="left" id="elaun_sehari4"><?= $model->elaun_harian_sabah ?></td>
 								<td>(<span id="kadar_elaun4">100</span>%)</td>
 								<td> sehari di Sabah / Sarawak</td>
-								<td align="right" id="jumlah_elaun4">0.00</td>
+								<td align="right" id="jumlah_elaun4"><?= number_format(($model->kali_harian_sabah * $model->elaun_harian_sabah), 2) ?></td>
 							</tr>
 							<tr>
-								<td id="kali5">0</td>
+								<td id="kali5"><?= $model->kali_elaun_luar ?></td>
 								<td>X Elaun Makan sebanyak</td>
-								<td>RM</td>
-								<td align="right" id="elaun_sehari5"></td>
+								<td class="text-right">RM</td>
+								<td align="left" id="elaun_sehari5"><?= $model->elaun_luar ?></td>
 								<td>(<span id="kadar_elaun5">100</span>%)</td>
 								<td>sehari luar negara</td>
-								<td align="right" id="jumlah_elaun5">0.00</td>
+								<td align="right" id="jumlah_elaun5"><?= number_format(($model->kali_elaun_luar * $model->elaun_luar), 2) ?></td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td align="right" class="text-right" style="font-weight:bold;">
+					<table width="200" border="0" align="right">
+						<tbody>
+							<tr>
+								<td align="right">Jumlah (RM)</td>
+								<td align="right" id="jumlah_elaun_makan_harian">
+									
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -313,6 +332,7 @@ $this->registerJs('
 	setClass("'.$model->kelas_tuntutan.'");	
 	setJarak('.$model->jumlah_jarak.');
 	jumlahKadarJarak();
+	setJumlahElaun();
 
 ');
 
@@ -376,6 +396,17 @@ function jumlahKadarJarak(){
 	$("#tolak_kadar_jarak").text((0-jarakDuit($(".perjalanan_lalu").eq(0).text()/1)).toFixed(2));
 	$("#jumlah_kadar_jarak2").text(($("#jumlah_kadar_jarak").text()/1 + $("#tolak_kadar_jarak").text()/1).toFixed(2));	
 }
+
+function setJumlahElaun() {
+	total = 0;
+	for(var i = 1; i <= 5; i++) {
+		temp = $("#kali"+i).text()/1 * $("#elaun_sehari"+i).text()/1 * $("#kadar_elaun"+i).text()/100;
+		$("#jumlah_elaun"+i).text(temp.toFixed(2));
+		total += temp/1;
+	}
+	$("#jumlah_elaun_makan_harian").text(total.toFixed(2));
+}
+
 
 function setJarak(j) {
 	jumlah_jarak = j;
