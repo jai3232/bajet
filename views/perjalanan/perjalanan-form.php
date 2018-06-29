@@ -319,10 +319,89 @@ $months = [
 </div>
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
+		<thead>
+			<tr><th colspan="7" class="text-center">E. TUNTUTAN BAYARAN SEWA HOTEL (BSH) / ELAUN LOJING(OL21102)</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+			    <td align="right">
+			    	<table width="100%" border="0">
+			    		<tbody>
+			    			<?php
+			    				$kos_hotel = 0;
+			    				foreach ($model_hotels as $key => $value) {
+			    					$kos_hotel += $value->kos_hotel;
+			    			?>
+			    			<tr>
+						        <td class="kali_hotel"><?= $value->kali_hotel ?></td>
+						        <td>hari x Bayaran Sewa Hotel <?= $key + 1 ?> sebanyak</td>
+						        <td>RM<span class="hotel"><?= number_format($value->kos_hotel, 2) ?></span> sehari</td>
+						        <td align="right" class="penginapan"><?= number_format($value->kali_hotel * $value->kos_hotel, 2) ?></td>
+					     	</tr>
+					     	<?php
+					     		}
+					     	?>
+					      	<tr>
+						        <td>&nbsp;</td>
+						        <td>Bayaran Perkhidmatan dan Cukai Perkhidmatan. 6% GST + 10% Perkhidmatan (OL21199)</td>
+						        <td>&nbsp;</td>
+						        <td align="right" class="penginapan"><?= number_format($model->cukai, 2) ?></td>
+					    	</tr>
+					    	<tr>
+						        <td id="kali_lojing"><?= $model->kali_lojing ?></td>
+						        <td>hari x Elaun Lojing sebanyak</td>
+						        <td>RM<span id="lojing"></span> sehari </td>
+						        <td align="right" class="penginapan"><?= number_format($model->lojing, 2) ?></td>
+					    	</tr>
+					    </tbody>
+					</table>
+				</td>
+			  </tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td align="right" style="font-weight: bold;">
+					<table width="200" border="0">
+				        <tbody>
+				        	<tr>
+						        <td align="right">Jumlah (RM)</td>
+						        <td align="right" id="jumlah_elaun_penginapan"><?= number_format($kos_hotel + $model->cukai + $model->lojing, 2) ?></td>
+				        	</tr>
+				    	</tbody>
+					</table>
+				</td>
+			</tr>
+		</tfoot>
 	</table>
 </div>
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
+		<thead>
+			<tr><th colspan="7" class="text-center">F. TUNTUTAN TAMBANG PENGANGKUTAN AWAM (*)</th></tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+</div>
+<div class="panel panel-default">
+	<table width="898" border="1" align="center" class="semakan table table-bordered print">
+		<thead>
+			<tr><th colspan="7" class="text-center">G. TUNTUTAN PELBAGAI (*) (OL21199)</th></tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+</div>
+<div class="panel panel-default">
+	<table width="898" border="1" align="center" class="semakan table table-bordered print">
+		<thead>
+			<tr><th colspan="7" class="text-center">H. PENGAKUAN</th></tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
 	</table>
 </div>
 <?= Html::a('Papar PDF', ['/perolehan/form-pdf', 'id' => yii::$app->request->get('id')], ['class'=>'btn btn-primary']) ?>
