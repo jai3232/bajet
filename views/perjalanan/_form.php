@@ -394,8 +394,8 @@ $months = [
                     </tr>
                     <tr>
                         <td>Lain-lain </td>
-                        <td><?= $form->field($model, 'lain')->dropdownList(['Tanpa Resit', 'Dilampirkan'], ['class' => 'resit form-control']) ?></td>
-                        <td><?= $form->field($model, 'resit_lain')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control tambang']) ?></td>
+                        <td><?= $form->field($model, 'resit_lain')->dropdownList(['Tanpa Resit', 'Dilampirkan'], ['class' => 'resit form-control']) ?></td>
+                        <td><?= $form->field($model, 'lain')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control tambang']) ?></td>
                     </tr>
                 </tbody>
                 <tfoot>

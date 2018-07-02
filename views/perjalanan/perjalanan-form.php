@@ -132,7 +132,7 @@ $months = [
 	</table>
 	
 </div>
-<footer></footer>
+<div class="break"></div>
 <div class="panel panel-default">
 	<table width="900" border="1" align="center" class="semakan table table-bordered">
 		<tbody>
@@ -169,6 +169,7 @@ $months = [
 		</tbody>
 	</table>
 </div>
+<div class="break"></div>
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<tbody>
@@ -180,7 +181,7 @@ $months = [
 			</tr>
 			<tr>
 				<td colspan="2" align="right"><table width="100%" border="0" align="center">
-					<tbody><tr>
+					<tbody class="noborder"><tr>
 						<td width="27%">500 KM Pertama </td>
 						<td width="14%" align="center" id="km1">0</td>
 						<td width="14%" align="center">KM X</td>
@@ -228,7 +229,7 @@ $months = [
 			</tr>
 			<tr>
 				<td colspan="2" width="888" align="right" id="jumlah_kadar_jarak4" style="font-weight:bold;">
-					<table width="200" border="0">
+					<table width="200" border="0" class="noborder">
 						<tbody>
 							<tr>
 								<td align="right">Jumlah (RM)</td>
@@ -249,7 +250,7 @@ $months = [
 		<tbody>
 			<tr>
 				<td>
-					<table width="100%" border="0">
+					<table width="100%" border="0" class="noborder">
 						<tbody>
 							<tr>
 								<td width="5%" id="kali1"><?= $model->kali_makan ?></td>
@@ -302,7 +303,7 @@ $months = [
 			</tr>
 			<tr>
 				<td align="right" class="text-right" style="font-weight:bold;">
-					<table width="200" border="0" align="right">
+					<table width="200" border="0" align="right" class="noborder">
 						<tbody>
 							<tr>
 								<td align="right">Jumlah (RM)</td>
@@ -325,7 +326,7 @@ $months = [
 		<tbody>
 			<tr>
 			    <td align="right">
-			    	<table width="100%" border="0">
+			    	<table width="100%" border="0" class="noborder">
 			    		<tbody>
 			    			<?php
 			    				$kos_hotel = 0;
@@ -351,7 +352,7 @@ $months = [
 						        <td id="kali_lojing"><?= $model->kali_lojing ?></td>
 						        <td>hari x Elaun Lojing sebanyak</td>
 						        <td>RM<span id="lojing"><?= number_format($model->lojing, 2) ?></span> sehari </td>
-						        <td align="right" class="penginapan"><?= number_format($model->lojing * $model->kali_lojing, 2) ?></td>
+						        <td align="right" class="penginapan" id="jumlah_lojing"><?= number_format($model->lojing * $model->kali_lojing, 2) ?></td>
 					    	</tr>
 					    </tbody>
 					</table>
@@ -361,7 +362,7 @@ $months = [
 		<tfoot>
 			<tr>
 				<td align="right" style="font-weight: bold;">
-					<table width="200" border="0">
+					<table width="200" border="0" class="noborder">
 				        <tbody>
 				        	<tr>
 						        <td align="right">Jumlah (RM)</td>
@@ -374,6 +375,7 @@ $months = [
 		</tfoot>
 	</table>
 </div>
+<div class="break"></div>
 <div class="panel panel-default">
 	<?php 
 		function receiptStatus($s, $value) {
@@ -391,7 +393,7 @@ $months = [
 		<tbody>
 			<tr>
 				<td>
-					<table width="100%" border="0">
+					<table width="100%" border="0" class="noborder">
 						<tbody>
 							<tr>
 								<td>Teksi(OL21104)</td>
@@ -436,7 +438,7 @@ $months = [
 		<tfoot>
 			<tr>
 				<th>
-					<table width="200" border="0" align="right">
+					<table width="200" border="0" align="right" class="noborder">
 				        <tbody>
 				    		<tr>
 				        		<td align="right">Jumlah (RM)</td>
@@ -459,7 +461,7 @@ $months = [
 		<tbody>
 			<tr>
 				<td>
-					<table width="100%" border="0">
+					<table width="100%" border="0" class="noborder">
 						<tbody>
 							<tr>
 								<td>Tol (Touch &amp; Go: <?= $model->no_tg ?>)</td>
@@ -508,7 +510,7 @@ $months = [
 		<tfoot>
 			<tr>
 				<th>
-					<table width="200" border="0" align="right">
+					<table width="200" border="0" align="right" class="noborder">
 				        <tbody>
 				    		<tr>
 				        		<td align="right">Jumlah (RM)</td>
@@ -519,6 +521,25 @@ $months = [
 				    	</tbody>
 				    </table>
 				</th>
+			</tr>
+			<tr>
+				<td>
+					<table width="300" border="0" align="right" class="noborder">
+						<tbody>
+							<tr style="font-size: 1.1em;">
+								<th align="right">Jumlah Tuntutan (RM)</th>
+								<th align="right" class="text-right" id="jumlah_tuntutan">0.00</th>
+							</tr>
+						</tbody>
+					</table><br>
+					<table border="0" align="left" class="noborder">
+					    <tbody>
+					    	<tr>
+					        	<th id="words" style="font-size: 1.1em;"></th>
+					        </tr>
+					    </tbody>
+					</table>
+				</td>
 			</tr>
 		</tfoot>
 	</table>
@@ -531,9 +552,32 @@ $months = [
 		<tbody>
 			<tr>
 				<td>
-					<table width="98%" border="0" align="center">
+					<table width="98%" border="0" align="center" class="noborder">
 				        <tbody>
-							<tr>
+				        	<tr>
+				        		<td colspan="3">
+				        			Saya mengaku bahawa
+					<ol type="a">
+						<li>
+							Perjalanan pada tarikh-tarikh tersebut adalah benar dan telah dibuat atas urusan rasmi;
+						</li>
+						<li>
+							Tuntutan ini dibuat mengikut kadar dan syarat seperti yang dinyatakan di bawah peraturan-peraturan bagi pegawai
+							bertugas rasmi dan/atau pegawai berkursus yang berkuatkuasa semasa; 
+						</li>
+						<li>
+							Perbelanjaan yang bertanda (*) berjumlah sebanyak RM <span id="dibayar"></span>  dilakukan dan dibayar oleh saya;
+						</li>
+						<li>
+							Panggilan telefon sebanyak <?= number_format($model->telefon, 2) ?> dibuat atas urusan rasmi; dan
+						</li>
+						<li>
+							butir-butir seperti yang dinyatakan di atas adalah benar dan saya bertanggungjawab terhadapnya.
+						</li>
+					</ol>
+				        		</td>
+				        	</tr>
+							<!-- <tr>
 								<td colspan="3">Saya mengaku bahawa</td>
 							</tr>
 							<tr>
@@ -546,7 +590,7 @@ $months = [
 							</tr>
 							<tr>
 								<td>(c)</td>
-								<td colspan="2"> Perbelanjaan yang bertanda (*) berjumlah sebanyak RM <span id="dibayar">1353.86</span> dilakukan dan dibayar oleh saya; </td>
+								<td colspan="2"> Perbelanjaan yang bertanda (*) berjumlah sebanyak RM <span id="dibayar"></span> dilakukan dan dibayar oleh saya; </td>
 							</tr>
 							<tr>
 								<td>(d) </td>
@@ -559,15 +603,16 @@ $months = [
 							<tr>
 								<td>&nbsp;</td>
 								<td colspan="2">&nbsp;</td>
-							</tr>
+							</tr> -->
 							<tr>
 								<td>&nbsp;</td>
-								<td width="76%">Tarikh: 02 Jul 2018 </td>
-								<td width="20%" align="right">__________________<br>
+								<td width="70%">Tarikh: <?= Yii::$app->formatter->asDate($model->tarikh_jadi) ?> </td>
+								<td width="30%" align="right">__________________<br>
 								(Tandatangan Pegawai)</td>
 							</tr>
 				    </tbody>
 					</table>
+
 				</td>
 			</tr>
 		</tbody>
@@ -581,6 +626,11 @@ $this->registerJs('
 	setJarak('.$model->jumlah_jarak.');
 	jumlahKadarJarak();
 	setJumlahElaun();
+	$("#jumlah_tuntutan").text(($("#jumlah_kadar_jarak2").text()/1 + $("#jumlah_elaun_makan_harian").text()/1 + $("#jumlah_elaun_penginapan").text()/1 + $("#jumlah_tambang").text()/1 + $("#jumlah_pelbagai").text()/1).toFixed(2) );
+
+	$("#dibayar").text(($("#jumlah_tambang").text()/1 + $("#jumlah_pelbagai").text()/1 + $("#jumlah_elaun_penginapan").text()/1 - $("#jumlah_lojing").text()/1).toFixed(2));
+	$("#words").text(numberToWord($("#jumlah_tuntutan").text()));
+
 
 ');
 
@@ -711,6 +761,64 @@ function jarakDuit(jarak) {
     }
 }
 
+function numberToWord(num) {
+	
+	var number = new Array("Satu ","Dua","Tiga", "Empat", "Lima", "Enam", "Tujuh", "Lapan", "Sembilan");
+	var value = new Array("", "Puluh", "", "", "Puluh", "Ratus", "Ribu");
+	num = num.toString();
+	var l = num.length;
+	//alert(l);	
+	var w = "";
+	for(var i = l; i >= 0; i--) {
+		if(i == 7) {
+			w = number[num.charAt(l-i)/1 - 1] + " Ribu ";
+		}
+		if(i == 6) {
+			if(num.charAt(l-i)/1 == 0)
+				w += " ";
+			else
+				w += number[num.charAt(l-i)/1 - 1] + " Ratus ";
+		}
+		if(i == 5) {
+			if(num.charAt(l-i)/1 == 1) {
+				w += number[num.charAt(l-4)/1 - 1] + " Belas ";
+				continue;
+			}
+			else if(num.charAt(l-i)/1 == 0)
+				w += " ";
+			else
+				w += number[num.charAt(l-i)/1 - 1] + " Puluh ";
+		}
+		if(i == 4) {
+			if(num.charAt(l-5)/1 == 1) continue;
+			if(num.charAt(l-i)/1 == 0)
+				w += " ";
+			else
+				w += number[num.charAt(l-i)/1 - 1] + " ";
+		}
+		if(i == 2) {
+			//alert(num.charAt(l-i));
+			if(num.charAt(l-i)/1 == 1) {
+				w += number[num.charAt(l-1)/1 - 1] + " Belas Sen Sahaja ";
+				break;
+			}
+			else if(num.charAt(l-i)/1 == 0)
+				w += " ";
+			else
+				w += number[num.charAt(l-i)/1 - 1] + " Puluh ";
+		}
+		if(i == 1) {
+			if(num.charAt(l-i)/1 > 0)
+				w += number[num.charAt(l-i)/1 - 1] + " Sen Sahaja ";
+			else
+				w += " Sahaja";
+		}
+	
+	}
+	return "Ringgit Malaysia: "+w;
+}
+
+
 ');
 
 $this->registerCss('
@@ -719,10 +827,26 @@ $this->registerCss('
 		padding: 5px;
 	}
 
-	@media print {
-    	footer {page-break-after: always;}
+	ol {
+    counter-reset: list;
+	}
+	ol > li {
+	    list-style: none;
+	    position: relative;
+	}
+	ol > li:before {
+	    counter-increment: list;
+	    content: counter(list, lower-alpha) ") ";
+	    position: absolute;
+	    left: -1.4em;
+	}
 
-    	.noborder tr td, table tr td, td {border: none !important;}
+	@media print {
+    	.break {page-break-after: always;}
+
+    	.noborder tr td, .noborder tr th , table tr td, td th {border: none !important;}
+
+    	.btn, footer {display: none !important;}
 
     	table {
             border: solid white !important;
