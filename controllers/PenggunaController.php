@@ -28,7 +28,7 @@ class PenggunaController extends Controller
                 'rules' => [
                     [
                         'actions' => ['index', 'activate', 'set-level'],
-                        'allow' => Yii::$app->user->isGuest ? false : Yii::$app->user->identity->accessLevel([1]),
+                        'allow' => Yii::$app->user->isGuest ? false : Yii::$app->user->identity->accessLevel([0]),
                         'roles' => ['@'],
                     ],
                 ],

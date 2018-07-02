@@ -320,7 +320,7 @@ $months = [
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<thead>
-			<tr><th colspan="7" class="text-center">E. TUNTUTAN BAYARAN SEWA HOTEL (BSH) / ELAUN LOJING(OL21102)</th></tr>
+			<tr><th colspan="7" class="text-center">E. TUNTUTAN BAYARAN SEWA HOTEL (*)(BSH) / ELAUN LOJING (OL21102)</th></tr>
 		</thead>
 		<tbody>
 			<tr>
@@ -330,7 +330,7 @@ $months = [
 			    			<?php
 			    				$kos_hotel = 0;
 			    				foreach ($model_hotels as $key => $value) {
-			    					$kos_hotel += $value->kos_hotel;
+			    					$kos_hotel += ($value->kos_hotel * $value->kali_hotel);
 			    			?>
 			    			<tr>
 						        <td class="kali_hotel"><?= $value->kali_hotel ?></td>
@@ -350,8 +350,8 @@ $months = [
 					    	<tr>
 						        <td id="kali_lojing"><?= $model->kali_lojing ?></td>
 						        <td>hari x Elaun Lojing sebanyak</td>
-						        <td>RM<span id="lojing"></span> sehari </td>
-						        <td align="right" class="penginapan"><?= number_format($model->lojing, 2) ?></td>
+						        <td>RM<span id="lojing"><?= number_format($model->lojing, 2) ?></span> sehari </td>
+						        <td align="right" class="penginapan"><?= number_format($model->lojing * $model->kali_lojing, 2) ?></td>
 					    	</tr>
 					    </tbody>
 					</table>
@@ -365,7 +365,7 @@ $months = [
 				        <tbody>
 				        	<tr>
 						        <td align="right">Jumlah (RM)</td>
-						        <td align="right" id="jumlah_elaun_penginapan"><?= number_format($kos_hotel + $model->cukai + $model->lojing, 2) ?></td>
+						        <td align="right" id="jumlah_elaun_penginapan"><?= number_format($kos_hotel + $model->cukai + ($model->lojing * $model->kali_lojing), 2) ?></td>
 				        	</tr>
 				    	</tbody>
 					</table>
@@ -375,13 +375,80 @@ $months = [
 	</table>
 </div>
 <div class="panel panel-default">
+	<?php 
+		function receiptStatus($s, $value) {
+			if(is_null($value))
+				return;
+			if($s == 3)
+				return 'Touch & Go';
+			return $s == 1 ? 'Dilampirkan' : 'Tanpa Resit';
+		}
+	?>
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<thead>
 			<tr><th colspan="7" class="text-center">F. TUNTUTAN TAMBANG PENGANGKUTAN AWAM (*)</th></tr>
 		</thead>
 		<tbody>
-			
+			<tr>
+				<td>
+					<table width="100%" border="0">
+						<tbody>
+							<tr>
+								<td>Teksi(OL21104)</td>
+								<td>[ Resit : <?= receiptStatus($model->resit_teksi, $model->teksi) ?> ]</td>
+								<td align="right"><span class="tambang"><?= number_format($model->teksi, 2) ?></span></td>
+							</tr>
+							<tr>
+								<td>Bas(OL21104)</td>
+								<td>[ Resit : <?= receiptStatus($model->resit_bas, $model->bas) ?>  
+								]</td>
+								<td align="right"><span class="tambang"><?= number_format($model->bas, 2) ?></span></td>
+							</tr>
+							<tr>
+								<td>Kereta Api(OL21103)</td>
+								<td>[ Resit : <?= receiptStatus($model->resit_keretapi, $model->keretapi) ?> 
+								]</td>
+								<td align="right"><span class="tambang"><?= number_format($model->keretapi, 2) ?></span></td>
+							</tr>
+							<tr>
+								<td>Terbang(OL21106)</td>
+								<td>[ Resit : <?= receiptStatus($model->resit_terbang, $model->terbang) ?>  
+								]</td>
+								<td align="right"><span class="tambang"><?= number_format($model->terbang, 2) ?></span></td>
+							</tr>
+							<tr>
+								<td>Feri(OL21105)</td>
+								<td>[ Resit : <?= receiptStatus($model->resit_feri, $model->feri) ?>   
+								]</td>
+								<td align="right"><span class="tambang"><?= number_format($model->feri, 2) ?></span></td>
+							</tr>
+							<tr>
+								<td>Lain-lain</td>
+								<td>[ Resit : <?= receiptStatus($model->resit_lain, $model->lain) ?>  
+								]</td>
+								<td align="right"><span class="tambang"><?= number_format($model->lain, 2) ?></span></td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
 		</tbody>
+		<tfoot>
+			<tr>
+				<th>
+					<table width="200" border="0" align="right">
+				        <tbody>
+				    		<tr>
+				        		<td align="right">Jumlah (RM)</td>
+				        		<td align="right" id="jumlah_tambang">
+				        			<?= number_format($model->teksi + $model->bas + $model->keretapi + $model->terbang + $model->feri + $model->lain, 2) ?>
+				        		</td>
+				      		</tr>
+				    	</tbody>
+				    </table>
+				</th>
+			</tr>
+		</tfoot>
 	</table>
 </div>
 <div class="panel panel-default">
@@ -390,8 +457,70 @@ $months = [
 			<tr><th colspan="7" class="text-center">G. TUNTUTAN PELBAGAI (*) (OL21199)</th></tr>
 		</thead>
 		<tbody>
-			
+			<tr>
+				<td>
+					<table width="100%" border="0">
+						<tbody>
+							<tr>
+								<td>Tol (Touch &amp; Go: <?= $model->no_tg ?>)</td>
+								<td>[ Resit : <?= receiptStatus($model->resit_tol, $model->tol) ?> ]
+								</td>
+								<td align="right" class="pelabagai"><?= number_format($model->tol, 2) ?></td>
+							</tr>
+							<tr>
+								<td>Tempat Letak Kereta</td>
+								<td>[ Resit : <?= receiptStatus($model->resit_pakir, $model->pakir) ?>
+								]</td>
+								<td align="right"><span class="pelabagai"><?= number_format($model->pakir, 2) ?></span></td>
+							</tr>
+							<tr>
+								<td>Dobi</td>
+								<td>[ Resit : <?= receiptStatus($model->resit_dobi, $model->dobi) ?>
+								]</td>
+								<td align="right"><span class="pelabagai"><?= number_format($model->dobi, 2) ?></span></td>
+							</tr>
+							<tr>
+								<td>Pos</td>
+								<td>[ Resit : <?= receiptStatus($model->resit_pos, $model->pos) ?>
+								]</td>
+								<td align="right"><span class="pelabagai"><?= number_format($model->pos, 2) ?></span></td>
+							</tr>
+							<tr>
+								<td>Telefon, Teleks, Faks</td>
+								<td>[ Resit : <?= receiptStatus($model->resit_telefon, $model->telefon) ?>
+								]</td>
+								<td align="right"><span class="pelabagai"><?= number_format($model->telefon, 2) ?></span></td>
+							</tr>
+							<tr>
+								<td>Kerugian pertukaran wang asing</td>
+								<td>[ Resit : <?= receiptStatus($model->resit_tukaran, $model->tukaran) ?>
+								]</td>
+								<td align="right"><span class="pelabagai"><?= number_format($model->tukaran, 2) ?></span></td>
+							</tr>
+							<tr>
+								<td colspan="3">(@3%)[Bagi Singapura, Selatan Thailand, Kalimantan dan Brunei Darussalam sahaja]</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
 		</tbody>
+		<tfoot>
+			<tr>
+				<th>
+					<table width="200" border="0" align="right">
+				        <tbody>
+				    		<tr>
+				        		<td align="right">Jumlah (RM)</td>
+				        		<td align="right" id="jumlah_pelbagai">
+				        			<?= number_format($model->tol + $model->pakir + $model->dobi + $model->pos + $model->telefon + $model->tukaran, 2) ?>
+				        		</td>
+				      		</tr>
+				    	</tbody>
+				    </table>
+				</th>
+			</tr>
+		</tfoot>
 	</table>
 </div>
 <div class="panel panel-default">
@@ -400,7 +529,47 @@ $months = [
 			<tr><th colspan="7" class="text-center">H. PENGAKUAN</th></tr>
 		</thead>
 		<tbody>
-			
+			<tr>
+				<td>
+					<table width="98%" border="0" align="center">
+				        <tbody>
+							<tr>
+								<td colspan="3">Saya mengaku bahawa</td>
+							</tr>
+							<tr>
+								<td width="4%">(a)</td>
+								<td colspan="2"> Perjalanan pada tarikh-tarikh tersebut adalah benar dan telah dibuat atas urusan rasmi;</td>
+							</tr>
+							<tr>
+								<td>(b)</td>
+								<td colspan="2"> Tuntutan ini dibuat mengikut kadar dan syarat seperti yang dinyatakan di bawah peraturan-peraturan bagi pegawai bertugas rasmi dan/atau pegawai berkursus yang berkuatkuasa semasa; <br></td>
+							</tr>
+							<tr>
+								<td>(c)</td>
+								<td colspan="2"> Perbelanjaan yang bertanda (*) berjumlah sebanyak RM <span id="dibayar">1353.86</span> dilakukan dan dibayar oleh saya; </td>
+							</tr>
+							<tr>
+								<td>(d) </td>
+								<td colspan="2">Panggilan telefon sebanyak RM <?= number_format($model->telefon, 2) ?> dibuat atas urusan rasmi; dan</td>
+							</tr>
+							<tr>
+								<td>(e)</td>
+								<td colspan="2"> butir-butir seperti yang dinyatakan di atas adalah benar dan saya bertanggungjawab terhadapnya.</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+								<td colspan="2">&nbsp;</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+								<td width="76%">Tarikh: 02 Jul 2018 </td>
+								<td width="20%" align="right">__________________<br>
+								(Tandatangan Pegawai)</td>
+							</tr>
+				    </tbody>
+					</table>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 </div>
