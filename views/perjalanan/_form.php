@@ -820,6 +820,7 @@ $this->registerJs('
             tempVal += $("#elaun_makan"+i).text()/1;
         }
         $("#jumlah_elaun_makan").text(tempVal.toFixed(2));
+        $(".kali").trigger("change"); 
         setTotal();
     });
     

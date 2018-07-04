@@ -218,7 +218,7 @@ echo Dialog::widget();
                 'attribute' => 'status_kewangan',
                 'encodeLabel' => false,
                 'value' => function($model) {
-                    $status = ['A', 'B', 'C'];
+                    $status = ['A', 'B', 'B+', 'C'];
                     return $status[$model->status_kewangan];
                 },
                 'contentOptions' => ['class' => 'text-center'],

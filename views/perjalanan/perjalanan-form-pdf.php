@@ -17,6 +17,7 @@ $months = [
             '07' => 'Jul', '08' => 'Ogo', '09' => 'Sep', '10' => 'Okt', '11' => 'Nov', '12' => 'Dis'
           ];
 ?>
+
 <div class="panel panel-default">
 	<table width="900" border="1" align="center" class="table table-bordered">
 	    <tbody>
@@ -31,7 +32,7 @@ $months = [
 		    	<td colspan="2" align="center"><strong>A. MAKLUMAT PEGAWAI</strong></td>
 		    </tr>
 		    <tr>
-		    	<td width="415" valign="top"><p><strong>NAMA (HURUF BESAR)</strong></p>
+		    	<td valign="top"><p><strong>NAMA (HURUF BESAR)</strong></p>
 		    		<p>No. Kad Pengenalan</p>
 		    		<p>No. Gaji</p>
 		    		<p>No. Telefon</p>
@@ -39,7 +40,7 @@ $months = [
 		    		<p>Gred/Kategori/Kumpulan</p>
 		    		<p>Pendapatan (RM)</p>
 		    	</td>
-		    	<td width="469" valign="top"><p><strong><?= strtoupper($model->nama) ?>&nbsp;</strong></p>
+		    	<td valign="top"><p><strong><?= strtoupper($model->nama) ?>&nbsp;</strong></p>
 	    			<p><?= strtoupper($model->no_kp) ?></p>
 	    			<p><?= strtoupper($model->no_gaji) ?></p>
 	    			<p><?= strtoupper($model->no_hp) ?></p>
@@ -48,10 +49,10 @@ $months = [
 	    			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="noborder">
 	    				<tbody>
 	    					<tr>
-		    					<td width="54%">Gaji: </td>
-		    					<td width="9%" align="right">RM</td>
-		    					<td width="10%" align="right" class="gaji"><?= number_format($model->gaji_asas, 2) ?></td>
-		    					<td width="2%" align="right">&nbsp;</td>
+		    					<td>Gaji: </td>
+		    					<td align="right">RM</td>
+		    					<td align="right" class="gaji"><?= number_format($model->gaji_asas, 2) ?></td>
+		    					<td align="right">&nbsp;</td>
 		    				</tr>
 		    				<tr>
 		    					<td>Elaun-elaun:</td>
@@ -66,15 +67,9 @@ $months = [
 		    					<td align="right">&nbsp;</td>
 		    				</tr>
 		    				<tr style="border-top:1px solid black;">
-		    					<td>Jumlah Pendapatan:</td>
-		    					<td align="right">RM</td>
-		    					<td align="right">
-		    						<script>
-		    							// total_gaji = 0;
-		    							// for(var i = 0; i < $(".gaji").length; i++)
-		    							// 	total_gaji += ($(".gaji").eq(i).text().replace(',','')/1);
-		    							// document.write(total_gaji.toFixed(2));
-		    						</script>
+		    					<td style="border-top:1px solid black;">Jumlah Pendapatan:</td>
+		    					<td style="border-top:1px solid black;" align="right">RM</td>
+		    					<td style="border-top:1px solid black;" align="right">
 		    						<?= number_format($model->gaji_asas + $model->elaun + $model->elaun_mangku, 2); ?>
 		    					</td>
 		    					<td align="right">&nbsp;</td>
@@ -99,8 +94,8 @@ $months = [
     			<td>Kenderaan</td>
     			<td><table width="100%" border="0" cellpadding="0" cellspacing="0" class="noborder">
     				<tbody><tr>
-    					<td width="39%">Jenis Model</td>
-    					<td width="61%">: <?= $model->model_kereta ?>7</td>
+    					<td>Jenis Model</td>
+    					<td>: <?= $model->model_kereta ?>7</td>
     				</tr>
     				<tr>
     					<td>No. Pendaftaran</td>
@@ -133,15 +128,15 @@ $months = [
 	<table width="900" border="1" align="center" class="semakan table table-bordered">
 		<tbody>
 			<tr>
-				<td width="104" rowspan="2" align="center"><strong>Tarikh</strong></td>
+				<td width="80" rowspan="2" align="center"><strong>Tarikh</strong></td>
 				<td colspan="2" align="center"><strong>Waktu</strong></td>
-				<td width="303" rowspan="2" align="center"><strong>Tujuan / Tempat</strong></td>
-				<td width="99" rowspan="2" align="center"><strong>Jarak (KM)</strong></td>
-				<td width="115" rowspan="2" align="center"><strong>Jumlah Tol (RM)</strong></td>
+				<td rowspan="2" align="center"><strong>Tujuan / Tempat</strong></td>
+				<td width="70" rowspan="2" align="center"><strong>Jarak (KM)</strong></td>
+				<td width="70" rowspan="2" align="center"><strong>Jumlah Tol (RM)</strong></td>
 			</tr>
 			<tr>
-				<td width="116" align="center"><strong>Bertolak</strong></td>
-				<td width="123" align="center"><strong>Sampai</strong></td>
+				<td width="80" align="center"><strong>Bertolak</strong></td>
+				<td width="80" align="center"><strong>Sampai</strong></td>
 			</tr>
 			<?php 
 				$jumah_jarak = 0;
@@ -168,63 +163,69 @@ $months = [
 <div class="break"></div>
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
+		<thead>
+			<tr>
+				<th align="center">C. TUNTUTAN  ELAUN PERJALANAN KENDERAAN(OL 21104)</th>
+			</tr>
+			<tr>
+				<td align="center">Jumlah Kilometer X Sen / Kilometer</td>
+			</tr>
+		</thead>
 		<tbody>
 			<tr>
-				<td colspan="2" align="center"><strong>C. TUNTUTAN  ELAUN PERJALANAN KENDERAAN(OL 21104)</strong></td>
+				<td align="right">
+					<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+						<tbody class="noborder">
+							<tr>
+								<td width="27%">500 KM Pertama </td>
+								<td width="14%" align="center" id="km1">0</td>
+								<td width="14%" align="center">KM X</td>
+								<td width="19%" align="center" id="kadar1">0</td>
+								<td width="13%" align="center">sen/KM</td>
+								<td width="13%" align="right" id="kadar_jarak1">0</td>
+							</tr>
+							<tr>
+								<td>501 KM - 1000 KM</td>
+								<td align="center" id="km2"></td>
+								<td align="center">KM X</td>
+								<td align="center" id="kadar2">0</td>
+								<td align="center">sen/KM</td>
+								<td align="right" id="kadar_jarak2">0.00</td>
+							</tr>
+							<tr>
+								<td>1001 KM - 1700 KM</td>
+								<td align="center" id="km3"></td>
+								<td align="center">KM X</td>
+								<td align="center" id="kadar3">0</td>
+								<td align="center">sen/KM</td>
+								<td align="right" id="kadar_jarak3">0.00</td>
+							</tr>
+							<tr>
+								<td>1701 KM ke atas</td>
+								<td align="center" id="km4"></td>
+								<td align="center">KM X</td>
+								<td align="center" id="kadar4">0</td>
+								<td align="center">sen/KM</td>
+								<td align="right" id="kadar_jarak4">0.00</td>
+							</tr>
+							<tr>
+								<td><strong>Jumlah (KM)</strong></td>
+								<td align="center" id="jumlah_km">0</td>
+								<td align="center"><br></td>
+								<!-- <td align="center" id="kadar5">&nbsp;</td> -->
+								<td colspan="2" align="center"><strong>Jumlah (RM)</strong></td>
+								<td align="right" id="jumlah_kadar_jarak"></td>
+							</tr>
+							<tr>
+								<td colspan="5" align="right"><strong>Perjalanan yang telah dilakukan pada bulan yang sedang dituntut sebanyak <span class="perjalanan_lalu">0</span> Km</strong>:</td>
+								<td align="right" id="tolak_kadar_jarak">0.00</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
 			</tr>
 			<tr>
-				<td colspan="2" align="center">Jumlah Kilometer X Sen / Kilometer</td>
-			</tr>
-			<tr>
-				<td colspan="2" align="right"><table width="100%" border="0" align="center">
-					<tbody class="noborder"><tr>
-						<td width="27%">500 KM Pertama </td>
-						<td width="14%" align="center" id="km1">0</td>
-						<td width="14%" align="center">KM X</td>
-						<td width="19%" align="center" id="kadar1">0</td>
-						<td width="13%" align="center">sen/KM</td>
-						<td width="13%" align="right" id="kadar_jarak1">0</td>
-					</tr>
-					<tr>
-						<td>501 KM - 1000 KM</td>
-						<td align="center" id="km2"></td>
-						<td align="center">KM X</td>
-						<td align="center" id="kadar2">0</td>
-						<td align="center">sen/KM</td>
-						<td align="right" id="kadar_jarak2">0.00</td>
-					</tr>
-					<tr>
-						<td>1001 KM - 1700 KM</td>
-						<td align="center" id="km3"></td>
-						<td align="center">KM X</td>
-						<td align="center" id="kadar3">0</td>
-						<td align="center">sen/KM</td>
-						<td align="right" id="kadar_jarak3">0.00</td>
-					</tr>
-					<tr>
-						<td>1701 KM ke atas</td>
-						<td align="center" id="km4"></td>
-						<td align="center">KM X</td>
-						<td align="center" id="kadar4">0</td>
-						<td align="center">sen/KM</td>
-						<td align="right" id="kadar_jarak4">0.00</td>
-					</tr>
-					<tr>
-						<td><strong>Jumlah (KM)</strong></td>
-						<td align="center" id="jumlah_km">0</td>
-						<td align="center"><br></td>
-						<td align="center" id="kadar5">&nbsp;</td>
-						<td align="center"><strong>Jumlah (RM)</strong></td>
-						<td align="right" id="jumlah_kadar_jarak"></td>
-					</tr>
-					<tr>
-						<td colspan="5" align="right"><strong>Perjalanan yang telah dilakukan pada bulan yang sedang dituntut sebanyak <span class="perjalanan_lalu">0</span> Km</strong>:</td>
-						<td align="right" id="tolak_kadar_jarak">0.00</td>
-					</tr>
-				</tbody></table></td>
-			</tr>
-			<tr>
-				<td colspan="2" width="888" align="right" id="jumlah_kadar_jarak4" style="font-weight:bold;">
+				<td align="right" id="jumlah_kadar_jarak4" style="font-weight:bold;">
 					<table width="200" border="0" class="noborder">
 						<tbody>
 							<tr>
@@ -241,21 +242,21 @@ $months = [
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<thead>
-			<tr><th colspan="7" class="text-center">D. TUNTUTAN ELAUN MAKAN DAN HARIAN(OL21101)</th></tr>
+			<tr><th class="text-center">D. TUNTUTAN ELAUN MAKAN DAN HARIAN(OL21101)</th></tr>
 		</thead>
 		<tbody>
 			<tr>
 				<td>
-					<table width="100%" border="0" class="noborder">
+					<table width="100%" border="0" class="noborder" cellspacing="0" cellpadding="0">
 						<tbody>
 							<tr>
-								<td width="5%" id="kali1"><?= $model->kali_makan ?></td>
-								<td width="28%">X Elaun Makan sebanyak</td>
-								<td width="1%" class="text-right">RM</td>
-								<td width="2%" align="left" id="elaun_sehari1"><?= $model->elaun_makan ?></td>
-								<td width="1%">(<span id="kadar_elaun1">100</span>%)</td>
-								<td width="33%">sehari di semananjung</td>
-								<td width="8%" align="right" id="jumlah_elaun1"><?= number_format(($model->kali_makan * $model->elaun_makan), 2) ?></td>
+								<td id="kali1"><?= $model->kali_makan ?></td>
+								<td>X Elaun Makan sebanyak</td>
+								<td class="text-right">RM</td>
+								<td align="left" id="elaun_sehari1"><?= $model->elaun_makan ?></td>
+								<td>(<span id="kadar_elaun1">100</span>%)</td>
+								<td>sehari di semananjung</td>
+								<td align="right" id="jumlah_elaun1"><?= number_format(($model->kali_makan * $model->elaun_makan), 2) ?></td>
 							</tr>
 							<tr>
 								<td id="kali2"><?= $model->kali_harian ?></td>
@@ -329,7 +330,7 @@ $months = [
 			    				foreach ($model_hotels as $key => $value) {
 			    					$kos_hotel += ($value->kos_hotel * $value->kali_hotel);
 			    			?>
-			    			<tr>
+			    			<tr style="border: none!important;">
 						        <td class="kali_hotel"><?= $value->kali_hotel ?></td>
 						        <td>hari x Bayaran Sewa Hotel <?= $key + 1 ?> sebanyak</td>
 						        <td>RM<span class="hotel"><?= number_format($value->kos_hotel, 2) ?></span> sehari</td>
@@ -361,8 +362,8 @@ $months = [
 					<table width="200" border="0" class="noborder">
 				        <tbody>
 				        	<tr>
-						        <td align="right">Jumlah (RM)</td>
-						        <td align="right" id="jumlah_elaun_penginapan"><?= number_format($kos_hotel + $model->cukai + ($model->lojing * $model->kali_lojing), 2) ?></td>
+						        <th align="right">Jumlah (RM)</th>
+						        <th align="right" id="jumlah_elaun_penginapan"><?= number_format($kos_hotel + $model->cukai + ($model->lojing * $model->kali_lojing), 2) ?></th>
 				        	</tr>
 				    	</tbody>
 					</table>
@@ -384,7 +385,7 @@ $months = [
 	?>
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<thead>
-			<tr><th colspan="7" class="text-center">F. TUNTUTAN TAMBANG PENGANGKUTAN AWAM (*)</th></tr>
+			<tr><th class="text-center">F. TUNTUTAN TAMBANG PENGANGKUTAN AWAM (*)</th></tr>
 		</thead>
 		<tbody>
 			<tr>
@@ -437,10 +438,10 @@ $months = [
 					<table width="200" border="0" align="right" class="noborder">
 				        <tbody>
 				    		<tr>
-				        		<td align="right">Jumlah (RM)</td>
-				        		<td align="right" id="jumlah_tambang">
+				        		<th align="right">Jumlah (RM)</th>
+				        		<th align="right" id="jumlah_tambang">
 				        			<?= number_format($model->teksi + $model->bas + $model->keretapi + $model->terbang + $model->feri + $model->lain, 2) ?>
-				        		</td>
+				        		</th>
 				      		</tr>
 				    	</tbody>
 				    </table>
@@ -452,12 +453,12 @@ $months = [
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<thead>
-			<tr><th colspan="7" class="text-center">G. TUNTUTAN PELBAGAI (*) (OL21199)</th></tr>
+			<tr><th class="text-center">G. TUNTUTAN PELBAGAI (*) (OL21199)</th></tr>
 		</thead>
 		<tbody>
 			<tr>
 				<td>
-					<table width="100%" border="0" class="noborder">
+					<table width="100%" border="0" class="noborder" cellpadding="0" cellspacing="0">
 						<tbody>
 							<tr>
 								<td>Tol (Touch &amp; Go: <?= $model->no_tg ?>)</td>
@@ -503,23 +504,9 @@ $months = [
 				</td>
 			</tr>
 		</tbody>
-		<tfoot>
+		<tfoot>			
 			<tr>
 				<th>
-					<table width="200" border="0" align="right" class="noborder">
-				        <tbody>
-				    		<tr>
-				        		<td align="right">Jumlah (RM)</td>
-				        		<td align="right" id="jumlah_pelbagai">
-				        			<?= number_format($model->tol + $model->pakir + $model->dobi + $model->pos + $model->telefon + $model->tukaran, 2) ?>
-				        		</td>
-				      		</tr>
-				    	</tbody>
-				    </table>
-				</th>
-			</tr>
-			<tr>
-				<td>
 					<table width="300" border="0" align="right" class="noborder">
 						<tbody>
 							<tr style="font-size: 1.1em;">
@@ -535,7 +522,21 @@ $months = [
 					        </tr>
 					    </tbody>
 					</table>
-				</td>
+				</th>
+			</tr>
+			<tr>
+				<th>
+					<table width="200" border="0" align="right" class="noborder">
+				        <tbody>
+				    		<tr>
+				        		<th align="right">Jumlah (RM)</th>
+				        		<th align="right" id="jumlah_pelbagai">
+				        			<?= number_format($model->tol + $model->pakir + $model->dobi + $model->pos + $model->telefon + $model->tukaran, 2) ?>
+				        		</th>
+				      		</tr>
+				    	</tbody>
+				    </table>
+				</th>
 			</tr>
 		</tfoot>
 	</table>
@@ -544,7 +545,7 @@ $months = [
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<thead>
-			<tr><th colspan="7" class="text-center">H. PENGAKUAN</th></tr>
+			<tr><th class="text-center">H. PENGAKUAN</th></tr>
 		</thead>
 		<tbody>
 			<tr>
@@ -552,62 +553,37 @@ $months = [
 					<table width="98%" border="0" align="center" class="noborder">
 				        <tbody>
 				        	<tr>
-				        		<td colspan="3">
+				        		<td colspan="2">
 				        			Saya mengaku bahawa
-					<ol type="a">
-						<li>
-							Perjalanan pada tarikh-tarikh tersebut adalah benar dan telah dibuat atas urusan rasmi;
-						</li>
-						<li>
-							Tuntutan ini dibuat mengikut kadar dan syarat seperti yang dinyatakan di bawah peraturan-peraturan bagi pegawai
-							bertugas rasmi dan/atau pegawai berkursus yang berkuatkuasa semasa; 
-						</li>
-						<li>
-							Perbelanjaan yang bertanda (*) berjumlah sebanyak RM <span id="dibayar"></span>  dilakukan dan dibayar oleh saya;
-						</li>
-						<li>
-							Panggilan telefon sebanyak <?= number_format($model->telefon, 2) ?> dibuat atas urusan rasmi; dan
-						</li>
-						<li>
-							butir-butir seperti yang dinyatakan di atas adalah benar dan saya bertanggungjawab terhadapnya.
-						</li>
-					</ol>
+									<ol type="a">
+										<li>
+											Perjalanan pada tarikh-tarikh tersebut adalah benar dan telah dibuat atas urusan rasmi;
+										</li>
+										<li>
+											Tuntutan ini dibuat mengikut kadar dan syarat seperti yang dinyatakan di bawah peraturan-peraturan bagi pegawai
+											bertugas rasmi dan/atau pegawai berkursus yang berkuatkuasa semasa; 
+										</li>
+										<li>
+											Perbelanjaan yang bertanda (*) berjumlah sebanyak RM <span id="dibayar"></span>  dilakukan dan dibayar oleh saya;
+										</li>
+										<li>
+											Panggilan telefon sebanyak <?= number_format($model->telefon, 2) ?> dibuat atas urusan rasmi; dan
+										</li>
+										<li>
+											butir-butir seperti yang dinyatakan di atas adalah benar dan saya bertanggungjawab terhadapnya.
+										</li>
+									</ol>
 				        		</td>
 				        	</tr>
-							<!-- <tr>
-								<td colspan="3">Saya mengaku bahawa</td>
+				        	<tr>
+								<td width="60%"></td>
+								<td align="right"></td>
 							</tr>
 							<tr>
-								<td width="4%">(a)</td>
-								<td colspan="2"> Perjalanan pada tarikh-tarikh tersebut adalah benar dan telah dibuat atas urusan rasmi;</td>
+								<td width="60%">Tarikh: <?= Yii::$app->formatter->asDate($model->tarikh_jadi) ?> </td>
+								<td align="right">__________________<br>(Tandatangan Pegawai)</td>
 							</tr>
-							<tr>
-								<td>(b)</td>
-								<td colspan="2"> Tuntutan ini dibuat mengikut kadar dan syarat seperti yang dinyatakan di bawah peraturan-peraturan bagi pegawai bertugas rasmi dan/atau pegawai berkursus yang berkuatkuasa semasa; <br></td>
-							</tr>
-							<tr>
-								<td>(c)</td>
-								<td colspan="2"> Perbelanjaan yang bertanda (*) berjumlah sebanyak RM <span id="dibayar"></span> dilakukan dan dibayar oleh saya; </td>
-							</tr>
-							<tr>
-								<td>(d) </td>
-								<td colspan="2">Panggilan telefon sebanyak RM <?= number_format($model->telefon, 2) ?> dibuat atas urusan rasmi; dan</td>
-							</tr>
-							<tr>
-								<td>(e)</td>
-								<td colspan="2"> butir-butir seperti yang dinyatakan di atas adalah benar dan saya bertanggungjawab terhadapnya.</td>
-							</tr>
-							<tr>
-								<td>&nbsp;</td>
-								<td colspan="2">&nbsp;</td>
-							</tr> -->
-							<tr>
-								<td>&nbsp;</td>
-								<td width="70%">Tarikh: <?= Yii::$app->formatter->asDate($model->tarikh_jadi) ?> </td>
-								<td width="30%" align="right">__________________<br>
-								(Tandatangan Pegawai)</td>
-							</tr>
-				    </tbody>
+				    	</tbody>
 					</table>
 
 				</td>
@@ -618,7 +594,7 @@ $months = [
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<thead>
-			<tr><th colspan="7" class="text-center">I. PENGESAHAN</th></tr>
+			<tr><th class="text-center">I. PENGESAHAN</th></tr>
 		</thead>
 		<tbody>
 			<tr>
@@ -637,12 +613,6 @@ $months = [
 						          (Tandatangan Ketua Jabatan)</td>
 						     </tr>
 						     <tr>
-						        <td>&nbsp;</td>
-						        <td>&nbsp;</td>
-						        <td align="right">&nbsp;</td>
-						     </tr>
-						     <tr>
-						        <td>&nbsp;</td>
 						        <td>&nbsp;</td>
 						        <td align="right">&nbsp;</td>
 						     </tr>
@@ -663,12 +633,12 @@ $months = [
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<thead>
-			<tr><th colspan="7" class="text-center">J. PENDAHULUAN DIRI (Jika ada)</th></tr>
+			<tr><th class="text-center">J. PENDAHULUAN DIRI (Jika ada)</th></tr>
 		</thead>
 		<tbody>
 			<tr>
 				<td>
-					<table width="98%" border="0" align="center" class="noborder">
+					<table width="98%" border="0" align="center" class="noborder" style="border-style: hidden;">
 						<tbody>
 							<tr>
 				        		<td colspan="2">Adalah disahkan bahawa perjalanan tersebut adalah atas urusan rasmi.</td>
@@ -696,29 +666,10 @@ $months = [
 		</tbody>
 	</table>
 </div>
-<?php Html::a('Papar PDF', ['/perjalanan/form-pdf', 'id' => yii::$app->request->get('id')], ['class'=>'btn btn-primary']) ?>
-
-
-<button class="btn btn-primary" onclick="window.print();">Cetak</button>
+<?= Html::a('Papar PDF', ['/perjalanan/form-pdf', 'id' => yii::$app->request->get('id')], ['class'=>'btn btn-primary']) ?>
 <?php
 
-
-
-$this->registerJs('
-
-$("#btnPrint").on("click", function () {
-            var divContents = $("#content").html();
-            var printWindow = window.open("", "", "height=400,width=1200");
-            printWindow.document.write("<html><head><title>DIV Contents</title>");
-            printWindow.document.write("<style> * {font-family: arial;} table.print tr td {border: 1px solid black;} table.print {border: none; }</style>"); 
-            printWindow.document.write("</head><body >");
-            printWindow.document.write(divContents);
-            printWindow.document.write("</body></html>");
-            printWindow.document.close();
-            printWindow.print();
-        });
-
-');
+$this->registerJsFile("@web/js/jspdf.min.js");
 
 $this->registerJs('
 	setClass("'.$model->kelas_tuntutan.'");	
@@ -923,7 +874,8 @@ function numberToWord(num) {
 $this->registerCss('
 
 	.noborder tr td, .print tr td {
-		padding: 5px;
+		/*padding: 5px;*/
+		border: none !important;
 	}
 
 	ol {

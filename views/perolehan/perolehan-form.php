@@ -19,7 +19,7 @@ if(isset($error)) {
 		<h3 class="text-center">BORANG PERMOHONAN PEROLEHAN BEKALAN / PERKHIDMATAN / KERJA</h3>
   	</div>
   	<div class="panel-body">
-    	Panel content
+    	<div id="no"> No: J1814080 (P46-09300) </div>
   	</div>
   	<ul class="list-group">
     	<li class="list-group-item">
@@ -132,8 +132,22 @@ if(isset($error)) {
 <?= Html::a('Papar PDF', ['/perolehan/form-pdf', 'id' => yii::$app->request->get('id')], ['class'=>'btn btn-primary']) ?>
 <?php
 $this->registerCss('
-	.bordered {
-		border: 1px solid black;
-	}
+.bordered {
+	border: 1px solid black;
+}
+
+#no {
+	position:relative;
+	width: 250px;
+	left: 10px;
+	top: -10px;
+	color:red;
+	font-weight:bold;
+	text-align:center;
+	border: 2px solid red;
+	padding: 1px 3px;
+	z-index: 9999;
+}
+
 ');
 ?>

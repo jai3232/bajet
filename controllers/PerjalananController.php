@@ -11,6 +11,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use kartik\mpdf\Pdf;
 
 /**
  * PerjalananController implements the CRUD actions for Perjalanan model.
@@ -204,6 +205,119 @@ class PerjalananController extends Controller
             'model_details' => $model_details,
             'model_hotels' => $model_hotels
         ]);
+    }
+
+    public function actionFormPdf($id = 0)
+    {
+        $model = Perjalanan::findOne($id);
+        if(count($model) == 0)
+            return $this->render('perjalanan-form', ['error' => 404]);
+        $model_details = PerjalananDetails::find()->where(['id_perjalanan' => $id])->all();
+        $model_hotels = PerjalananHotel::find()->where(['id_perjalanan' => $id])->all();
+
+        $content = $this->renderPartial('perjalanan-form-pdf',[
+            'model' => $model,
+            'model_details' => $model_details,
+            'model_hotels' => $model_hotels
+        ]);
+
+        $css = '
+            #rujukan {
+                position: relative;
+                border: 3px solid red;
+                width: 200px;
+                padding: 1px 3px;
+                text-align: center;
+                font-weight: bold;
+                color: red;
+
+            }
+            .btn {
+                display: none;
+            }
+            .break {page-break-after: always;}
+
+            .noborder tr td, .noborder tr th , table tr td, td th {border: none !important;}
+
+            .noborder td, td , .noborder th { 
+                border: none !important; 
+                border-style: hidden !important;
+                padding: 0; !important;
+            }
+
+            table {
+              border-collapse: separate;
+              border-spacing: 0px;
+              font-size: 13px;
+              /* Apply cell spacing */
+            }
+
+            .btn, footer {display: none !important;}
+
+            table {
+                border: solid white !important;
+                border-width: 1px 0 0 1px !important;
+                border-bottom-style: none;
+                border: none;
+            }
+
+            th, td {
+                border: solid white !important;
+                border-width: 0 1px 1px 0 !important;
+                border-bottom-style: none;
+                border: none;
+            }
+            .glyphicon {
+                position: relative;
+                top: 1px;
+                display: inline-block;
+                font-family: \'Glyphicons Halflings\';
+                font-style: normal;
+                font-weight: normal;
+                line-height: 1;
+
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+            .glyphicon-phone-alt:before {
+                content: "\e183";
+            }
+        ';
+        
+        
+        $pdf = new Pdf([
+            // set to use core fonts only
+            'mode' => Pdf::MODE_CORE, 
+            // A4 paper format
+            'format' => Pdf::FORMAT_A4, 
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_PORTRAIT, 
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER, 
+            // your html content input
+            'content' => $content,  
+            // format content from your own css file if needed or use the
+            // enhanced bootstrap css built by Krajee for mPDF formatting 
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            'cssInline' => '.kv-heading-1{font-size:18px} .bordered {border: 1px solid black;}'.$css, 
+             // set mPDF properties on the fly
+            //'options' => ['title' => 'Borang Perolehan'],
+             // call mPDF methods on the fly
+            'methods' => [ 
+                //'SetHeader'=>['Borang Perolehan'], 
+                'SetFooter'=>['{PAGENO}'],
+            ]
+        ]);
+
+        $mpdf = $pdf->api;
+        //$mpdf->keep_table_proportions = false;
+        $mpdf->SetDefaultFontSize(8);
+    
+        // return the pdf output as per the destination setting
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        //Yii::$app->response->headers->add('Content-Type', 'application/pdf');
+        return $pdf->render(); 
     }
 
 
