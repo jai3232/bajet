@@ -4,20 +4,33 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use yii\bootstrap\Modal;
 use kartik\dialog\Dialog;
 use app\models\Unit;
 use yii\jui\DatePicker;
 use kartik\time\TimePicker;
 
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Perjalanan */
+/* @var $form yii\widgets\ActiveForm */
+?>
 
-$this->title = Yii::t('app', 'Kemaskini Perjalanan: ' . $model->kod_id, [
-    'nameAttribute' => '' . $model->id,
+<?php
+
+Modal::begin([
+    'header' => '<h3 id="modal-header">Senarai Unjuran</h3>',
+    'id' => 'modal',
+    'clientOptions' => ['backdrop' => 'static'],
+    'size' => 'modal-lg',
+    'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>',
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Perjalanan'), 'url' => ['index']];
-//$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+
+echo '<div id="modalContent"><div class="loader col-sm-4" style="margin: 40px 50%;"></div></div>';
+Modal::end();
+$id_pengguna = Yii::$app->user->identity->id;
+
+echo Dialog::widget();
 
 $currentYear = date("Y"); 
 $yearList = [];
@@ -27,35 +40,39 @@ for($i = $currentYear - 1; $i < $currentYear + 2; $i++) {
 
 $months = [
             '01' => 'Jan', '02' => 'Feb', '03' => 'Mac', '04' => 'Apr', '05' => 'Mei', '06' => 'Jun',
-            '07' => 'Jul', '08' => 'Ogos', '09' => 'Sep', '10' => 'Okt', '11' => 'Nov', '12' => 'Dis'
+            '07' => 'Jul', '08' => 'Ogo', '09' => 'Sep', '10' => 'Okt', '11' => 'Nov', '12' => 'Dis'
           ];
 ?>
+
+<div class="form-group">
+    <button id="pilih-unjuran" class="btn btn-primary">Pilih Unjuran</button>
+</div>
 <div id="unjuran_info" style="display: none;">
     <div class="form-group">
-        <label>Kod Unjuran: <span id="kod-unjuran"><?= $model->kod_unjuran ?></span></label>
+        <label>Kod Unjuran: <span id="kod-unjuran"></span></label>
     </div>
     <div class="form-group">
-        <label>OS: <span id="os"><?= $model->kodUnjuran->os ?></span></label>
+        <label>OS: <span id="os"></span></label>
     </div>
     <div class="form-group">
-        <label>Butiran: <span id="butiran"><?= $model->kodUnjuran->butiran ?></span></label>
+        <label>Butiran: <span id="butiran"></span></label>
     </div>
     <div class="form-group">
-        <label>Jumlah Unjuran: <span id="jumlah-unjuran"><?= $model->kodUnjuran->jumlah_unjuran ?></span></label>
+        <label>Jumlah Unjuran: <span id="jumlah-unjuran"></span></label>
     </div>
     <div class="form-group">
-        <label>Baki: <span id="baki"><?= \app\models\Unjuran::bakiUnjuran($model->kod_unjuran) ?></span></label>
+        <label>Baki: <span id="baki"></span></label>
     </div>
     <div class="form-group">
-        <label>Unjuran Jabatan: <span id="jabatan"><?= $model->id_jabatan ?></span></label>
+        <label>Unjuran Jabatan: <span id="jabatan"></span></label>
     </div>
 
 </div>
-<div class="perjalanan-update">
 
-    <h2><?= Html::encode($this->title) ?></h2>
-    <?php $form = ActiveForm::begin(["id" => "perjalanan-form", 'action' => ['perjalanan/create']]); ?>
-    <div class="first" style="display: nonex;">
+
+<div class="perjalanan-form">
+    <?php $form = ActiveForm::begin(["id" => "perjalanan-form"]); ?>
+    <div class="first" style="display: none;">
 
         <?= $form->field($model, 'kod_unjuran')->hiddenInput(['maxlength' => true])->label(false) ?>
 
@@ -71,7 +88,6 @@ $months = [
                         [
                             'prompt' => '- Sila Pilih -',
                             'options' => [date("m") => ['selected' => true]],
-                            'disabled' => true,
                         ]) ?>                
             </div>
             <div class="col-6 col-sm-6">
@@ -79,19 +95,23 @@ $months = [
                         [
                             'prompt' => '- Sila Pilih -',
                             'options' => [date("Y") => ['selected' => true]],
-                            'disabled' => true,
                         ]) ?>               
             </div>
         </div>
 
-        <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true, 'value' => $model->no_kp, 'readonly' => true])->label('No. KP tanpa (-)') ?>
+        <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true, 'value' => '777777777777'])->label('No. KP tanpa (-)') ?>
         <div class="row row-loader form-group" style="display: none;">
             <div class="loader col-sm-4"></div>
             <div class="col-sm-8" style="height:60px; display:flex; align-items:center; font-weight: bold;">Carian data ....</div>
         </div>
+         <div class="form-group">
+            <?= Html::button(Yii::t('app', 'Periksa Data'), ['class' => 'btn btn-success', 'id' => 'periksa-data']) ?>
+            <?= Html::button(Yii::t('app', 'Buat Tuntutan'), ['class' => 'btn btn-warning', 'id' => 'buat-tuntutan', 'style' => 'display: none;']) ?>
+        </div>
 
     </div>
-    <div class="second">
+
+    <div class="second" style="display: nonex;">
         <fieldset><legend>Maklumat Personal</legend>
         <?php //= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(Unit::find()->where(['id_jabatan' => yii::$app->user->identity->id_jabatan])->all(), 'id', 'unit'),['prompt' => '- Sila Pilih -']) ?>
 
@@ -184,46 +204,29 @@ $months = [
                         </tr>
                     </thead>
                     <tbody id="perjalanan-body">
-	                    <?php 
-	                    	$jumlah_perjalanan = count($perjalanan_details);
-	                    	foreach ($perjalanan_details as $key => $value) {
-	                    		$num = $key + 1;
-	                    ?>                    	
                         <tr>
-                            <td class="text-center"><?= $num ?></td>
+                            <td class="text-center">1</td>
                             <td class="text-center">
-                                <?= Html::textInput('PerjalananDetails[tarikh]['.$num.']', Yii::$app->formatter->asDate($value['tarikh']), ['class' => 'form-control datepicker must']) ?>
+                                <?= Html::textInput('PerjalananDetails[tarikh][1]', null, ['class' => 'form-control datepicker must']) ?>
                             </td>
                             <td class="text-center">
                                 <div class="bootstrap-timepicker input-group">
-                                    <input type="text" class="form-control time-picker must" name="PerjalananDetails[bertolak][<?= $num ?>]" value="<?= $value['bertolak'] ?>">
+                                    <input type="text" class="form-control time-picker must" name="PerjalananDetails[bertolak][1]">
                                     <span class="input-group-addon picker"><i class="glyphicon glyphicon-time"></i></span>
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div class="bootstrap-timepicker input-group">
-                                    <input type="text" class="form-control time-picker must" name="PerjalananDetails[sampai][<?= $num ?>]"  value="<?= $value['sampai'] ?>">
+                                    <input type="text" class="form-control time-picker must" name="PerjalananDetails[sampai][1]">
                                     <span class="input-group-addon picker"><i class="glyphicon glyphicon-time"></i></span>
                                 </div>
                             </td>
-                            <td class="text-center"><?= Html::textarea('PerjalananDetails[tujuan]['.$num.']', $value['tujuan'],['class' => 'form-control must', 'cols' => 55]) ?></td>
-                            <td class="text-center col-lg-1"><?= Html::textInput('PerjalananDetails[jarak]['.$num.']', $value['jarak'],['class' => 'form-control jarak', 'type' => 'number']) ?></td>
-                            <td class="text-center col-lg-1"><?= Html::textInput('PerjalananDetails[kos]['.$num.']', $value['kos'],['class' => 'form-control kos', 'type' => 'number', 'step' => 0.01]) ?></td>
-                            <td class="text-center">
-                        	<?php
-                        		if($num > 1) {
-                        	?>
-								<button class="btn btn-warning btn-minus"><span class="glyphicon glyphicon-minus-sign icon-size"></span></button>
-                            <?php
-                            	}
-                            ?>	
-                            </td>
+                            <td class="text-center"><?= Html::textarea('PerjalananDetails[tujuan][1]', null,['class' => 'form-control must', 'cols' => 55]) ?></td>
+                            <td class="text-center col-lg-1"><?= Html::textInput('PerjalananDetails[jarak][1]', null,['class' => 'form-control jarak', 'type' => 'number']) ?></td>
+                            <td class="text-center col-lg-1"><?= Html::textInput('PerjalananDetails[kos][1]', null,['class' => 'form-control kos', 'type' => 'number', 'step' => 0.01]) ?></td>
+                            <td class="text-center"></td>
                         </tr>
-                        <?php
-	                    	}
-	                    ?>
                     </tbody>
-                    
                     <tfoot>
                         <tr><th colspan="5" class="text-right">Jumlah</th><th id="jumlah_jarak0" class="text-center">0</th><th id="jumlah_kos" class="text-right">0.00</th><th></th></tr>
                         <tr><th colspan="5" class="text-right">Jumlah Perjalanan Lain-lain (KM):</th><th class="perjalanan_lalu text-center">0</th><th></th><th></th></tr>
@@ -321,25 +324,18 @@ $months = [
                     <tr><th>Jumlah Malam</th><th>Kadar</th><th>Harga Semalam (RM)</th><th>Jumlah (RM)</th><th>Tindakan</th></tr>
                 </thead>
                 <tbody>
-                	<?php
-                		foreach ($perjalanan_hotel as $key => $value) {
-                			$num = $key + 1;
-                	?>
                     <tr>
                         <td class="text-center">
                             <div class="form-group  form-inline">
-                                <label>Hotel <?= $num ?></label>
-                                <?= Html::dropDownList('PerjalananHotel[kali_hotel]['.$num.']', $value['kali_hotel'], $kali_makan, ['class' => 'kali_hotel form-control']) ?>
+                                <label>Hotel 1</label>
+                                <?= Html::dropDownList('PerjalananHotel[kali_hotel][1]', null, $kali_makan, ['class' => 'kali_hotel form-control']) ?>
                             </div>
                         </td>
                         <td class="text-center">hari x Bayaran Sewa Hotel sebanyak</td>
-                        <td><?= Html::textInput('PerjalananHotel[kos_hotel]['.$num.']', $value['kos_hotel'], ['class' => 'hotel form-control', 'type' => 'number', 'step' => 0.01]) ?></td>
+                        <td><?= Html::textInput('PerjalananHotel[kos_hotel][1]', null, ['class' => 'hotel form-control', 'type' => 'number', 'step' => 0.01]) ?></td>
                         <td class="penginapan text-right">0.00</td>
                         <td></td>
                     </tr>
-                    <?php
-                    	}
-                    ?>
                 </tbody>
                 <tfoot>
                     <tr>
@@ -486,7 +482,7 @@ dilakukan dan dibayar oleh saya;</li>
 
         <?= $form->field($model, 'jumlah_kew')->hiddenInput()->label(false) ?>
 
-        <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
+        <?= $form->field($model, 'id')->textInput()->label(false) ?>
 
         <?php //= $form->field($model, 'status')->textInput() ?>
 
@@ -505,15 +501,16 @@ dilakukan dan dibayar oleh saya;</li>
             <?= Html::submitButton(Yii::t('app', 'Hantar & Cetak'), ['class' => 'btn btn-warning', 'id' => 'cetak-perjalanan', 'style' => 'display: none;']) ?>
         </div>
 
-    </div> 
+    </div>    
+    <?php ActiveForm::end(); ?>
 
-	<?php ActiveForm::end(); ?>
+    
+
 </div>
 
 <?php
 
 $this->registerJs('
-
     $("#pilih-unjuran").on("click", function(){
         $("#modal").modal("show").find("#modalContent").load("'.Url::to(['perjalanan/unjuran-list']).'");
         //$("#modal-header").html("Penukaran Kod A");
@@ -675,7 +672,7 @@ $this->registerJs('
         // minuteStep: 5
     });
 
-    var ii = '.$jumlah_perjalanan.';
+    var ii = 1;
     $("#btn-perjalanan").on("click", function(){
         
         ii++;
@@ -719,7 +716,6 @@ $this->registerJs('
     });
 
     $("form#perjalanan-form").on("beforeSubmit", function(){
-    	return true;
         if(!checkMust())
             return false; 
         if(checkBaki() && confirm("Hantar tuntutan perjalanan ini?"))
@@ -730,7 +726,7 @@ $this->registerJs('
     });
 
     $("#simpan-perjalanan").on("click", function(){
-        if(checkMust() && confirm("Simpan tuntutan perjalanan ini?")) {
+        if(checkMust() && confirm("Hantar tuntutan perjalanan ini?")) {
             $.post("'.Url::to(['perjalanan/create']).'", $("form#perjalanan-form").serialize(), function(data){
                 if(data)
                     alert("Data berjaya disimpan");
@@ -918,17 +914,6 @@ $this->registerJs('
         }
 
     });
-
-    //onload page
-	$(".jarak, .kos, .hotel").trigger("keyup");
-	$(".kali").trigger("change");
-	$(".kali_hotel").trigger("change");
-	$("#perjalanan-kali_lojing").trigger("change");
-	$("#perjalanan-lojing").trigger("keyup");
-	$("#perjalanan-cukai").trigger("keyup");
-	$(".tambang, .pelbagai").trigger("keyup");
-
-	//
 ');
 
 // FUNCTIONS
@@ -1087,9 +1072,8 @@ function checkMust() {
 }
 
 function checkBaki() {
-    var balance = $("#baki").text().replace(/,/g, "")/1;
+    var balance = $("#baki").text()/1;
     var spend = $("#perjalanan-jumlah_kew").val()/1;
-    console.log(balance+":"+spend);
     if(balance >= spend)
         return true;
     return false;
@@ -1115,6 +1099,30 @@ $this->registerCss('
         100% { transform: rotate(360deg); }
     }
 ');
+
+
+//TEST SCRIPT 
+$this->registerJs('
+    $("#perjalanan-nama").val(Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-no_hp").val((Math.random() * 40000000).toFixed(0));
+    $("#perjalanan-email").val(Math.random().toString(36).substr(2, 5) + "@" + Math.random().toString(36).substr(2, 5) + ".com");
+    $("#perjalanan-jawatan").val(Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-no_gaji").val(Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-gaji_asas").val((Math.random()* 10000).toFixed(2));
+    $("#perjalanan-elaun").val((Math.random() * 10000).toFixed(2));
+    $("#perjalanan-bank").val(Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-cawangan_bank").val(Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-akaun_bank").val((Math.random() * 100000000000).toFixed(0));
+    $("#perjalanan-model_kereta").val("Citroen " + Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-no_plate").val("TL " + Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-cc").val((Math.random() * 3000).toFixed(0));
+    $("#perjalanan-alamat_pejabat").val(Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-alamat_rumah").val(Math.random() * 10 + Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-cc").trigger("keyup");
+    $("#perjalanan-cc").trigger("blur");
+
+');
+?>
 
 
 

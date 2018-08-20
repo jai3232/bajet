@@ -93,9 +93,15 @@ AppAsset::register($this);
                 'visible' => !Yii::$app->user->isGuest,
             ],
             ['label' => 'Tuntutan', 'items' => [
-                    ['label' => 'Tuntutan Perjalanan', 'url' => ['/perjalanan/create']],
+                    ['label' => 'Perjalanan Dalam Negeri', 'url' => ['/perjalanan/create']],
+                    ['label' => 'Perjalanan Luar Negeri', 'url' => ['/perjalanan/create-over']],
+                    ['label' => 'Perjalanan Lain', 'url' => ['/perjalanan/lain']],
+                    ['label' => 'Lebih Masa (OT)', 'url' => ['/ot/create']],
+                    ['label' => 'Ceramah', 'url' => ['/ceramah/create']],
                     ['label' => 'Senarai Tuntutan Perjalanan', 'url' => ['/perjalanan/index']],
-                    ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
+                    ['label' => 'Senarai Tuntutan Lebih Masa (OT)', 'url' => ['/ot/index']],
+                    ['label' => 'Senarai Tuntutan Ceramah', 'url' => ['/ceramah/index']],
+                    
                 ],
                 'visible' => !Yii::$app->user->isGuest,
             ],

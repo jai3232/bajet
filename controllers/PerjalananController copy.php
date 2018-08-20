@@ -80,21 +80,12 @@ class PerjalananController extends Controller
     public function actionCreate()
     {
         $model = new Perjalanan();
-        $id_pengguna = Yii::$app->user->identity->id;
-        $latest_model = Perjalanan::find()->where(['user' => $id_pengguna])
-                                          ->andWhere(['<>', 'status', 'X'])
-                                          ->orderBy(['id' => SORT_DESC])->one();
         $post = Yii::$app->request->post();
 
         if($post && $post['Perjalanan']['id'] != '') { // save only
             $model_id = $post['Perjalanan']['id'];
             $model = Perjalanan::findONe($model_id);
             $model->load($post);
-            if(isset($post['Perjalanan']['akuan']))
-                $model->status = 'A';
-            else
-                $model->jumlah_kew = 0;
-
             if(!$model->save())
                 return print_r($model->getErrors());
             
@@ -142,8 +133,6 @@ class PerjalananController extends Controller
                     return print_r($model_details->getErrors());
             }
 
-            if(isset($post['Perjalanan']['akuan']))
-                return $this->redirect(['form', 'id' => $model_id]);
 
             return $model_id;
         }
@@ -156,8 +145,7 @@ class PerjalananController extends Controller
 
             $model->user = yii::$app->user->identity->id;
             $model->kod_id = self::generateCodeReset('J', $model);
-            if(isset($post['Perjalanan']['akuan']) && $post['Perjalanan']['akuan']/1 == 1)
-                $model->status = 'A';
+
             if(!$model->save())
                 return print_r($model->getErrors());
             $model_id = $model->id;
@@ -204,8 +192,8 @@ class PerjalananController extends Controller
                     return print_r($model_details->getErrors());
             }
 
-            if(isset($post['Perjalanan']['akuan']) && $post['Perjalanan']['akuan']/1 == 1)
-                return $this->redirect(['form', 'id' => $model_id]);
+            if(isset($post['Perjalanan']['akuan']))
+                return $this->redirect(['view_over', 'id' => $model_id]);
 
             return $model_id;
             
@@ -213,7 +201,6 @@ class PerjalananController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'latest_model' => $latest_model,
         ]);
     }
 
@@ -226,37 +213,30 @@ class PerjalananController extends Controller
             $model_id = $post['Perjalanan']['id'];
             $model = Perjalanan::findONe($model_id);
             $model->load($post);
-            //$model->jumlah_kew = 0;
-            if(isset($post['Perjalanan']['akuan']) && $post['Perjalanan']['akuan']/1 == 1)
-                $model->status = 'A';
-            else
-                $model->jumlah_kew = 0;
             if(!$model->save())
                 return print_r($model->getErrors());
             
             PerjalananDetails::deleteAll(['id_perjalanan' => $model_id]);
-            if(isset($post['PerjalananDetails'])) {
-                $details = $post['PerjalananDetails'];
-                $nth_perjalanans = [];
-                foreach ($details['tarikh'] as $key => $value) {
-                    $nth_perjalanans [] = $key;
-                }
-                $data_perjalanans = [];
-                foreach ($details as $key => $value) {
-                    $data_perjalanans[] = $value;
-                }
-                foreach ($nth_perjalanans as $key => $value1) {
-                    $model_details = new PerjalananDetails();
-                    $model_details->id_perjalanan = $model_id;
-                    $model_details->tarikh =  Yii::$app->formatter->asDate($data_perjalanans[0][$value1], 'yyyy-MM-dd');
-                    $model_details->bertolak = date('H:i', strtotime($data_perjalanans[1][$value1]));
-                    $model_details->sampai = date('H:i', strtotime($data_perjalanans[2][$value1]));
-                    $model_details->tujuan = $data_perjalanans[3][$value1];
-                    $model_details->jarak = $data_perjalanans[4][$value1];
-                    $model_details->kos = $data_perjalanans[5][$value1];
-                    if(!$model_details->save())
-                        return print_r($model_details->getErrors());
-                }
+            $details = $post['PerjalananDetails'];
+            $nth_perjalanans = [];
+            foreach ($details['tarikh'] as $key => $value) {
+                $nth_perjalanans [] = $key;
+            }
+            $data_perjalanans = [];
+            foreach ($details as $key => $value) {
+                $data_perjalanans[] = $value;
+            }
+            foreach ($nth_perjalanans as $key => $value1) {
+                $model_details = new PerjalananDetails();
+                $model_details->id_perjalanan = $model_id;
+                $model_details->tarikh =  Yii::$app->formatter->asDate($data_perjalanans[0][$value1], 'yyyy-MM-dd');
+                $model_details->bertolak = date('H:i', strtotime($data_perjalanans[1][$value1]));
+                $model_details->sampai = date('H:i', strtotime($data_perjalanans[2][$value1]));
+                $model_details->tujuan = $data_perjalanans[3][$value1];
+                $model_details->jarak = $data_perjalanans[4][$value1];
+                $model_details->kos = $data_perjalanans[5][$value1];
+                if(!$model_details->save())
+                    return print_r($model_details->getErrors());
             }
 
             PerjalananHotel::deleteAll(['id_perjalanan' => $model_id]);
@@ -303,18 +283,17 @@ class PerjalananController extends Controller
                     return print_r($model_luar_details->getErrors());
             }
 
-            if(isset($post['Perjalanan']['akuan']) && $post['Perjalanan']['akuan']/1 == 1)
-                return $this->redirect(['form-over', 'id' => $model_id]);
-
             return $model_id;
         }
 
-        if ($model->load($post)) { // save, submit and print
 
+        if ($model->load($post)) { // save, submit and print
+            // if(isset($post['Perjalanan']['akuan']))
+            //     return print($post['Perjalanan']['akuan']);
+            // else
+            //     return 'XXX';
             $model->user = yii::$app->user->identity->id;
             $model->kod_id = self::generateCodeReset('J', $model);
-            if(isset($post['Perjalanan']['akuan']) && $post['Perjalanan']['akuan']/1 == 1)
-                $model->status = 'A';
             if(!$model->save())
                 return print_r($model->getErrors());
             $model_id = $model->id;
@@ -385,8 +364,8 @@ class PerjalananController extends Controller
                 if(!$model_luar_details->save())
                     return print_r($model_luar_details->getErrors());
             }
-            if(isset($post['Perjalanan']['akuan']) && $post['Perjalanan']['akuan']/1 == 1)
-                return $this->redirect(['form-over', 'id' => $model_id]);
+            if(isset($post['Perjalanan']['akuan']))
+                return $this->redirect(['view_over', 'id' => $model_id]);
 
             return $model_id;
         }
@@ -408,36 +387,12 @@ class PerjalananController extends Controller
     {
         $model = $this->findModel($id);
 
-        if($model->status != 'X')
-            return $this->redirect(['perjalanan/index']);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['form', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
-            'perjalanan_details' => PerjalananDetails::findAll(['id_perjalanan' => $id]),
-            'perjalanan_hotel' =>PerjalananHotel::findAll(['id_perjalanan' => $id]),
-        ]);
-    }
-
-    public function actionUpdateOver($id)
-    {
-        $model = $this->findModel($id);
-
-        if($model->status != 'X')
-            return $this->redirect(['perjalanan/index']);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['form-over', 'id' => $model->id]);
-        }
-
-        return $this->render('update-over', [
-            'model' => $model,
-            'perjalanan_details' => PerjalananDetails::findAll(['id_perjalanan' => $id]),
-            'perjalanan_hotel' => PerjalananHotel::findAll(['id_perjalanan' => $id]),
-            'perjalanan_luar_details' => PerjalananLuarDetails::findAll(['id_perjalanan' => $id]),
         ]);
     }
 
@@ -450,13 +405,9 @@ class PerjalananController extends Controller
      */
     public function actionDelete($id)
     {
-        PerjalananDetails::deleteAll(['id_perjalanan' => $id]);
-        PerjalananHotel::deleteAll(['id_perjalanan' => $id]);
-        PerjalananLuarDetails::deleteAll(['id_perjalanan' => $id]);
         $this->findModel($id)->delete();
 
-        //return $this->redirect(['index']);
-        return $this->redirect(Yii::$app->request->referrer ?: ['index']);
+        return $this->redirect(['index']);
     }
 
     public function actionUnjuranList()
@@ -489,23 +440,6 @@ class PerjalananController extends Controller
             'model' => $model,
             'model_details' => $model_details,
             'model_hotels' => $model_hotels
-        ]);
-    }
-
-    public function actionFormOver($id = 0)
-    {
-        $model = Perjalanan::findOne($id);
-        if(count($model) == 0)
-            return $this->render('perjalanan-form', ['error' => 404]);
-        $model_details = PerjalananDetails::find()->where(['id_perjalanan' => $id])->all();
-        $model_hotels = PerjalananHotel::find()->where(['id_perjalanan' => $id])->all();
-        $model_luar_details = PerjalananLuarDetails::find()->where(['id_perjalanan' => $id])->all();
-
-        return $this->render('perjalanan-form-over', [
-            'model' => $model,
-            'model_details' => $model_details,
-            'model_hotels' => $model_hotels,
-            'model_luar_details' => $model_luar_details,
         ]);
     }
 
@@ -622,19 +556,6 @@ class PerjalananController extends Controller
         return $pdf->render(); 
     }
 
-    public function actionFinance($id)
-    {
-        $post = yii::$app->request->post('Perjalanan');
-        $model = $this->findModel($id);
-        if($post) {
-            $model->jumlah_kew = $post['jumlah_kew'];
-            $model->status = $post['status'];
-            if(!$model->save())
-                return print_r($model->getErrors());
-            return true;
-        }
-        return $this->renderAjax('finance', ['model' => $model]);
-    }
 
     static function generateCodeReset($c, $model) {
         

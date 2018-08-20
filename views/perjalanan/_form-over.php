@@ -4,20 +4,33 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use yii\bootstrap\Modal;
 use kartik\dialog\Dialog;
 use app\models\Unit;
 use yii\jui\DatePicker;
 use kartik\time\TimePicker;
 
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Perjalanan */
+/* @var $form yii\widgets\ActiveForm */
+?>
 
-$this->title = Yii::t('app', 'Kemaskini Perjalanan: ' . $model->kod_id, [
-    'nameAttribute' => '' . $model->id,
+<?php
+
+Modal::begin([
+    'header' => '<h3 id="modal-header">Senarai Unjuran</h3>',
+    'id' => 'modal',
+    'clientOptions' => ['backdrop' => 'static'],
+    'size' => 'modal-lg',
+    'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>',
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Perjalanan'), 'url' => ['index']];
-//$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+
+echo '<div id="modalContent"><div class="loader col-sm-4" style="margin: 40px 50%;"></div></div>';
+Modal::end();
+$id_pengguna = Yii::$app->user->identity->id;
+
+echo Dialog::widget();
 
 $currentYear = date("Y"); 
 $yearList = [];
@@ -30,32 +43,34 @@ $months = [
             '07' => 'Jul', '08' => 'Ogos', '09' => 'Sep', '10' => 'Okt', '11' => 'Nov', '12' => 'Dis'
           ];
 ?>
+
+<div class="form-group">
+    <button id="pilih-unjuran" class="btn btn-primary">Pilih Unjuran</button>
+</div>
 <div id="unjuran_info" style="display: none;">
     <div class="form-group">
-        <label>Kod Unjuran: <span id="kod-unjuran"><?= $model->kod_unjuran ?></span></label>
+        <label>Kod Unjuran: <span id="kod-unjuran"></span></label>
     </div>
     <div class="form-group">
-        <label>OS: <span id="os"><?= $model->kodUnjuran->os ?></span></label>
+        <label>OS: <span id="os"></span></label>
     </div>
     <div class="form-group">
-        <label>Butiran: <span id="butiran"><?= $model->kodUnjuran->butiran ?></span></label>
+        <label>Butiran: <span id="butiran"></span></label>
     </div>
     <div class="form-group">
-        <label>Jumlah Unjuran: <span id="jumlah-unjuran"><?= $model->kodUnjuran->jumlah_unjuran ?></span></label>
+        <label>Jumlah Unjuran: <span id="jumlah-unjuran"></span></label>
     </div>
     <div class="form-group">
-        <label>Baki: <span id="baki"><?= \app\models\Unjuran::bakiUnjuran($model->kod_unjuran) ?></span></label>
+        <label>Baki: <span id="baki"></span></label>
     </div>
     <div class="form-group">
-        <label>Unjuran Jabatan: <span id="jabatan"><?= $model->id_jabatan ?></span></label>
+        <label>Unjuran Jabatan: <span id="jabatan"></span></label>
     </div>
 
 </div>
-<div class="perjalanan-update">
-
-    <h2><?= Html::encode($this->title) ?></h2>
-    <?php $form = ActiveForm::begin(["id" => "perjalanan-form", 'action' => ['perjalanan/create']]); ?>
-    <div class="first" style="display: nonex;">
+<div class="perjalanan-form">
+    <?php $form = ActiveForm::begin(["id" => "perjalanan-form"]); ?>
+    <div class="first" style="display: none;">
 
         <?= $form->field($model, 'kod_unjuran')->hiddenInput(['maxlength' => true])->label(false) ?>
 
@@ -71,7 +86,6 @@ $months = [
                         [
                             'prompt' => '- Sila Pilih -',
                             'options' => [date("m") => ['selected' => true]],
-                            'disabled' => true,
                         ]) ?>                
             </div>
             <div class="col-6 col-sm-6">
@@ -79,19 +93,23 @@ $months = [
                         [
                             'prompt' => '- Sila Pilih -',
                             'options' => [date("Y") => ['selected' => true]],
-                            'disabled' => true,
                         ]) ?>               
             </div>
         </div>
 
-        <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true, 'value' => $model->no_kp, 'readonly' => true])->label('No. KP tanpa (-)') ?>
+        <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true, 'value' => '777777777777'])->label('No. KP tanpa (-)') ?>
         <div class="row row-loader form-group" style="display: none;">
             <div class="loader col-sm-4"></div>
             <div class="col-sm-8" style="height:60px; display:flex; align-items:center; font-weight: bold;">Carian data ....</div>
         </div>
+         <div class="form-group">
+            <?= Html::button(Yii::t('app', 'Periksa Data'), ['class' => 'btn btn-success', 'id' => 'periksa-data']) ?>
+            <?= Html::button(Yii::t('app', 'Buat Tuntutan'), ['class' => 'btn btn-warning', 'id' => 'buat-tuntutan', 'style' => 'display: none;']) ?>
+        </div>
 
     </div>
-    <div class="second">
+
+    <div class="second" style="display: none;">
         <fieldset><legend>Maklumat Personal</legend>
         <?php //= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(Unit::find()->where(['id_jabatan' => yii::$app->user->identity->id_jabatan])->all(), 'id', 'unit'),['prompt' => '- Sila Pilih -']) ?>
 
@@ -154,110 +172,186 @@ $months = [
         <?= $form->field($model, 'alamat_pejabat')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'alamat_rumah')->textInput(['maxlength' => true]) ?>
+        
+        <?= $form->field($model, 'jenis')->hiddenInput(['value' => 1])->label(false) ?>
         </fieldset>
-        <fieldset>
-            <legend>B. Maklumat Perjalanan</legend>
-            <div class="form-group">
-                <div class="hidden">
-                    <?= DatePicker::widget(['options' => ['class' => 'hidden']]); ?>
-                    <?= TimePicker::widget([
-                            'name' => 'start_time', 
-                            'value' => '00:00 AM',
-                            'options' => ['class' => 'hidden'],
-                            'pluginOptions' => []
-                        ]); ?>
-                </div>
-                <table id="maklumat-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
-                    <thead bgcolor="#ccc">
+        <h3>TUNTUTAN LUAR NEGERI </h3>
+        <div class="oversea">
+            <fieldset>
+                <legend>Kenyataan Tuntutan #<span class="nth">1</span></legend>
+                <table id="elaun_makan-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
+                    <tbody>
                         <tr>
-                            <th rowspan="2" scope="col" class="text-center">No</th>
-                            <th colspan="3" scope="col" class="text-center">Waktu</th>
-                            <th rowspan="2" scope="col" class="text-center">Tujuan / Tempat</th>
-                            <th rowspan="2" scope="col" class="text-center">Jarak (Km)</th>
-                            <th rowspan="2" scope="col" class="text-center">Kos Tol (RM)</th>
-                            <th rowspan="2" scope="col" class="text-center">Padam</th>
-                        </tr>
-                        <tr>
-                            <th class="text-center">Tarikh</th>
-                            <th class="text-center">Bertolak</th>
-                            <th class="text-center">Sampai</th>
-                        </tr>
-                    </thead>
-                    <tbody id="perjalanan-body">
-	                    <?php 
-	                    	$jumlah_perjalanan = count($perjalanan_details);
-	                    	foreach ($perjalanan_details as $key => $value) {
-	                    		$num = $key + 1;
-	                    ?>                    	
-                        <tr>
-                            <td class="text-center"><?= $num ?></td>
-                            <td class="text-center">
-                                <?= Html::textInput('PerjalananDetails[tarikh]['.$num.']', Yii::$app->formatter->asDate($value['tarikh']), ['class' => 'form-control datepicker must']) ?>
+                            <td>
+                                <label>Dari</label>
+                                <?= Html::textInput('PerjalananLuarDetails[dari][1]', null, ['class' => 'must form-control', 'placeholder' => 'Nama Negara']) ?>
+                                
                             </td>
-                            <td class="text-center">
+                            <td>
+                                <label>Tarikh Bertolak:</label> <?= Html::textInput('PerjalananLuarDetails[tarikh_bertolak][1]', null, ['class' => 'datepicker must form-control', 'readonly' => true]) ?>
+                                <label>Waktu Bertolak:</label>
                                 <div class="bootstrap-timepicker input-group">
-                                    <input type="text" class="form-control time-picker must" name="PerjalananDetails[bertolak][<?= $num ?>]" value="<?= $value['bertolak'] ?>">
+                                    <input type="text" class="form-control time-picker must" name="PerjalananLuarDetails[waktu_bertolak][1]" placeholder="0:00 AM">
                                     <span class="input-group-addon picker"><i class="glyphicon glyphicon-time"></i></span>
                                 </div>
-                            </td>
-                            <td class="text-center">
-                                <div class="bootstrap-timepicker input-group">
-                                    <input type="text" class="form-control time-picker must" name="PerjalananDetails[sampai][<?= $num ?>]"  value="<?= $value['sampai'] ?>">
-                                    <span class="input-group-addon picker"><i class="glyphicon glyphicon-time"></i></span>
-                                </div>
-                            </td>
-                            <td class="text-center"><?= Html::textarea('PerjalananDetails[tujuan]['.$num.']', $value['tujuan'],['class' => 'form-control must', 'cols' => 55]) ?></td>
-                            <td class="text-center col-lg-1"><?= Html::textInput('PerjalananDetails[jarak]['.$num.']', $value['jarak'],['class' => 'form-control jarak', 'type' => 'number']) ?></td>
-                            <td class="text-center col-lg-1"><?= Html::textInput('PerjalananDetails[kos]['.$num.']', $value['kos'],['class' => 'form-control kos', 'type' => 'number', 'step' => 0.01]) ?></td>
-                            <td class="text-center">
-                        	<?php
-                        		if($num > 1) {
-                        	?>
-								<button class="btn btn-warning btn-minus"><span class="glyphicon glyphicon-minus-sign icon-size"></span></button>
-                            <?php
-                            	}
-                            ?>	
+                                
                             </td>
                         </tr>
-                        <?php
-	                    	}
-	                    ?>
+                        <tr>
+                            <td>
+                                <label>Negara / tempat dituju</label>
+                                <?= Html::textInput('PerjalananLuarDetails[destinasi][1]', null, ['class' => 'must form-control']) ?>
+                                 <label>Tujuan</label>
+                                <?= Html::textInput('PerjalananLuarDetails[tujuan_lawatan][1]', null, ['class' => 'must form-control']) ?>
+                                
+                            </td>
+                            <td>
+                                <label>Tarikh tiba di Negara / tempat dituju:</label> <?= Html::textInput('PerjalananLuarDetails[tarikh_sampai][1]', null, ['class' => 'datepicker must form-control', 'readonly' => true]) ?>
+                                <label>Waktu tiba di Negara / tempat dituju: </label>
+                                <div class="bootstrap-timepicker input-group">
+                                    <input type="text" class="form-control time-picker must" name="PerjalananLuarDetails[waktu_sampai][1]" placeholder="0:00 AM">
+                                    <span class="input-group-addon picker"><i class="glyphicon glyphicon-time"></i></span>
+                                </div>
+                                
+                            </td>
+                        </tr>
                     </tbody>
-                    
+                </table>
+            </fieldset>
+            <fieldset>
+                <legend>Tuntukan elaun makan / harian</legend>
+                <table id="elaun_makan-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
+                    <thead>
+                        <tr><th>Kekerapan Elaun</th><th>Jenis Elaun</th><th>Jumlah Elaun Sehari (RM)</th><th>Sarapan: 20%, Makan Tengahari: 40%, Makan Malam: 40%</th><th>Jumlah Elaun</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <?php
+                                $kali_makan = ['Pilih'];
+
+                                for($i = 1; $i <= 31; $i++) {
+                                    $kali_makan[$i] = $i;
+                                }
+                                $percent_elaun = ['1' => '100%', '0.8' => '80%', '0.6' => '60%', '0.4' => '40%', '0.2' => '20%'];
+
+                            ?>
+                            <td><?= Html::dropDownList('PerjalananLuarDetails[kali_makan][1]', null, $kali_makan, ['class' => 'kali_luar form-control']) ?></td>
+                            <td>X Elaun makan sebanyak</td>
+                            <td><?= Html::textInput('PerjalananLuarDetails[elaun_makan][1]', null, ['class' => 'elaun_makan_luar_sehari text-right form-control', 'type' => 'number', 'step' => 0.01]) ?></td>
+                            <td><?= Html::dropDownList('PerjalananLuarDetails[peratus_elaun_makan][1]', null, $percent_elaun, ['class' => 'kadar_elaun_luar form-control']) ?></td>
+                            <td class="text-right elaun_makan_luar">0.00</td>
+                        </tr>
+                        <tr>
+                            <td><?= Html::dropDownList('PerjalananLuarDetails[kali_harian][1]', null, $kali_makan, ['class' => 'kali_luar form-control']) ?></td>
+                            <td>X Elaun harian sebanyak</td>
+                            <td><?= Html::textInput('PerjalananLuarDetails[elaun_harian][1]', null, ['class' => 'elaun_makan_luar_sehari text-right form-control', 'type' => 'number', 'step' => 0.01]) ?></td>
+                            <td><?= Html::dropDownList('PerjalananLuarDetails[peratus_elaun_harian][1]', null, $percent_elaun, ['class' => 'kadar_elaun_luar form-control']) ?></td>
+                            <td class="text-right elaun_makan_luar">0.00</td>
+                        </tr>
+                    </tbody>
                     <tfoot>
-                        <tr><th colspan="5" class="text-right">Jumlah</th><th id="jumlah_jarak0" class="text-center">0</th><th id="jumlah_kos" class="text-right">0.00</th><th></th></tr>
-                        <tr><th colspan="5" class="text-right">Jumlah Perjalanan Lain-lain (KM):</th><th class="perjalanan_lalu text-center">0</th><th></th><th></th></tr>
-                        <tr><th colspan="5" class="text-right">Jumlah Keseluruhan Perjalanan:</th><th id="jumlah_jarak" class="text-center">0</th><th></th><th></th></tr>
+                        <tr><th colspan="4" class="text-right">Jumlah (RM)</th><th class="text-right jumlah_elaun_makan_luar">0.00</th></tr>
                     </tfoot>
                 </table>
-                <div class="form-group">
-                    <button class="btn btn-success" id="btn-perjalanan" title="Tambah Perjalanan"><span class="glyphicon glyphicon-plus-sign icon-size"></span></button>
-                </div>
-            </div>
-        </fieldset>
+
+            </fieldset>
+            <fieldset>
+                <legend>Tuntutan Bayaran Sewa Hotel (BSH) / Elaun Lojing</legend>
+                <table id="bhs-perjalanan-luar" class="table table-condensed table-striped table-bordered table-hover table-responsive">
+                    <thead>
+                        <tr><th>Jumlah Malam</th><th>Kadar</th><th>Harga Semalam (RM)</th><th>Jumlah (RM)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">
+                                <div class="form-group  form-inline">
+                                    <label></label>
+                                    <?= Html::dropDownList('PerjalananLuarDetails[kali_hotel][1]', null, $kali_makan, ['class' => 'kali_hotel_luar form-control']) ?>
+                                </div>
+                            </td>
+                            <td class="text-center">hari x Bayaran Sewa Hotel sebanyak</td>
+                            <td><?= Html::textInput('PerjalananLuarDetails[kos_hotel][1]', null, ['class' => 'hotel_luar_semalam text-right form-control', 'type' => 'number', 'step' => 0.01]) ?></td>
+                            <td class="hotel_luar text-right">0.00</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td class="text-center">Bayaran Perkhidmatan dan Cukai Perkhidmatan(OL21199)</td>
+                            <td><?= Html::textInput('PerjalananLuarDetails[cukai][1]', null, ['type' => 'number', 'step' => 0.01, 'class' => 'cukai_luar text-right form-control']) ?></td>
+                            <td class="jumlah_cukai_luar text-right">0.00</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <div class="form-group  form-inline">
+                                <?= Html::dropdownList('PerjalananLuarDetails[kali_lojing][1]', null, $kali_makan, ['class' => 'kali_lojing_luar form-control']) ?>
+                                </div>
+                                    
+                            </td>
+                            <td class="text-center">hari x Elaun Lojing sebanyak</td>
+                            <td><?= Html::textInput('PerjalananLuarDetails[lojing][1]', null, ['type' => 'number', 'step' => 0.01, 'class' => 'lojing_luar_semalam text-right form-control']) ?></td>
+                            <td class="lojing_luar text-right">0.00</td>
+                        </tr>
+                        <tr><th colspan="3" class="text-right ">Jumlah (RM)</th><th class="text-right jumlah_elaun_penginapan_luar">0.00</th></tr>
+                    </tfoot>
+                </table>
+            </fieldset>
+            <fieldset>
+                <legend>Tuntutan Pelbagai</legend>
+                <table id="pelbagai-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
+                    <thead>
+                        <tr><th>Jenis</th><th>Resit</th><th>Jumlah</th></tr>
+                    </thead>
+                    <tbody>                
+                        <tr>
+                            <td>Dobi</td>
+                            <td><?= Html::dropDownList('PerjalananLuarDetails[resit_dobi][1]', null, ['Tanpa Resit', 'Dilampirkan'], ['class' => 'form-control']) ?></td>
+                            <td><?= Html::textInput('PerjalananLuarDetails[dobi][1]', null, ['class' => 'dobi_luar pelbagai_luar text-right form-control', 'type' => 'number', 'step' => 0.01]) ?></td>
+                        </tr>
+                        <tr>
+                            <td>Pos</td>
+                            <td><?= Html::dropDownList('PerjalananLuarDetails[resit_pos][1]', null, ['Tanpa Resit', 'Dilampirkan'], ['class' => 'form-control']) ?></td>
+                            <td><?= Html::textInput('PerjalananLuarDetails[pos][1]', null, ['class' => 'pos_luar pelbagai_luar text-right form-control', 'type' => 'number', 'step' => 0.01]) ?></td>
+                        </tr>
+                        <tr>
+                            <td>Telefon, Teleks, Faks</td>
+                            <td><?= Html::dropdownList('PerjalananLuarDetails[resit_telefon][1]', null, ['Tanpa Resit', 'Dilampirkan'], ['class' => 'form-control']) ?></td>
+                            <td><?= Html::textInput('PerjalananLuarDetails[telefon][1]', null, ['class' => 'telefon_luar pelbagai_luar text-right form-control', 'type' => 'number', 'step' => 0.01]) ?></td>
+                        </tr>
+                        <tr>
+                            <td>"Tips / Porterage" (15% daripada Elaun Makan)</td>
+                            <td></td>
+                            <td><?= Html::textInput('PerjalananLuarDetails[porterage][1]', null, ['class' => 'porterage_luar pelbagai_luar text-right form-control', 'type' => 'number', 'step' => 0.01])?></td>
+                        </tr>
+                        <tr>
+                            <td>Cukai Kapal Terbang</td>
+                            <td><?= Html::dropDownList('PerjalananLuarDetails[resit_cukai_airport][1]', null, ['Tanpa Resit', 'Dilampirkan'], ['class' => 'form-control']) ?></td>
+                            <td><?= Html::textInput('PerjalananLuarDetails[cukai_airport][1]', null, ['class' => 'cukai_airport_luar pelbagai_luar text-right form-control', 'type' => 'number', 'step' => 0.01])?></td>
+                        </tr>
+                        <tr>
+                            <td>Keraian Rasmi</td>
+                            <td><?= Html::dropDownList('PerjalananLuarDetails[resit_keraian][1]', null, ['Tanpa Resit', 'Dilampirkan'], ['class' => 'form-control']) ?></td>
+                            <td><?= Html::textInput('PerjalananLuarDetails[keraian][1]', null, ['class' => 'keraian pelbagai_luar text-right form-control', 'type' => 'number', 'step' => 0.01])?></td>
+                        </tr>
+                        <tr>
+                            <td>Tambang Teksi / 'Tube' / Keretapi / Bas / Kos</td>
+                            <td><?= Html::dropDownList('PerjalananLuarDetails[resit_tambang_kenderaan][1]', null, ['Tanpa Resit', 'Dilampirkan'], ['class' => 'form-control']) ?></td>
+                            <td><?= Html::textInput('PerjalananLuarDetails[tambang_kenderaan][1]', null, ['class' => 'tambang_luar pelbagai_luar text-right form-control', 'type' => 'number', 'step' => 0.01])?></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr><th colspan="2" class="text-right">Jumlah (RM)</th><th class="jumlah_pelbagai_luar text-right">0.00</th></tr>
+                    </tfoot>
+                </table>
+            </fieldset>
+        </div>
+        <button class="btn btn-primary btn-oversea">Tambah Tuntutan Luar Negeri</button>
+
+        <!-- END OVERSEA CLAIM-->
+
+        <H2>TUNTUTAN DALAM NEGERI</H2>
         <fieldset>
-            <legend>C. Tuntutan Elaun Perjalanan Kenderaan (OL 21104)</legend>
-            <table id="elaun-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
-                <thead>
-                    <tr><th colspan="5"></th><th>Jumlah RM</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>500 Km Pertama</td><td id="km1"></td><td>Km X</td><td id="kadar1"></td><td>sen/Km</td><td id="kadar_jarak1">0.00</td></tr>
-                    <tr><td>501 Km - 1000 Km</td><td id="km2"></td><td>Km X</td><td id="kadar2"></td><td>sen/Km</td><td id="kadar_jarak2">0.00</td></tr>
-                    <tr><td>1001 Km - 1700 Km</td><td id="km3"></td><td>Km X</td><td id="kadar3"></td><td>sen/Km</td><td id="kadar_jarak3">0.00</td></tr>
-                    <tr><td>17001 Km ke atas</td><td id="km4"></td><td>Km X</td><td id="kadar4"></td><td>sen/Km</td><td id="kadar_jarak4">0.00</td></tr>
-                </tbody>
-                <tfoot>
-                    <tr><th class="text-right">Jumlah (Km)</th><th id="jumlah_km"></th><th>Km X</th><th></th><th>Jumlah (RM)</th><th id="jumlah_kadar_jarak"></th></tr>
-                    <tr><th colspan="5" class="text-right">Perjalanan yang telah dilakukan pada bulan yang sedang dituntut sebanyak <span class="perjalanan_lalu">0</span> Km:</th><th id="tolak_kadar_jarak">0.00</th></tr>
-                    <tr><th colspan="5" class="text-right">Jumlah Sebenar (RM)</th><th id="jumlah_kadar_jarak2">0.00</th></tr>
-                </tfoot>
-            </table>
-            <?= $form->field($model, 'jumlah_jarak')->hiddenInput() ?>
-            <?= $form->field($model, 'jarak_telah_dituntut')->hiddenInput() ?>
-        </fieldset>
-        <fieldset>
-            <legend>D. Tuntukan elaun makan dan harian (OL21101)</legend>
+            <legend>A. Tuntukan elaun makan dan harian (OL21101)</legend>
             <table id="elaun_makan-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
                 <thead>
                     <tr><th>Kekerapan Elaun</th><th>Jenis Elaun</th><th>Jumlah Elaun Sehari (RM)</th><th>Sarapan: 20%, Makan Tengahari: 40%, Makan Malam: 40%</th><th>Jumlah Elaun</th></tr>
@@ -274,38 +368,17 @@ $months = [
 
                         ?>
                         <td><?= $form->field($model, 'kali_makan')->dropDownList($kali_makan, ['class' => 'kali form-control'])->label(false) ?></td>
-                        <td>X Elaun makan semenanjung sebanyak</td>
-                        <td><?= $form->field($model, 'elaun_makan')->textInput(['type' => 'number', 'step' => '0.01', 'class' => 'elaun_makan form-control'])->label(false) ?></td>
+                        <td>X Elaun makan sebanyak</td>
+                        <td><?= $form->field($model, 'elaun_makan')->textInput(['type' => 'number', 'step' => '0.01', 'class' => 'elaun_makan text-right form-control'])->label(false) ?></td>
                         <td><?= $form->field($model, 'peratus_elaun_makan')->dropDownList($percent_elaun, ['class' => 'kadar_elaun form-control'])->label(false) ?></td>
                         <td class="text-right" id="elaun_makan0">0.00</td>
                     </tr>
                     <tr>
                         <td><?= $form->field($model, 'kali_harian')->dropDownList($kali_makan, ['class' => 'kali form-control'])->label(false) ?></td>
-                        <td>X Elaun harian semenanjung sebanyak</td>
-                        <td><?= $form->field($model, 'elaun_harian')->textInput(['type' => 'number', 'step' => '0.01', 'class' => 'elaun_makan form-control'])->label(false) ?></td>
+                        <td>X Elaun harian sebanyak</td>
+                        <td><?= $form->field($model, 'elaun_harian')->textInput(['type' => 'number', 'step' => '0.01', 'class' => 'elaun_makan text-right form-control'])->label(false) ?></td>
                         <td><?= $form->field($model, 'peratus_elaun_harian')->dropDownList($percent_elaun, ['class' => 'kadar_elaun form-control'])->label(false) ?></td>
                         <td class="text-right" id="elaun_makan1">0.00</td>
-                    </tr>
-                    <tr>
-                        <td><?= $form->field($model, 'kali_makan_sabah')->dropDownList($kali_makan, ['class' => 'kali form-control'])->label(false) ?></td>
-                        <td>X Elaun makan Sabah/Sarawak sebanyak</td>
-                        <td><?= $form->field($model, 'elaun_makan_sabah')->textInput(['type' => 'number', 'step' => '0.01', 'class' => 'elaun_makan form-control'])->label(false) ?></td>
-                        <td><?= $form->field($model, 'peratus_elaun_makan_sabah')->dropDownList($percent_elaun, ['class' => 'kadar_elaun form-control'])->label(false) ?></td>
-                        <td class="text-right" id="elaun_makan2">0.00</td>
-                    </tr>
-                    <tr>
-                        <td><?= $form->field($model, 'kali_harian_sabah')->dropDownList($kali_makan, ['class' => 'kali form-control'])->label(false) ?></td>
-                        <td>X Elaun harian Sabah/Sarawak sebanyak</td>
-                        <td><?= $form->field($model, 'elaun_harian_sabah')->textInput(['type' => 'number', 'step' => '0.01', 'class' => 'elaun_makan form-control'])->label(false) ?></td>
-                        <td><?= $form->field($model, 'peratus_elaun_harian_sabah')->dropDownList($percent_elaun, ['class' => 'kadar_elaun form-control'])->label(false) ?></td>
-                        <td class="text-right" id="elaun_makan3">0.00</td>
-                    </tr>
-                    <tr>
-                        <td><?= $form->field($model, 'kali_elaun_luar')->dropDownList($kali_makan, ['class' => 'kali form-control'])->label(false) ?></td>
-                        <td>X Elaun makan luar negara sebanyak</td>
-                        <td><?= $form->field($model, 'elaun_luar')->textInput(['type' => 'number', 'step' => '0.01', 'class' => 'elaun_makan form-control'])->label(false) ?></td>
-                        <td><?= $form->field($model, 'peratus_elaun_luar')->dropDownList($percent_elaun, ['class' => 'kadar_elaun form-control'])->label(false) ?></td>
-                        <td class="text-right" id="elaun_makan4">0.00</td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -315,44 +388,37 @@ $months = [
 
         </fieldset>
         <fieldset>
-            <legend>E. Tuntutan Bayaran Sewa Hotel (BSH) / Elaun Lojing (OL21102)</legend>
+            <legend>B. Tuntutan Bayaran Sewa Hotel (BSH) / Elaun Lojing (OL21102)</legend>
             <table id="bhs-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
                 <thead>
                     <tr><th>Jumlah Malam</th><th>Kadar</th><th>Harga Semalam (RM)</th><th>Jumlah (RM)</th><th>Tindakan</th></tr>
                 </thead>
                 <tbody>
-                	<?php
-                		foreach ($perjalanan_hotel as $key => $value) {
-                			$num = $key + 1;
-                	?>
                     <tr>
                         <td class="text-center">
                             <div class="form-group  form-inline">
-                                <label>Hotel <?= $num ?></label>
-                                <?= Html::dropDownList('PerjalananHotel[kali_hotel]['.$num.']', $value['kali_hotel'], $kali_makan, ['class' => 'kali_hotel form-control']) ?>
+                                <label>Hotel 1</label>
+                                <?= Html::dropDownList('PerjalananHotel[kali_hotel][1]', null, $kali_makan, ['class' => 'kali_hotel form-control']) ?>
                             </div>
                         </td>
                         <td class="text-center">hari x Bayaran Sewa Hotel sebanyak</td>
-                        <td><?= Html::textInput('PerjalananHotel[kos_hotel]['.$num.']', $value['kos_hotel'], ['class' => 'hotel form-control', 'type' => 'number', 'step' => 0.01]) ?></td>
+                        <td><?= Html::textInput('PerjalananHotel[kos_hotel][1]', null, ['class' => 'hotel text-right form-control', 'type' => 'number', 'step' => 0.01]) ?></td>
                         <td class="penginapan text-right">0.00</td>
                         <td></td>
                     </tr>
-                    <?php
-                    	}
-                    ?>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td></td>
                         <td class="text-center">Bayaran Perkhidmatan dan Cukai Perkhidmatan(OL21199)</td>
-                        <td><?= $form->field($model, 'cukai')->textInput(['type' => 'number', 'step' => 0.01])->label(false) ?></td>
+                        <td><?= $form->field($model, 'cukai')->textInput(['class' => 'text-right form-control', 'type' => 'number', 'step' => 0.01])->label(false) ?></td>
                         <td class="penginapan text-right">0.00</td>
                         <td></td>
                     </tr>
                     <tr>
                         <td><?= $form->field($model, 'kali_lojing')->dropdownList($kali_makan)->label(false) ?></td>
                         <td class="text-center">hari x Elaun Lojing sebanyak</td>
-                        <td><?= $form->field($model, 'lojing')->textInput(['type' => 'number', 'step' => 0.01])->label(false) ?></td>
+                        <td><?= $form->field($model, 'lojing')->textInput(['class' => 'text-right form-control', 'type' => 'number', 'step' => 0.01])->label(false) ?></td>
                         <td class="penginapan text-right" id="jumlah_lojing">0.00</td>
                         <td></td>
                     </tr>
@@ -363,52 +429,8 @@ $months = [
             <button class="btn btn-success" id="btn-hotel" title="Tambah Hotel"><span class="glyphicon glyphicon-plus-sign icon-size"  title="Tambah Hotel"></span></button>
         </div>
         </fieldset>
-
         <fieldset>
-            <legend>F. Tuntutan Tambang Pengangkutan Awam (*)</legend>
-            <table id="tambang-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
-                <thead>
-                    <tr><th>Jenis</th><th>Resit</th><th>Jumlah</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Teksi (OL21104)</td>
-                        <td><?= $form->field($model, 'resit_teksi')->dropdownList(['Tanpa Resit', 'Dilampirkan'], ['class' => 'resit form-control']) ?></td>
-                        <td><?= $form->field($model, 'teksi')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control tambang']) ?></td>
-                    </tr>
-                    <tr>
-                        <td>Bas (OL21104)</td>
-                        <td><?= $form->field($model, 'resit_bas')->dropdownList(['Tanpa Resit', 'Dilampirkan'], ['class' => 'resit form-control']) ?></td>
-                        <td><?= $form->field($model, 'bas')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control tambang']) ?></td>
-                    </tr>
-                    <tr>
-                        <td>Kereta Api (OL21103)</td>
-                        <td><?= $form->field($model, 'resit_keretapi')->dropdownList(['Tanpa Resit', 'Dilampirkan'], ['class' => 'resit form-control']) ?></td>
-                        <td><?= $form->field($model, 'keretapi')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control tambang']) ?></td>
-                    </tr>
-                    <tr>
-                        <td>Terbang (OL21106)</td>
-                        <td><?= $form->field($model, 'resit_terbang')->dropdownList(['Tanpa Resit', 'Dilampirkan'], ['class' => 'resit form-control']) ?></td>
-                        <td><?= $form->field($model, 'terbang')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control tambang']) ?></td>
-                    </tr>
-                    <tr>
-                        <td>Feri (OL21105)</td>
-                        <td><?= $form->field($model, 'resit_feri')->dropdownList(['Tanpa Resit', 'Dilampirkan'], ['class' => 'resit form-control']) ?></td>
-                        <td><?= $form->field($model, 'feri')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control tambang']) ?></td>
-                    </tr>
-                    <tr>
-                        <td>Lain-lain </td>
-                        <td><?= $form->field($model, 'resit_lain')->dropdownList(['Tanpa Resit', 'Dilampirkan'], ['class' => 'resit form-control']) ?></td>
-                        <td><?= $form->field($model, 'lain')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control tambang']) ?></td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr><th colspan="2"></th><th id="jumlah_tambang">0.00</th></tr>
-                </tfoot>
-            </table>
-        </fieldset>
-        <fieldset>
-            <legend>G: Tuntutan Pelbagai (*)(OL21199)</legend>
+            <legend>C. Tuntutan Pelbagai (*)(OL21199)</legend>
             <table id="pelbagai-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
                 <thead>
                     <tr><th>Jenis</th><th>Resit</th><th>Jumlah</th></tr>
@@ -454,8 +476,137 @@ $months = [
                     <tr><th colspan="2" class="text-right">Jumlah (RM)</th><th id="jumlah_pelbagai" class="text-right">0.00</th></tr>
                 </tfoot>
             </table>
+        </fieldset>
+        <fieldset>
+            <legend>D. Maklumat Perjalanan</legend>
+            <div class="form-group">
+                <div class="hidden">
+                    <?= DatePicker::widget(['options' => ['class' => 'hidden']]); ?>
+                    <?= TimePicker::widget([
+                            'name' => 'start_time', 
+                            'value' => '00:00 AM',
+                            'options' => ['class' => 'hidden'],
+                            'pluginOptions' => []
+                        ]); ?>
+                </div>
+                <table id="maklumat-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
+                    <thead bgcolor="#ccc">
+                        <tr>
+                            <th rowspan="2" scope="col" class="text-center">No</th>
+                            <th colspan="3" scope="col" class="text-center">Waktu</th>
+                            <th rowspan="2" scope="col" class="text-center">Tujuan / Tempat</th>
+                            <th rowspan="2" scope="col" class="text-center">Jarak (Km)</th>
+                            <th rowspan="2" scope="col" class="text-center">Kos Tol (RM)</th>
+                            <th rowspan="2" scope="col" class="text-center">Padam</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center">Tarikh</th>
+                            <th class="text-center">Bertolak</th>
+                            <th class="text-center">Sampai</th>
+                        </tr>
+                    </thead>
+                    <tbody id="perjalanan-body">
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td class="text-center">
+                                <?= Html::textInput('PerjalananDetails[tarikh][1]', null, ['class' => 'form-control datepicker must', 'readonly' => true]) ?>
+                            </td>
+                            <td class="text-center">
+                                <div class="bootstrap-timepicker input-group">
+                                    <input type="text" class="form-control time-picker must" name="PerjalananDetails[bertolak][1]">
+                                    <span class="input-group-addon picker"><i class="glyphicon glyphicon-time"></i></span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="bootstrap-timepicker input-group">
+                                    <input type="text" class="form-control time-picker must" name="PerjalananDetails[sampai][1]">
+                                    <span class="input-group-addon picker"><i class="glyphicon glyphicon-time"></i></span>
+                                </div>
+                            </td>
+                            <td class="text-center"><?= Html::textarea('PerjalananDetails[tujuan][1]', null,['class' => 'form-control must', 'cols' => 55]) ?></td>
+                            <td class="text-center col-lg-1"><?= Html::textInput('PerjalananDetails[jarak][1]', null,['class' => 'form-control jarak', 'type' => 'number']) ?></td>
+                            <td class="text-center col-lg-1"><?= Html::textInput('PerjalananDetails[kos][1]', null,['class' => 'form-control kos', 'type' => 'number', 'step' => 0.01]) ?></td>
+                            <td class="text-center"></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr><th colspan="5" class="text-right">Jumlah</th><th id="jumlah_jarak0" class="text-center">0</th><th id="jumlah_kos" class="text-right">0.00</th><th></th></tr>
+                        <tr><th colspan="5" class="text-right">Jumlah Perjalanan Lain-lain (KM):</th><th class="perjalanan_lalu text-center">0</th><th></th><th></th></tr>
+                        <tr><th colspan="5" class="text-right">Jumlah Keseluruhan Perjalanan:</th><th id="jumlah_jarak" class="text-center">0</th><th></th><th></th></tr>
+                    </tfoot>
+                </table>
+                <div class="form-group">
+                    <button class="btn btn-success" id="btn-perjalanan" title="Tambah Perjalanan"><span class="glyphicon glyphicon-plus-sign icon-size"></span></button>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>E. Tuntutan Elaun Perjalanan Kenderaan (OL 21104)</legend>
+            <table id="elaun-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
+                <thead>
+                    <tr><th colspan="5"></th><th>Jumlah RM</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>500 Km Pertama</td><td id="km1"></td><td>Km X</td><td id="kadar1"></td><td>sen/Km</td><td id="kadar_jarak1">0.00</td></tr>
+                    <tr><td>501 Km - 1000 Km</td><td id="km2"></td><td>Km X</td><td id="kadar2"></td><td>sen/Km</td><td id="kadar_jarak2">0.00</td></tr>
+                    <tr><td>1001 Km - 1700 Km</td><td id="km3"></td><td>Km X</td><td id="kadar3"></td><td>sen/Km</td><td id="kadar_jarak3">0.00</td></tr>
+                    <tr><td>17001 Km ke atas</td><td id="km4"></td><td>Km X</td><td id="kadar4"></td><td>sen/Km</td><td id="kadar_jarak4">0.00</td></tr>
+                </tbody>
+                <tfoot>
+                    <tr><th class="text-right">Jumlah (Km)</th><th id="jumlah_km"></th><th>Km X</th><th></th><th>Jumlah (RM)</th><th id="jumlah_kadar_jarak"></th></tr>
+                    <tr><th colspan="5" class="text-right">Perjalanan yang telah dilakukan pada bulan yang sedang dituntut sebanyak <span class="perjalanan_lalu">0</span> Km:</th><th id="tolak_kadar_jarak">0.00</th></tr>
+                    <tr><th colspan="5" class="text-right">Jumlah Sebenar (RM)</th><th id="jumlah_kadar_jarak2">0.00</th></tr>
+                </tfoot>
+            </table>
+            <?= $form->field($model, 'jumlah_jarak')->hiddenInput() ?>
+            <?= $form->field($model, 'jarak_telah_dituntut')->hiddenInput() ?>
+        </fieldset>
+
+        <fieldset>
+            <legend>F. Tuntutan Tambang Pengangkutan Awam (*)</legend>
+            <table id="tambang-perjalanan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
+                <thead>
+                    <tr><th>Jenis</th><th>Resit</th><th>Jumlah</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Teksi (OL21104)</td>
+                        <td><?= $form->field($model, 'resit_teksi')->dropdownList(['Tanpa Resit', 'Dilampirkan'], ['class' => 'resit form-control']) ?></td>
+                        <td><?= $form->field($model, 'teksi')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control tambang']) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Bas (OL21104)</td>
+                        <td><?= $form->field($model, 'resit_bas')->dropdownList(['Tanpa Resit', 'Dilampirkan'], ['class' => 'resit form-control']) ?></td>
+                        <td><?= $form->field($model, 'bas')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control tambang']) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Kereta Api (OL21103)</td>
+                        <td><?= $form->field($model, 'resit_keretapi')->dropdownList(['Tanpa Resit', 'Dilampirkan'], ['class' => 'resit form-control']) ?></td>
+                        <td><?= $form->field($model, 'keretapi')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control tambang']) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Terbang (OL21106)</td>
+                        <td><?= $form->field($model, 'resit_terbang')->dropdownList(['Tanpa Resit', 'Dilampirkan'], ['class' => 'resit form-control']) ?></td>
+                        <td><?= $form->field($model, 'terbang')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control tambang']) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Feri (OL21105)</td>
+                        <td><?= $form->field($model, 'resit_feri')->dropdownList(['Tanpa Resit', 'Dilampirkan'], ['class' => 'resit form-control']) ?></td>
+                        <td><?= $form->field($model, 'feri')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control tambang']) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Lain-lain </td>
+                        <td><?= $form->field($model, 'resit_lain')->dropdownList(['Tanpa Resit', 'Dilampirkan'], ['class' => 'resit form-control']) ?></td>
+                        <td><?= $form->field($model, 'lain')->textInput(['type' => 'number', 'step' => 0.01, 'class' => 'form-control tambang']) ?></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr><th colspan="2"></th><th id="jumlah_tambang">0.00</th></tr>
+                </tfoot>
+            </table>
             <h3 class="text-right">Jumlah Tuntutan (RM) <span id="jumlah_tuntutan">0.00</span></h3>
         </fieldset>
+        
         <fieldset>
             <legend>H. Pengakuan</legend>
             <div class="form-group">
@@ -485,7 +636,7 @@ dilakukan dan dibayar oleh saya;</li>
         <?= $form->field($model, 'jumlah_tuntutan')->hiddenInput()->label(false) ?>
 
         <?= $form->field($model, 'jumlah_kew')->hiddenInput()->label(false) ?>
-
+        
         <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
 
         <?php //= $form->field($model, 'status')->textInput() ?>
@@ -505,15 +656,138 @@ dilakukan dan dibayar oleh saya;</li>
             <?= Html::submitButton(Yii::t('app', 'Hantar & Cetak'), ['class' => 'btn btn-warning', 'id' => 'cetak-perjalanan', 'style' => 'display: none;']) ?>
         </div>
 
-    </div> 
+    </div>    
+    <?php ActiveForm::end(); ?>
 
-	<?php ActiveForm::end(); ?>
+    
+
 </div>
 
 <?php
+//oversea
+$this->registerJs('
+    $(".btn-oversea").click(function(){
+        // var nth = $(".nth").text() / 1;
+        // nth++;
+        var nthLen = $(".nth").length + 1;
+        var btn_minus = "<div class=\"form-group\"><button class=\"btn btn-warning btn-oversea-minus\">Buang Kenyataan #" + nthLen + "</button></div>";
+        $(".oversea").eq(0).clone().insertAfter(".oversea:last").append(btn_minus);
+
+        //$(".oversea").last().html($(".oversea").last().html().replace(/[1]/g, nthLen));
+        $(".oversea").last().html($(".oversea").last().html().replace(/\[.1?\]/g, "[" + nthLen + "]"));
+        //$(".oversea").last().html($(".oversea").last().html().replace(/hasDatepicker/g, ""));
+        //$(".datepicker").removeClass("hasDatepicker");
+        $(".oversea").last().html($(".oversea").last().html().replace(/id/g, "src"));
+
+        nthLen = $(".nth").length;
+        //console.log(nthLen);
+        $(".nth").eq(nthLen - 1).text(nthLen);
+        $(".elaun_makan_luar").eq((nthLen - 1) * 2).text("0.00");
+        $(".elaun_makan_luar").eq((nthLen - 1) * 2 + 1).text("0.00");
+        $(".jumlah_elaun_makan_luar").eq(nthLen - 1).text("0.00");
+        $(".hotel_luar").eq(nthLen - 1).text("0.00");
+        $(".jumlah_cukai_luar").eq(nthLen - 1).text("0.00");
+        $(".lojing_luar").eq(nthLen - 1).text("0.00");
+        $(".jumlah_elaun_penginapan_luar").eq(nthLen - 1).text("0.00");
+        $(".jumlah_pelbagai_luar").eq(nthLen - 1).text("0.00");
+
+        return false;
+    });
+
+    $(document).on("click", ".btn-oversea-minus", function(){
+        //alert($(this).index(".btn-oversea-minus"));
+        var index = $(this).index(".btn-oversea-minus")/1 + 1;
+        $("div.oversea").eq(index).remove();
+        //$(this).parentsUntil("div.oversea").css( "background-color", "red" );;
+        return false;
+    });
+
+    $(document).on("change", ".kali_luar", function(){
+        var index = $(this).index(".kali_luar");
+        var val = $(this).val()/1 * $(".elaun_makan_luar_sehari").eq(index).val()/1 * $(".kadar_elaun_luar").eq(index).val()/1; 
+        $(".elaun_makan_luar").eq(index).text(val.toFixed(2));
+        var index_jumlah = Math.floor(index / 2);
+        index2 = index - 1;
+        if(index % 2 == 0)
+            index2 = index + 1;
+        var total_val = $(".elaun_makan_luar").eq(index).text()/1 + $(".elaun_makan_luar").eq(index2).text()/1
+        $(".jumlah_elaun_makan_luar").eq(index_jumlah).text(total_val.toFixed(2));
+        setTotal();
+    });
+
+    $(document).on("keyup", ".elaun_makan_luar_sehari", function(){
+        var index = $(this).index(".elaun_makan_luar_sehari");
+        var val = $(this).val()/1 * $(".kali_luar").eq(index).val()/1 * $(".kadar_elaun_luar").eq(index).val()/1; 
+        $(".elaun_makan_luar").eq(index).text(val.toFixed(2));
+        var index_jumlah = Math.floor(index / 2);
+        index2 = index - 1;
+        if(index % 2 == 0)
+            index2 = index + 1;
+        var total_val = $(".elaun_makan_luar").eq(index).text()/1 + $(".elaun_makan_luar").eq(index2).text()/1
+        $(".jumlah_elaun_makan_luar").eq(index_jumlah).text(total_val.toFixed(2));
+        setTotal();
+    });
+
+    $(document).on("change", ".kadar_elaun_luar", function(){
+        $(".kali_luar").trigger("change");
+    });
+
+    $(document).on("change", ".kali_hotel_luar", function(){
+        var index = $(this).index(".kali_hotel_luar");
+        var val = $(this).val()/1 * $(".hotel_luar_semalam").eq(index).val(); 
+
+        $(".hotel_luar").eq(index).text(val.toFixed(2));
+
+        var jumlah_val = val/1 + $(".jumlah_cukai_luar").eq(index).text()/1 + $(".lojing_luar").eq(index).text()/1;
+        $(".jumlah_elaun_penginapan_luar").eq(index).text(jumlah_val.toFixed(2));
+        setTotal();
+    });
+
+    $(document).on("keyup", ".hotel_luar_semalam", function(){
+        $(".kali_hotel_luar").trigger("change");
+    });
+
+    $(document).on("keyup", ".cukai_luar", function(){
+        var index = $(this).index(".cukai_luar");
+        var val = $(this).val()/1;
+        $(".jumlah_cukai_luar").eq(index).text(val.toFixed(2));
+        var jumlah_val = val/1 + $(".hotel_luar").eq(index).text()/1 + $(".lojing_luar").eq(index).text()/1;
+        $(".jumlah_elaun_penginapan_luar").eq(index).text(jumlah_val.toFixed(2));
+        setTotal();
+    });
+
+    $(document).on("change", ".kali_lojing_luar", function(){
+        var index = $(this).index(".kali_lojing_luar");
+        var val = $(this).val()/1 * $(".lojing_luar_semalam").eq(index).val(); 
+
+        $(".lojing_luar").eq(index).text(val.toFixed(2));
+
+        var jumlah_val = val/1 + $(".jumlah_cukai_luar").eq(index).text()/1 + $(".hotel_luar").eq(index).text()/1;
+        $(".jumlah_elaun_penginapan_luar").eq(index).text(jumlah_val.toFixed(2));
+        setTotal();
+    });
+
+    $(document).on("keyup", ".lojing_luar_semalam", function(){
+        $(".kali_lojing_luar").trigger("change");
+    });
+
+    $(document).on("keyup", ".pelbagai_luar", function(){
+        //var length = $(".pelbagai_luar").length;
+        var total = 0;
+        var class_name = $(this).prop("class").split(" ")[0];
+        var index = $(this).index("." + class_name);
+        for(var i = (index * 7); i <= (index * 7 + 6); i++) {
+            total += $(".pelbagai_luar").eq(i).val()/1;
+        }
+        //console.log(index);
+        $(".jumlah_pelbagai_luar").eq(index).text(total.toFixed(2));
+        setTotal();
+    });
+');
+//end of oversea
+
 
 $this->registerJs('
-
     $("#pilih-unjuran").on("click", function(){
         $("#modal").modal("show").find("#modalContent").load("'.Url::to(['perjalanan/unjuran-list']).'");
         //$("#modal-header").html("Penukaran Kod A");
@@ -531,7 +805,7 @@ $this->registerJs('
             var bulan = $("#perjalanan-bulan").val();
             var tahun = $("#perjalanan-tahun").val();
             var os = $("#os").text();
-            var data = {no_kp: nokp, bulan: bulan, tahun: tahun, os: os, jenis: 0};
+            var data = {no_kp: nokp, bulan: bulan, tahun: tahun, os: os, jenis: 1};
             $.post("'.Url::to(['perjalanan/carian-perjalanan']).'", data)
                 .done(function(msg){
                     var x = msg;
@@ -654,7 +928,7 @@ $this->registerJs('
                     } );
     
     $(document).on("focus", ".time-picker", function(){
-        $(this).timepicker({defaultTime: "08:00 AM", minuteStep: 5});
+        $(this).timepicker({ /*defaultTime: "08:00 AM",*/ minuteStep: 5});
     });
 
     // $( ".datepicker" ).on("click", function(){
@@ -668,21 +942,21 @@ $this->registerJs('
     // });
 
     $(".time-picker").timepicker({
-        defaultTime: "08:00 AM",
+        defaultTime: false,
         minuteStep: 5
         // template: true,
         // showInputs: true,
         // minuteStep: 5
     });
 
-    var ii = '.$jumlah_perjalanan.';
+    var ii = 1;
     $("#btn-perjalanan").on("click", function(){
         
         ii++;
         row = "<tr>" +
                 "<td class=\"text-center\">" + ii + "</td>" +
                 "<td class=\"text-center\">" +
-                    "<input type=\"text\" class=\"form-control datepicker must\" name=\"PerjalananDetails[tarikh][" + ii + "]\"></td>" +
+                    "<input type=\"text\" class=\"form-control datepicker must\" name=\"PerjalananDetails[tarikh][" + ii + "]\" readonly></td>" +
                 "<td class=\"text-center\">" +
                     "<div class=\"bootstrap-timepicker input-group\">" +
                         "<input type=\"text\" class=\"form-control time-picker must\" name=\"PerjalananDetails[bertolak][" + ii + "]\">" +
@@ -719,7 +993,6 @@ $this->registerJs('
     });
 
     $("form#perjalanan-form").on("beforeSubmit", function(){
-    	return true;
         if(!checkMust())
             return false; 
         if(checkBaki() && confirm("Hantar tuntutan perjalanan ini?"))
@@ -730,8 +1003,10 @@ $this->registerJs('
     });
 
     $("#simpan-perjalanan").on("click", function(){
+        // console.log($("#perjalanan-form").serialize());
+        // return false;
         if(checkMust() && confirm("Simpan tuntutan perjalanan ini?")) {
-            $.post("'.Url::to(['perjalanan/create']).'", $("form#perjalanan-form").serialize(), function(data){
+            $.post("'.Url::to(['perjalanan/create-over']).'", $("form#perjalanan-form").serialize(), function(data){
                 if(data)
                     alert("Data berjaya disimpan");
                 $("#perjalanan-id").val(data);
@@ -852,6 +1127,8 @@ $this->registerJs('
 
     $(document).on("change", ".kali_hotel", function(){
         var i = $(this).index(".kali_hotel");
+        //$(".penginapan").eq(i).text("XXX");
+        console.log($(".hotel").eq(i).val());
         $(".penginapan").eq(i).text(($(this).val()/1 * $(".hotel").eq(i).val()/1).toFixed(2));
         setPenginapan();    
         setTotal();
@@ -918,17 +1195,6 @@ $this->registerJs('
         }
 
     });
-
-    //onload page
-	$(".jarak, .kos, .hotel").trigger("keyup");
-	$(".kali").trigger("change");
-	$(".kali_hotel").trigger("change");
-	$("#perjalanan-kali_lojing").trigger("change");
-	$("#perjalanan-lojing").trigger("keyup");
-	$("#perjalanan-cukai").trigger("keyup");
-	$(".tambang, .pelbagai").trigger("keyup");
-
-	//
 ');
 
 // FUNCTIONS
@@ -1020,7 +1286,23 @@ function jarakDuit(jarak) {
 }
 
 function setTotal() {
-    $("#jumlah_tuntutan").text(($("#jumlah_kadar_jarak2").text()/1 + $("#jumlah_elaun_makan").text()/1 + $("#jumlah_elaun_penginapan").text()/1 + $("#jumlah_tambang").text()/1 + $("#jumlah_pelbagai").text()/1).toFixed(2));
+    var jumlah_elaun_makan_luar = 0
+    for(var j = 0; j < $(".jumlah_elaun_makan_luar").length; j++) {
+        jumlah_elaun_makan_luar += $(".jumlah_elaun_makan_luar").eq(j).text()/1;
+    }
+    console.log()
+
+    var jumlah_elaun_penginapan_luar = 0
+    for(j = 0; j < $(".jumlah_elaun_penginapan_luar").length; j++) {
+        jumlah_elaun_penginapan_luar += $(".jumlah_elaun_penginapan_luar").eq(j).text()/1;
+    }
+
+    var jumlah_pelbagai_luar = 0
+    for(j = 0; j < $(".jumlah_pelbagai_luar").length; j++) {
+        jumlah_pelbagai_luar += $(".jumlah_pelbagai_luar").eq(j).text()/1;
+    }
+
+    $("#jumlah_tuntutan").text(($("#jumlah_kadar_jarak2").text()/1 + $("#jumlah_elaun_makan").text()/1 + $("#jumlah_elaun_penginapan").text()/1 + $("#jumlah_tambang").text()/1 + jumlah_elaun_makan_luar/1 + jumlah_elaun_penginapan_luar/1 + jumlah_pelbagai_luar/1 + $("#jumlah_pelbagai").text()/1).toFixed(2));
     $("#perjalanan-jumlah_tuntutan, #perjalanan-jumlah_kew").val($("#jumlah_tuntutan").text());
     $("#pendahuluan").html(($("#jumlah_tambang").text()/1 + $("#jumlah_pelbagai").text()/1 + $("#jumlah_elaun_penginapan").text()/1 - $("#jumlah_lojing").text()/1 - $("#perjalanan-telefon").val()/1).toFixed(2));
     $("#perjalanan-pendahuluan").val($("#pendahuluan").html());
@@ -1087,9 +1369,8 @@ function checkMust() {
 }
 
 function checkBaki() {
-    var balance = $("#baki").text().replace(/,/g, "")/1;
+    var balance = $("#baki").text()/1;
     var spend = $("#perjalanan-jumlah_kew").val()/1;
-    console.log(balance+":"+spend);
     if(balance >= spend)
         return true;
     return false;
@@ -1115,6 +1396,34 @@ $this->registerCss('
         100% { transform: rotate(360deg); }
     }
 ');
+
+
+//TEST SCRIPT 
+$this->registerJs('
+    $("#perjalanan-nama").val(Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-no_hp").val((Math.random() * 40000000).toFixed(0));
+    $("#perjalanan-email").val(Math.random().toString(36).substr(2, 5) + "@" + Math.random().toString(36).substr(2, 5) + ".com");
+    $("#perjalanan-jawatan").val(Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-no_gaji").val(Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-gaji_asas").val((Math.random()* 10000).toFixed(2));
+    $("#perjalanan-elaun").val((Math.random() * 10000).toFixed(2));
+    $("#perjalanan-bank").val(Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-cawangan_bank").val(Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-akaun_bank").val((Math.random() * 100000000000).toFixed(0));
+    $("#perjalanan-model_kereta").val("Citroen " + Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-no_plate").val("TL " + Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-cc").val((Math.random() * 3000).toFixed(0));
+    $("#perjalanan-alamat_pejabat").val(Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-alamat_rumah").val(Math.random() * 10 + Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
+    $("#perjalanan-cc").trigger("keyup");
+    $("#perjalanan-cc").trigger("blur");
+
+    for(var x = 0; x < $(".must").length; x++) {
+        $(".must").eq(x).val(x);
+    }
+
+');
+?>
 
 
 

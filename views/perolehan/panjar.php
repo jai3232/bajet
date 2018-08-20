@@ -27,9 +27,9 @@ use yii\helpers\Html;
     				<tr><th>Telefon / Sambungan</th><td><?= $model_panjar->sambungan ?></td></tr>
     				<tr><th>Butiran / Tujuran</th><td> <?= $model_panjar->tujuan ?></td></tr>
     				<tr><th>Jumlah</th><td> <?= 'RM'.number_format($model_panjar->jumlah_panjar, 2) ?></td></tr>
-    				<tr style="height: 80px;"><th>Tandatangan Pemohon & Tarikh</th><td><br>_________________<br>Tarikh:</td></tr>
-    				<tr style="height: 50px;"><th>Sokongan Ketua Jabatan / Unit</th><td></td></tr>
-    				<tr style="height: 80px;"><th>Tandatangan Ketua Jabatan / Unit & Tarikh</th><td><br>_________________<br>Tarikh:</td></tr>
+    				<tr style="height: 60px;"><th>Tandatangan Pemohon & Tarikh</th><td><br>_________________<br>Tarikh:</td></tr>
+    				<tr style="height: 40px;"><th>Sokongan Ketua Jabatan / Unit</th><td></td></tr>
+    				<tr style="height: 60px;"><th>Tandatangan Ketua Jabatan / Unit & Tarikh</th><td><br>_________________<br>Tarikh:</td></tr>
     			</tbody>
     		</table>
     	</li>
@@ -39,14 +39,15 @@ use yii\helpers\Html;
     			<tbody>
     				<tr><th>Peruntukan</th><td>Mengurus / Amanah / Pembangunan</td></tr>
     				<tr><th>Objek Sebagai</th><td><?= $model->kodUnjuran->os ?></td></tr>
-    				<tr style="height: 50px;"><th>Pegawai Pelulus</th><td></td></tr>
-    				<tr style="height: 80px;"><th>Tandatangan Pegawai Pelulus & Tarikh</th><td><br>_________________<br>Tarikh:</td></tr>
+    				<tr style="height: 40px;"><th>Pegawai Pelulus</th><td></td></tr>
+    				<tr style="height: 60px;"><th>Tandatangan Pegawai Pelulus & Tarikh</th><td><br>_________________<br>Tarikh:</td></tr>
     			</tbody>
     		</table>
     	</li>
   	</ul>
 </div>
-<?= Html::a('Papar PDF', ['/perolehan/panjar-pdf', 'id' => yii::$app->request->get('id')], ['class'=>'btn btn-primary']) ?>
+<button class="btn btn-primary" onclick="window.print();">Cetak</button>
+<?php // Html::a('Papar PDF', ['/perolehan/panjar-pdf', 'id' => yii::$app->request->get('id')], ['class'=>'btn btn-primary']) ?>
 <?php
 $this->registerCss('
 	.bordered {
@@ -55,12 +56,26 @@ $this->registerCss('
 	#rujukan {
 		position: relative;
 		border: 3px solid red;
-		width: 200px;
+		width: 150px;
+        top: 60px;
+        left: 5px;
 		padding: 1px 3px;
 		text-align: center;
 		font-weight: bold;
 		color: red;
 
 	}
+    @media print {
+        .break {page-break-after: always;}
+
+        .noborder tr td, .noborder tr th , table tr td, td th {border: none !important;}
+
+        .btn, footer {display: none !important;}
+
+        .panel, {margin-top: -70px !important; } 
+
+        #rujukan {position: absolute; top: 90px !important; left: 20px !important; }
+
+    }
 ');
 ?>

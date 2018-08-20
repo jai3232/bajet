@@ -6,33 +6,6 @@ use app\models\Agihan;
 use app\models\Unjuran;
 ?>
 
-<?php /*DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            //'id',
-            'kod_id',
-            'os',
-            'ol',
-            //'id_jabatan',
-            //'id_unit',
-            'butiran:ntext',
-            'kuantiti',
-            'kod',
-            'jumlah_unjuran',
-            //'kongsi',
-            //'public',
-            //'tahun',
-            'catatan:ntext',
-            //'status',
-            //'sah',
-            //'tarikh_jadi',
-            //'tarikh_kemaskini',
-            //'user',
-        ],
-    ])*/ ?>
-
-
-
 <?php
     //echo $model->tahun;
     //echo Yii::$app->user->identity->id_jabatan;
@@ -100,7 +73,7 @@ use app\models\Unjuran;
 <?php
     }
     else
-        echo "<h5 style=\"color: red; font-weight: bold;\">Penukaran Kod A tidak boleh dilakukan kerana baki agihan adalah kosong.</h5>";
+        echo "<h5 style=\"color: red; font-weight: bold;\">Penukaran Kod A tidak boleh dilakukan kerana baki agihan adalah kosong atau negatif.</h5>";
 ?>
 
 

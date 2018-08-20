@@ -18,9 +18,9 @@ class PerjalananSearch extends Perjalanan
     public function rules()
     {
         return [
-            [['id', 'cc', 'jumlah_jarak', 'jarak_telah_dituntut', 'kali_makan', 'kali_makan_sabah', 'kali_harian', 'kali_harian_sabah', 'kali_elaun_luar', 'kali_hotel', 'kali_hotel2', 'kali_hotel3', 'kali_hotel4', 'kali_hotel5', 'kali_hotel6', 'kali_lojing', 'resit_teksi', 'resit_bas', 'resit_keretapi', 'resit_terbang', 'resit_feri', 'resit_lain', 'resit_tol', 'resit_pakir', 'resit_dobi', 'resit_pos', 'resit_telefon', 'resit_tukaran', 'tuntutan_lain', 'status', 'cetak', 'user'], 'integer'],
-            [['kod_unjuran', 'kod_id', 'os', 'bahagian', 'bahagian_asal', 'unit', 'nama', 'no_kp', 'no_hp', 'email', 'bulan', 'tahun', 'jawatan', 'no_gaji', 'bank', 'cawangan_bank', 'akaun_bank', 'model_kereta', 'no_plate', 'kelas_tuntutan', 'alamat_pejabat', 'alamat_rumah', 'no_tg', 'catatan', 'tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
-            [['gaji_asas', 'elaun', 'elaun_mangku', 'elaun_makan', 'elaun_makan_sabah', 'elaun_harian', 'elaun_harian_sabah', 'elaun_luar', 'peratus_elaun_makan', 'peratus_elaun_makan_sabah', 'peratus_elaun_harian', 'peratus_elaun_harian_sabah', 'peratus_elaun_luar', 'hotel', 'hotel2', 'hotel3', 'hotel4', 'hotel5', 'hotel6', 'cukai', 'lojing', 'teksi', 'bas', 'keretapi', 'terbang', 'feri', 'lain', 'tol', 'pakir', 'dobi', 'pos', 'telefon', 'tukaran', 'pendahuluan', 'jumlah_tuntutan', 'jumlah_kew'], 'number'],
+            [['id', 'jenis', 'id_jabatan', 'id_jabatan_asal', 'id_unit', 'cc', 'jumlah_jarak', 'jarak_telah_dituntut', 'kali_makan', 'kali_makan_sabah', 'kali_harian', 'kali_harian_sabah', 'kali_elaun_luar', 'kali_lojing', 'resit_teksi', 'resit_bas', 'resit_keretapi', 'resit_terbang', 'resit_feri', 'resit_lain', 'resit_tol', 'resit_pakir', 'resit_dobi', 'resit_pos', 'resit_telefon', 'resit_tukaran', 'tuntutan_lain', 'status', 'cetak', 'user'], 'integer'],
+            [['kod_unjuran', 'kod_id', 'nama', 'no_kp', 'no_hp', 'email', 'bulan', 'tahun', 'jawatan', 'no_gaji', 'bank', 'cawangan_bank', 'akaun_bank', 'model_kereta', 'no_plate', 'kelas_tuntutan', 'alamat_pejabat', 'alamat_rumah', 'no_tg', 'catatan', 'tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
+            [['gaji_asas', 'elaun', 'elaun_mangku', 'elaun_makan', 'elaun_makan_sabah', 'elaun_harian', 'elaun_harian_sabah', 'elaun_luar', 'peratus_elaun_makan', 'peratus_elaun_makan_sabah', 'peratus_elaun_harian', 'peratus_elaun_harian_sabah', 'peratus_elaun_luar', 'cukai', 'lojing', 'teksi', 'bas', 'keretapi', 'terbang', 'feri', 'lain', 'tol', 'pakir', 'dobi', 'pos', 'telefon', 'tukaran', 'pendahuluan', 'jumlah_tuntutan', 'jumlah_kew'], 'number'],
         ];
     }
 
@@ -46,8 +46,20 @@ class PerjalananSearch extends Perjalanan
 
         // add conditions that should always apply here
 
+        $level = Yii::$app->user->identity->level;
+        $id_pengguna = Yii::$app->user->identity->id;
+        $id_jabatan = Yii::$app->user->identity->id_jabatan;
+        if($level == 5)
+            $query->where(['id_jabatan_asal' => $id_jabatan]);
+        if($level > 5)
+            $query->where(['user' => $id_pengguna]);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['id'=>SORT_DESC],
+                //'attributes' => ['id', 'pembekal'],
+            ]
         ]);
 
         $this->load($params);
@@ -58,9 +70,16 @@ class PerjalananSearch extends Perjalanan
             return $dataProvider;
         }
 
+        $this->tahun = isset($this->tahun) ? $this->tahun : date("Y");
+        $this->bulan = isset($this->bulan) ? $this->bulan : date("m");
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'jenis' => $this->jenis,
+            'id_jabatan' => $this->id_jabatan,
+            'id_jabatan_asal' => $this->id_jabatan_asal,
+            'id_unit' => $this->id_unit,
             'gaji_asas' => $this->gaji_asas,
             'elaun' => $this->elaun,
             'elaun_mangku' => $this->elaun_mangku,
@@ -82,19 +101,7 @@ class PerjalananSearch extends Perjalanan
             'peratus_elaun_harian' => $this->peratus_elaun_harian,
             'peratus_elaun_harian_sabah' => $this->peratus_elaun_harian_sabah,
             'peratus_elaun_luar' => $this->peratus_elaun_luar,
-            'kali_hotel' => $this->kali_hotel,
-            'kali_hotel2' => $this->kali_hotel2,
-            'kali_hotel3' => $this->kali_hotel3,
-            'kali_hotel4' => $this->kali_hotel4,
-            'kali_hotel5' => $this->kali_hotel5,
-            'kali_hotel6' => $this->kali_hotel6,
             'kali_lojing' => $this->kali_lojing,
-            'hotel' => $this->hotel,
-            'hotel2' => $this->hotel2,
-            'hotel3' => $this->hotel3,
-            'hotel4' => $this->hotel4,
-            'hotel5' => $this->hotel5,
-            'hotel6' => $this->hotel6,
             'cukai' => $this->cukai,
             'lojing' => $this->lojing,
             'teksi' => $this->teksi,
@@ -134,10 +141,6 @@ class PerjalananSearch extends Perjalanan
 
         $query->andFilterWhere(['like', 'kod_unjuran', $this->kod_unjuran])
             ->andFilterWhere(['like', 'kod_id', $this->kod_id])
-            ->andFilterWhere(['like', 'os', $this->os])
-            ->andFilterWhere(['like', 'bahagian', $this->bahagian])
-            ->andFilterWhere(['like', 'bahagian_asal', $this->bahagian_asal])
-            ->andFilterWhere(['like', 'unit', $this->unit])
             ->andFilterWhere(['like', 'nama', $this->nama])
             ->andFilterWhere(['like', 'no_kp', $this->no_kp])
             ->andFilterWhere(['like', 'no_hp', $this->no_hp])

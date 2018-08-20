@@ -25,7 +25,7 @@ $months = [
 	<table width="900" border="1" align="center" class="table table-bordered">
 	    <tbody>
 		    <tr>
-				<td colspan="2" align="center"><strong>TUNTUTAN ELAUN PERJALANAN DALAM NEGERI								
+				<td colspan="2" align="center"><strong>TUNTUTAN ELAUN PERJALANAN LUAR NEGERI								
 				</strong></td>
 		    </tr>
 		    <tr>
@@ -132,6 +132,266 @@ $months = [
 	</table>
 	
 </div>
+<?php
+foreach ($model_luar_details as $key => $value) {
+	$num = $key + 1;
+?>
+<div class="break"></div>
+<h3>Perjalanan #<?= $num ?></h3>
+<div class="panel panel-default">
+	<table width="900" border="1" align="center" class="table table-bordered">
+		<tbody>
+			<tr><td class="text-center"><strong>KENYATAAN TUNTUTAN</strong></td></tr>
+			<tr>
+				<td style="margin: 0; padding: 0;">					
+					<table width="98%" align="center" class="noborder" border="0">
+						<tbody>
+							<tr>
+								<td style="border-right: 0px solid #ccc;">
+									<div style="border-right: 1px solid #ccc; height: 80px; display: flex; align-items: center;">
+										<span>Dari <?= $value->dari ?></span>
+									</div>
+								</td>
+								<td style="padding: 10px;">
+									<p>Tarikh Bertolak: <?= Yii::$app->formatter->asDate($value->tarikh_bertolak, 'dd-M-Y') ?></p>
+									<p>Waktur Bertolak: <?= date("g:i A", strtotime($value->waktu_bertolak)) ?> </p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p>Negara tempat dituju &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;: <?= $value->destinasi ?></p>
+					<p>Tarikh tiba di Negara / tempat dituju &emsp;: <?= Yii::$app->formatter->asDate($value->tarikh_sampai, 'dd-M-Y') ?></p>
+					<p>Waktu tiba di Negara / tempat dituju&emsp;: <?= date("g:i A", strtotime($value->waktu_sampai)) ?></p>
+					<p>Tujuan lawatan &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;: <?= $value->tujuan_lawatan ?></p>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-center">
+					<strong>TUNTUTAN ELAUN MAKAN / ELAUN HARIAN</strong>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table width="98%" align="center" class="noborder">
+						<tbody>
+							<tr>
+								<td>
+									<?= $value->kali_elaun_makan ?> X Elaun Makan Sebanyak RM <?= $value->elaun_makan ?> / hari		
+								</td>
+								<td class="text-right">
+									: RM <?= number_format($value->kali_elaun_makan * $value->elaun_makan * $value->peratus_elaun_makan, 2) ?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table width="98%" align="center" class="noborder">
+						<tbody>
+							<tr>
+								<td>
+									<?= $value->kali_elaun_harian ?> X Elaun Harian Sebanyak RM <?= $value->elaun_harian ?> / hari		
+								</td>
+								<td class="text-right">
+									: RM <?= number_format($value->kali_elaun_harian * $value->elaun_harian * $value->peratus_elaun_harian, 2) ?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right" style="padding-right: 25px;">Jumlah : RM <span class="jumlah_luar"><?= number_format($value->kali_elaun_makan * $value->elaun_makan * $value->peratus_elaun_makan + $value->kali_elaun_harian * $value->elaun_harian * $value->peratus_elaun_harian, 2) ?></span></td>
+			</tr>
+			<tr>
+				<td class="text-center">
+					<strong>TUNTUTAN BAYARAN SEWA HOTEL (BSH) / ELAUN LOJING</strong>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table width="98%" align="center" class="noborder">
+						<tbody>
+							<tr>
+								<td>
+									<?= $value->kali_hotel ?> X Elaun BSH Sebanyak RM <?= number_format($value->kos_hotel, 2) ?> / hari		
+								</td>
+								<td class="text-right">
+									: RM <?= number_format($value->kali_hotel * $value->kos_hotel, 2) ?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table width="98%" align="center" class="noborder">
+						<tbody>
+							<tr>
+								<td>
+									Bayaran Perkhidmatan dan Cukai Kerajaan		
+								</td>
+								<td class="text-right">
+									: RM <?= number_format($value->cukai_hotel, 2) ?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table width="98%" align="center" class="noborder">
+						<tbody>
+							<tr>
+								<td>
+									<?= $value->kali_lojing ?> X Elaun Lojing sebanyak RM <?= number_format($value->lojing, 2) ?>		
+								</td>
+								<td class="text-right">
+									: RM <?= number_format($value->kali_lojing * $value->lojing, 2) ?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>	
+			<tr>
+				<td class="text-right" style="padding-right: 25px;">Jumlah : RM <span class="jumlah_luar"><?= number_format($value->kali_hotel * $value->kos_hotel + $value->cukai_hotel + $value->kali_lojing * $value->lojing, 2) ?></span></td>
+			</tr>
+			<tr>
+				<td class="text-center">
+					<strong>TUNTUTAN PELBAGAI</strong>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table width="98%" align="center" border="0" class="noborder" style="margin: 0 auto;">
+
+							<tr>
+								<td>
+									<?php $resit = ['Tanpa Resit', 'Dilampirkan']; ?>
+									Dobi [ Resit: <?= $resit[$value->resit_dobi] ?>]		
+								</td>
+								<td class="text-right">
+									: RM <?= number_format($value->dobi, 2) ?>
+								</td>
+							</tr>
+
+					</table>
+				</td>
+			</tr>	
+			<tr>
+				<td>
+					<table width="98%" align="center" class="noborder">
+						<tbody>
+							<tr>
+								<td>
+									Pos [ Resit: <?= $resit[$value->resit_pos] ?>]		
+								</td>
+								<td class="text-right">
+									: RM <?= number_format($value->pos, 2) ?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table width="98%" align="center" class="noborder">
+						<tbody>
+							<tr>
+								<td>
+									Telefon, Teleks, Faks [ Resit: <?= $resit[$value->resit_telefon] ?>]		
+								</td>
+								<td class="text-right">
+									: RM <?= number_format($value->telefon, 2) ?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table width="98%" align="center" class="noborder">
+						<tbody>
+							<tr>
+								<td>
+									"Tips / Porterage" (15% daripada Elaun Makan)		
+								</td>
+								<td class="text-right">
+									: RM <?= number_format($value->porterage, 2) ?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table width="98%" align="center" class="noborder">
+						<tbody>
+							<tr>
+								<td>
+									Cukai Lapangan Terbang
+								</td>
+								<td class="text-right">
+									: RM <?= number_format($value->cukai_airport, 2) ?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table width="98%" align="center" class="noborder">
+						<tbody>
+							<tr>
+								<td>
+									Keraian Rasmi [ Resit: <?= $resit[$value->resit_keraian] ?>]		
+								</td>
+								<td class="text-right">
+									: RM <?= number_format($value->keraian, 2) ?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table width="98%" align="center" class="noborder">
+						<tbody>
+							<tr>
+								<td>
+									Tambang Teksi / 'Tube' / Keretapi / Bas / Koc [ Resit: <?= $resit[$value->resit_tambang_kenderaan] ?>]		
+								</td>
+								<td class="text-right">
+									: RM <?= number_format($value->tambang_kenderaan, 2) ?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-right" style="padding-right: 25px;">Jumlah : RM <span class="jumlah_luar"><?= number_format($value->dobi + $value->pos + $value->telefon + $value->porterage + $value->cukai_airport + $value->keraian + $value->tambang_kenderaan, 2) ?></span></td>
+			</tr>	
+		</tbody>
+	</table>
+</div>
+<?php
+}
+?>
 <div class="break"></div>
 <div class="panel panel-default">
 	<table width="900" border="1" align="center" class="semakan table table-bordered">
@@ -174,7 +434,7 @@ $months = [
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<tbody>
 			<tr>
-				<td colspan="2" align="center"><strong>C. TUNTUTAN  ELAUN PERJALANAN KENDERAAN(OL 21104)</strong></td>
+				<td colspan="2" align="center"><strong>TUNTUTAN  ELAUN PERJALANAN KENDERAAN(OL 21104)</strong></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center">Jumlah Kilometer X Sen / Kilometer</td>
@@ -245,7 +505,7 @@ $months = [
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<thead>
-			<tr><th colspan="7" class="text-center">D. TUNTUTAN ELAUN MAKAN DAN HARIAN(OL21101)</th></tr>
+			<tr><th colspan="7" class="text-center">TUNTUTAN ELAUN MAKAN DAN HARIAN(OL21101)</th></tr>
 		</thead>
 		<tbody>
 			<tr>
@@ -321,7 +581,7 @@ $months = [
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<thead>
-			<tr><th colspan="7" class="text-center">E. TUNTUTAN BAYARAN SEWA HOTEL (*)(BSH) / ELAUN LOJING (OL21102)</th></tr>
+			<tr><th colspan="7" class="text-center">TUNTUTAN BAYARAN SEWA HOTEL (*)(BSH) / ELAUN LOJING (OL21102)</th></tr>
 		</thead>
 		<tbody>
 			<tr>
@@ -388,7 +648,7 @@ $months = [
 	?>
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<thead>
-			<tr><th colspan="7" class="text-center">F. TUNTUTAN TAMBANG PENGANGKUTAN AWAM (*)</th></tr>
+			<tr><th colspan="7" class="text-center">TUNTUTAN TAMBANG PENGANGKUTAN AWAM (*)</th></tr>
 		</thead>
 		<tbody>
 			<tr>
@@ -456,7 +716,7 @@ $months = [
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<thead>
-			<tr><th colspan="7" class="text-center">G. TUNTUTAN PELBAGAI (*) (OL21199)</th></tr>
+			<tr><th colspan="7" class="text-center">TUNTUTAN PELBAGAI (*) (OL21199)</th></tr>
 		</thead>
 		<tbody>
 			<tr>
@@ -548,7 +808,7 @@ $months = [
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<thead>
-			<tr><th colspan="7" class="text-center">H. PENGAKUAN</th></tr>
+			<tr><th colspan="7" class="text-center">PENGAKUAN</th></tr>
 		</thead>
 		<tbody>
 			<tr>
@@ -622,7 +882,7 @@ $months = [
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<thead>
-			<tr><th colspan="7" class="text-center">I. PENGESAHAN</th></tr>
+			<tr><th colspan="7" class="text-center">PENGESAHAN</th></tr>
 		</thead>
 		<tbody>
 			<tr>
@@ -667,7 +927,7 @@ $months = [
 <div class="panel panel-default">
 	<table width="898" border="1" align="center" class="semakan table table-bordered print">
 		<thead>
-			<tr><th colspan="7" class="text-center">J. PENDAHULUAN DIRI (Jika ada)</th></tr>
+			<tr><th colspan="7" class="text-center">PENDAHULUAN DIRI (Jika ada)</th></tr>
 		</thead>
 		<tbody>
 			<tr>
@@ -726,10 +986,10 @@ $("#btnPrint").on("click", function () {
 
 $this->registerJs('
 	setClass("'.$model->kelas_tuntutan.'");	
-	setJarak('.$model->jumlah_jarak.');
+	setJarak('.$model->jumlah_jarak == '' ? 0 : $model->jumlah_jarak.');
 	jumlahKadarJarak();
 	setJumlahElaun();
-	$("#jumlah_tuntutan").text(($("#jumlah_kadar_jarak2").text()/1 + $("#jumlah_elaun_makan_harian").text()/1 + $("#jumlah_elaun_penginapan").text()/1 + $("#jumlah_tambang").text()/1 + $("#jumlah_pelbagai").text()/1).toFixed(2) );
+	$("#jumlah_tuntutan").text(($("#jumlah_kadar_jarak2").text()/1 + $("#jumlah_elaun_makan_harian").text()/1 + $("#jumlah_elaun_penginapan").text()/1 + $("#jumlah_tambang").text()/1 + $("#jumlah_pelbagai").text()/1 + jumlah_luar()).toFixed(2) );
 
 	$("#dibayar").text(($("#jumlah_tambang").text()/1 + $("#jumlah_pelbagai").text()/1 + $("#jumlah_elaun_penginapan").text()/1 - $("#jumlah_lojing").text()/1).toFixed(2));
 	$("#words").text(numberToWord($("#jumlah_tuntutan").text()));
@@ -921,13 +1181,21 @@ function numberToWord(num) {
 	return "Ringgit Malaysia: "+w;
 }
 
+function jumlah_luar() {
+	var total = 0;
+	for(var i = 0; i < $(".jumlah_luar").length; i++) {
+		total += $(".jumlah_luar").eq(i).text().replace(/,/g , "")/1;
+	}
+	return total;
+}
+
 
 ');
 
 $this->registerCss('
 
 	.noborder tr td, .print tr td {
-		padding: 5px;
+		padding: 0px;
 	}
 
 	ol {
@@ -942,6 +1210,10 @@ $this->registerCss('
 	    content: counter(list, lower-alpha) ") ";
 	    position: absolute;
 	    left: -1.4em;
+	}
+
+	.compressed {
+		padding: 0;
 	}
 
 	#rujukan {

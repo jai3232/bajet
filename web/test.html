@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pie Chart</title>
+</head>
+<body>
+	<canvas id="chart" width="600" height="600"></canvas>
+</body>
+</html>
+
+<script type="text/javascript">
+	window.onload = draw;
+	function draw() {
+		var canvas = document.getElementById("chart");
+		var ctx = canvas.getContext("2d");
+
+		var angle = Math.PI * 0.3;
+		var radius = 200
+
+		ctx.beginPath();
+		ctx.moveTo(300, 300);
+
+		ctx.arc(300, 300, radius, 0, angle);
+		ctx.lineTo(300, 300);
+		ctx.stroke();
+		ctx.fillStyle = '#E91E63';
+		ctx.fill();
+		ctx.beginPath();
+		ctx.arc(300, 300, radius, angle, angle + Math.PI * 0.5);
+		ctx.lineTo(300, 300);
+		ctx.stroke();
+		
+		ctx.fillStyle = '#000000';
+
+		ctx.fill();
+
+	}
+</script>

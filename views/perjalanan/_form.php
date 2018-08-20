@@ -40,7 +40,7 @@ for($i = $currentYear - 1; $i < $currentYear + 2; $i++) {
 
 $months = [
             '01' => 'Jan', '02' => 'Feb', '03' => 'Mac', '04' => 'Apr', '05' => 'Mei', '06' => 'Jun',
-            '07' => 'Jul', '08' => 'Ogo', '09' => 'Sep', '10' => 'Okt', '11' => 'Nov', '12' => 'Dis'
+            '07' => 'Jul', '08' => 'Ogos', '09' => 'Sep', '10' => 'Okt', '11' => 'Nov', '12' => 'Dis'
           ];
 ?>
 
@@ -117,11 +117,11 @@ $months = [
 
         <?= $form->field($model, 'id_unit')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_unit])->label(false) ?>
 
-        <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'nama')->textInput(['maxlength' => true, 'value' => $latest_model->nama]) ?>
 
         <div class="row">
             <div class="col-6 col-sm-6">
-            <?= $form->field($model, 'no_hp')->textInput(['maxlength' => true])->label('No Telefon/Hp') ?>
+            <?= $form->field($model, 'no_hp')->textInput(['maxlength' => true, 'value' => $latest_model->no_hp])->label('No Telefon/Hp') ?>
             </div>
             <div class="col-6 col-sm-6">
             <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
@@ -455,7 +455,7 @@ $months = [
         <fieldset>
             <legend>H. Pengakuan</legend>
             <div class="form-group">
-                <?= Html::checkbox('akuan', false, ['id' => 'akuan']) ?> Saya mengaku bahawa
+                <?= Html::checkbox('Perjalanan[akuan]', false, ['id' => 'akuan']) ?> Saya mengaku bahawa (tik untuk simpan dan cetak)
                 
             </div>
             <div class="form-group">
@@ -482,6 +482,8 @@ dilakukan dan dibayar oleh saya;</li>
 
         <?= $form->field($model, 'jumlah_kew')->hiddenInput()->label(false) ?>
 
+        <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
+
         <?php //= $form->field($model, 'status')->textInput() ?>
 
         <?php //= $form->field($model, 'cetak')->textInput() ?>
@@ -501,9 +503,6 @@ dilakukan dan dibayar oleh saya;</li>
 
     </div>    
     <?php ActiveForm::end(); ?>
-
-    
-
 </div>
 
 <?php
@@ -526,7 +525,7 @@ $this->registerJs('
             var bulan = $("#perjalanan-bulan").val();
             var tahun = $("#perjalanan-tahun").val();
             var os = $("#os").text();
-            var data = {no_kp: nokp, bulan: bulan, tahun: tahun, os: os};
+            var data = {no_kp: nokp, bulan: bulan, tahun: tahun, os: os, jenis: 0};
             $.post("'.Url::to(['perjalanan/carian-perjalanan']).'", data)
                 .done(function(msg){
                     var x = msg;
@@ -541,7 +540,7 @@ $this->registerJs('
                         }
                         else {
                             $(".loader").hide();
-                            $(".col-sm-8").html(" <span class=\"glyphicon glyphicon-remove\"></span> Sudah Claim");
+                            $(".col-sm-8").html(" <span class=\"glyphicon glyphicon-remove\"></span> Anda sudah membuat tuntutan perjalanan untuk bulan " + $("#perjalanan-bulan option:selected").text() + " dan OS " + os);
                             $("#buat-tuntutan").hide();
                         }
                     });
@@ -713,20 +712,23 @@ $this->registerJs('
         return false;
     });
 
-
-
     $("form#perjalanan-form").on("beforeSubmit", function(){
-        if(checkMust() && confirm("Hantar tuntutan perjalanan ini?"))
+        if(!checkMust())
+            return false; 
+        if(checkBaki() && confirm("Hantar tuntutan perjalanan ini?"))
             return true;
+        if(!checkBaki())
+            alert("Jumlah tuntutan melebihi baki unjuran");
         return false;
     });
 
     $("#simpan-perjalanan").on("click", function(){
-        if(checkMust() && confirm("Hantar tuntutan perjalanan ini?")) {
+        if(checkMust() && confirm("Simpan tuntutan perjalanan ini?")) {
             $.post("'.Url::to(['perjalanan/create']).'", $("form#perjalanan-form").serialize(), function(data){
                 if(data)
                     alert("Data berjaya disimpan");
-                //console.log(data);
+                $("#perjalanan-id").val(data);
+                console.log(data);
             });
         }
         return false;
@@ -1066,6 +1068,16 @@ function checkMust() {
     return true;    
 }
 
+function checkBaki() {
+    var balance = $("#baki").text().replace(/,/g, "")/1;
+    var spend = $("#perjalanan-jumlah_kew").val()/1;
+    console.log(balance+":"+spend);
+    if(balance >= spend)
+        return true;
+    return false;
+
+}
+
 
 
 ');
@@ -1089,8 +1101,8 @@ $this->registerCss('
 
 //TEST SCRIPT 
 $this->registerJs('
-    $("#perjalanan-nama").val(Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
-    $("#perjalanan-no_hp").val((Math.random() * 40000000).toFixed(0));
+    //$("#perjalanan-nama").val(Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
+    //$("#perjalanan-no_hp").val((Math.random() * 40000000).toFixed(0));
     $("#perjalanan-email").val(Math.random().toString(36).substr(2, 5) + "@" + Math.random().toString(36).substr(2, 5) + ".com");
     $("#perjalanan-jawatan").val(Math.random().toString(36).substr(2, 5));
     $("#perjalanan-no_gaji").val(Math.random().toString(36).substr(2, 5));

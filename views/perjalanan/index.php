@@ -3,38 +3,104 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\bootstrap\Modal;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PerjalananSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Perjalanans');
+$currentYear = date("Y"); 
+$currentMonth = date("m");
+$yearList = ['' => ''];
+for($i = $currentYear - 5; $i < $currentYear + 1; $i++) {
+    $yearList[$i] = $i; 
+}
+$months = [
+            '' => '',
+            '01' => 'Jan', '02' => 'Feb', '03' => 'Mac', '04' => 'Apr', '05' => 'Mei', '06' => 'Jun',
+            '07' => 'Jul', '08' => 'Ogos', '09' => 'Sep', '10' => 'Okt', '11' => 'Nov', '12' => 'Dis'
+          ];
+//$months = [0 => 'Semua', 'Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul','Ogo', 'Sep', 'Okt', 'Nov', 'Dis'];
+if(!isset($_GET['PerjalananSearch']['tahun']))
+    $selectedYear = $currentYear;
+else
+    $selectedYear = $_GET['PerjalananSearch']['tahun'];
+
+if(!isset($_GET['PerjalananSearch']['bulan']))
+    $selectedMonth = $currentMonth;
+else
+    $selectedMonth =  $_GET['PerjalananSearch']['bulan'];
+
+$this->title = Yii::t('app', 'Senarai Perjalanan');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="perjalanan-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <div class="alert alert-info">
+        <h5>Petunjuk: A: Sedang diproses, B: Lulus, C: Tolak, X: Tidak Lengkap (belum dihantar)</h5>
+    </div>
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    <div class="form-group">
+        <div class="row">
+        <?php echo $this->render('_search', [
+                'model' => $searchModel, 
+                'yearList' => $yearList, 
+                'selectedYear' => $selectedYear,
+                'months' => $months,
+                'selectedMonth' => $selectedMonth,
+            ]
+        ); ?>
+        </div>
+    </div>
     <p>
-        <?= Html::a(Yii::t('app', 'Create Perjalanan'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?php // Html::a(Yii::t('app', 'Create Perjalanan'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
+        'id' => 'perjalanan-grid',
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
             'kod_unjuran',
             'kod_id',
-            'os',
-            'bahagian',
-            //'bahagian_asal',
-            //'unit',
-            //'nama',
-            //'no_kp',
+            'kodUnjuran.os',
+            'nama',
+            'no_kp',
+            [
+                'attribute' => 'jenis',
+                'value' => function($model) {
+                    return $model->jenis == 0 ? 'Dalam':'Luar';
+                },
+                'filter' => ['Dalam', 'Luar', 'Lain'],
+            ],
+            [
+                // 'attribute' => 'id_jabatan',
+                'label' => 'Jabatan',
+                'value' => function($model) {
+                    return \app\models\Jabatan::findOne($model->id_jabatan)->jabatan;
+                }
+            ],
+            [
+                // 'attribute' => 'id_jabatan_asal',
+                'label' => 'Unjuran Jabatan ',
+                'value' => function($model) {
+                    return \app\models\Jabatan::findOne($model->id_jabatan_asal)->jabatan;
+                }
+            ],
+            [
+                // 'attribute' => 'id_unit',
+                'label' => 'Unit',
+                'value' => function($model) {
+                    return \app\models\Unit::findOne($model->id_unit)->unit;
+                }
+            ],
+            [
+                'label' => 'Bulan',
+                'value' => function($model) {
+                    return $model->bulan.'/'.$model->tahun;
+                }
+            ],
             //'no_hp',
             //'email:email',
             //'bulan',
@@ -70,19 +136,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'peratus_elaun_harian',
             //'peratus_elaun_harian_sabah',
             //'peratus_elaun_luar',
-            //'kali_hotel',
-            //'kali_hotel2',
-            //'kali_hotel3',
-            //'kali_hotel4',
-            //'kali_hotel5',
-            //'kali_hotel6',
             //'kali_lojing',
-            //'hotel',
-            //'hotel2',
-            //'hotel3',
-            //'hotel4',
-            //'hotel5',
-            //'hotel6',
             //'cukai',
             //'lojing',
             //'teksi',
@@ -112,17 +166,113 @@ $this->params['breadcrumbs'][] = $this->title;
             //'resit_tukaran',
             //'pendahuluan',
             //'tuntutan_lain',
-            //'jumlah_tuntutan',
-            //'jumlah_kew',
-            //'status',
+            [  
+                'attribute' => 'jumlah_tuntutan',
+                'contentOptions' => ['class' => 'text-right'],
+                'value' => function($model) {
+                    return number_format($model->jumlah_tuntutan, 2);
+                }
+            ],
+            [  
+                'label' => 'Lulus Kewangan',
+                'attribute' => 'jumlah_kew',
+                'contentOptions' => ['class' => 'text-right'],
+                'value' => function($model) {
+                    if($model->status == 'B')
+                        return number_format($model->jumlah_kew, 2);
+                    return '0.00';
+                }
+            ],
+            [
+                'attribute' => 'status',
+                'contentOptions' => ['class' => 'text-center'],
+                'filter' => ['A', 'B', 'C', 'X'],
+            ],
             //'cetak',
             //'catatan:ntext',
             //'user',
             //'tarikh_jadi',
             //'tarikh_kemaskini',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}{update}{delete}{finance}',
+                'visibleButtons' => [
+                    'update' => function($model) {
+                        // if($model->status == 'X')
+                        //     return true;
+                        // return false;
+                        return ($model->status == 'X' && $model->user == Yii::$app->user->identity->id);
+                    },
+                    'delete' => function($model) {
+                        // if($model->status == 'X' )
+                        // return true;
+                        // return false;
+                        return (($model->status == 'X' || $model->status == 'A') && $model->user == Yii::$app->user->identity->id);
+                    }
+
+                ],
+                'buttons' => [
+                    'view' => function($url, $model) {
+                        if($model->jenis == 1) {
+                            return Html::a('<span class="glyphicon glyphicon-print"></span>', ['perjalanan/form-over', 'id' => $model->id], [
+                                    'title' => Yii::t('app', 'Cetak'),
+                                ]);
+                        }
+                        return Html::a('<span class="glyphicon glyphicon-print"></span>', ['perjalanan/form', 'id' => $model->id], [
+                                    'title' => Yii::t('app', 'Cetak'),
+                                ]);
+                    },
+                    'update' => function($url, $model) {
+                        if($model->jenis == 1) {
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['perjalanan/update-over', 'id' => $model->id], [
+                                'title' => Yii::t('app', 'Kemaskini'),
+                            ]);
+                        }
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                'title' => Yii::t('app', 'Kemaskini'),
+                            ]);
+
+
+                    },
+                    'finance' => function($url, $model) {
+                        if($model->status == 'A') {
+                            return Html::a('<span class="glyphicon glyphicon-usd finance"></span>', ['perjalanan/finance', 'id' => $model->id], ['title' => Yii::t('app', 'Tindakan Kewangan')]);
+                        }
+                    }
+                ],
+            ],
         ],
     ]); ?>
     <?php Pjax::end(); ?>
 </div>
+<?php
+Modal::begin([
+    'header' => '<h3 id="modal-header">Kelulusan Kewangan</h3>',
+    'id' => 'modal',
+    //'clientOptions' => ['backdrop' => 'static'],
+    'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>',
+]);
+
+echo '<div id="modalContent"></div>';
+Modal::end();
+
+?>
+
+<?php
+    $this->registerJs('
+        $("select option[value=\"\"]").append("Semua");
+        $("select[name*=tahun] > option:first").hide();
+
+        $(document).on("pjax:success", function() {
+            $("select option[value=\"\"]").append("Semua");
+            $("select[name*=tahun] > option:first").hide();
+        });
+
+        $(".finance").on("click", function(){
+            $("#modal").modal("show").find("#modalContent").load($(this).parent().attr("href"));
+            return false;
+        });
+    ');
+
+?>

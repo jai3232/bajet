@@ -10,7 +10,6 @@ use Yii;
  * @property int $id
  * @property string $kod_unjuran
  * @property string $kod_id
- * @property int $jenis
  * @property int $id_jabatan
  * @property int $id_jabatan_asal
  * @property int $id_unit
@@ -73,7 +72,6 @@ use Yii;
  * @property int $resit_pakir
  * @property double $dobi
  * @property int $resit_dobi
- * @property double $pos
  * @property int $resit_pos
  * @property double $telefon
  * @property int $resit_telefon
@@ -83,7 +81,7 @@ use Yii;
  * @property int $tuntutan_lain
  * @property double $jumlah_tuntutan
  * @property double $jumlah_kew
- * @property string $status
+ * @property int $status
  * @property int $cetak
  * @property string $catatan
  * @property int $user
@@ -111,7 +109,7 @@ class Perjalanan extends \yii\db\ActiveRecord
     {
         return [
             [['kod_unjuran', 'kod_id', 'id_jabatan', 'id_unit', 'nama', 'no_kp', 'no_hp', 'bulan', 'tahun', 'jawatan', 'no_gaji', 'gaji_asas', 'elaun', 'bank', 'cawangan_bank', 'akaun_bank', 'model_kereta', 'no_plate', 'cc', 'kelas_tuntutan', 'alamat_pejabat', 'alamat_rumah', 'jumlah_tuntutan', 'user'], 'required'],
-            [['jenis', 'id_jabatan', 'id_jabatan_asal', 'id_unit', 'cc', 'jumlah_jarak', 'jarak_telah_dituntut', 'kali_makan', 'kali_makan_sabah', 'kali_harian', 'kali_harian_sabah', 'kali_elaun_luar', 'kali_lojing', 'resit_teksi', 'resit_bas', 'resit_keretapi', 'resit_terbang', 'resit_feri', 'resit_lain', 'resit_tol', 'resit_pakir', 'resit_dobi', 'resit_pos', 'resit_telefon', 'resit_tukaran', 'tuntutan_lain', 'cetak', 'user'], 'integer'],
+            [['id_jabatan', 'id_jabatan_asal', 'id_unit', 'cc', 'jumlah_jarak', 'jarak_telah_dituntut', 'kali_makan', 'kali_makan_sabah', 'kali_harian', 'kali_harian_sabah', 'kali_elaun_luar', 'kali_lojing', 'resit_teksi', 'resit_bas', 'resit_keretapi', 'resit_terbang', 'resit_feri', 'resit_lain', 'resit_tol', 'resit_pakir', 'resit_dobi', 'resit_pos', 'resit_telefon', 'resit_tukaran', 'tuntutan_lain', 'status', 'cetak', 'user'], 'integer'],
             [['gaji_asas', 'elaun', 'elaun_mangku', 'elaun_makan', 'elaun_makan_sabah', 'elaun_harian', 'elaun_harian_sabah', 'elaun_luar', 'peratus_elaun_makan', 'peratus_elaun_makan_sabah', 'peratus_elaun_harian', 'peratus_elaun_harian_sabah', 'peratus_elaun_luar', 'cukai', 'lojing', 'teksi', 'bas', 'keretapi', 'terbang', 'feri', 'lain', 'tol', 'pakir', 'dobi', 'pos', 'telefon', 'tukaran', 'pendahuluan', 'jumlah_tuntutan', 'jumlah_kew'], 'number'],
             [['catatan'], 'string'],
             [['tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
@@ -124,7 +122,7 @@ class Perjalanan extends \yii\db\ActiveRecord
             [['no_gaji', 'no_plate'], 'string', 'max' => 15],
             [['bank', 'cawangan_bank'], 'string', 'max' => 50],
             [['akaun_bank'], 'string', 'max' => 20],
-            [['kelas_tuntutan', 'status'], 'string', 'max' => 1],
+            [['kelas_tuntutan'], 'string', 'max' => 1],
             [['alamat_pejabat', 'alamat_rumah'], 'string', 'max' => 150],
             [['kod_id'], 'unique'],
             [['kod_unjuran'], 'exist', 'skipOnError' => true, 'targetClass' => Unjuran::className(), 'targetAttribute' => ['kod_unjuran' => 'kod_id']],
@@ -140,7 +138,6 @@ class Perjalanan extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'kod_unjuran' => Yii::t('app', 'Kod Unjuran'),
             'kod_id' => Yii::t('app', 'Kod ID'),
-            'jenis' => Yii::t('app', 'Jenis'),
             'id_jabatan' => Yii::t('app', 'Id Jabatan'),
             'id_jabatan_asal' => Yii::t('app', 'Id Jabatan Asal'),
             'id_unit' => Yii::t('app', 'Id Unit'),
