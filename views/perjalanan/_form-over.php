@@ -7,6 +7,7 @@ use yii\widgets\ActiveForm;
 use yii\bootstrap\Modal;
 use kartik\dialog\Dialog;
 use app\models\Unit;
+use app\models\Perjalanan;
 use yii\jui\DatePicker;
 use kartik\time\TimePicker;
 
@@ -29,6 +30,7 @@ Modal::begin([
 echo '<div id="modalContent"><div class="loader col-sm-4" style="margin: 40px 50%;"></div></div>';
 Modal::end();
 $id_pengguna = Yii::$app->user->identity->id;
+$no_kp = Yii::$app->user->identity->no_kp;
 
 echo Dialog::widget();
 
@@ -96,8 +98,11 @@ $months = [
                         ]) ?>               
             </div>
         </div>
+        <?php
+            // $no_kp = Perjalanan::find()->select(['no_kp'])->orderBy(['id' => SORT_DESC])->one()->no_kp;
+        ?>
 
-        <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true, 'value' => '777777777777'])->label('No. KP tanpa (-)') ?>
+        <?= $form->field($model, 'no_kp')->textInput(['maxlength' => true, 'value' => $no_kp])->label('No. KP tanpa (-)') ?>
         <div class="row row-loader form-group" style="display: none;">
             <div class="loader col-sm-4"></div>
             <div class="col-sm-8" style="height:60px; display:flex; align-items:center; font-weight: bold;">Carian data ....</div>
@@ -235,14 +240,14 @@ $months = [
                                 $percent_elaun = ['1' => '100%', '0.8' => '80%', '0.6' => '60%', '0.4' => '40%', '0.2' => '20%'];
 
                             ?>
-                            <td><?= Html::dropDownList('PerjalananLuarDetails[kali_makan][1]', null, $kali_makan, ['class' => 'kali_luar form-control']) ?></td>
+                            <td><?= Html::dropDownList('PerjalananLuarDetails[kali_elaun_makan][1]', null, $kali_makan, ['class' => 'kali_luar form-control']) ?></td>
                             <td>X Elaun makan sebanyak</td>
                             <td><?= Html::textInput('PerjalananLuarDetails[elaun_makan][1]', null, ['class' => 'elaun_makan_luar_sehari text-right form-control', 'type' => 'number', 'step' => 0.01]) ?></td>
                             <td><?= Html::dropDownList('PerjalananLuarDetails[peratus_elaun_makan][1]', null, $percent_elaun, ['class' => 'kadar_elaun_luar form-control']) ?></td>
                             <td class="text-right elaun_makan_luar">0.00</td>
                         </tr>
                         <tr>
-                            <td><?= Html::dropDownList('PerjalananLuarDetails[kali_harian][1]', null, $kali_makan, ['class' => 'kali_luar form-control']) ?></td>
+                            <td><?= Html::dropDownList('PerjalananLuarDetails[kali_elaun_harian][1]', null, $kali_makan, ['class' => 'kali_luar form-control']) ?></td>
                             <td>X Elaun harian sebanyak</td>
                             <td><?= Html::textInput('PerjalananLuarDetails[elaun_harian][1]', null, ['class' => 'elaun_makan_luar_sehari text-right form-control', 'type' => 'number', 'step' => 0.01]) ?></td>
                             <td><?= Html::dropDownList('PerjalananLuarDetails[peratus_elaun_harian][1]', null, $percent_elaun, ['class' => 'kadar_elaun_luar form-control']) ?></td>
@@ -278,7 +283,7 @@ $months = [
                         <tr>
                             <td></td>
                             <td class="text-center">Bayaran Perkhidmatan dan Cukai Perkhidmatan(OL21199)</td>
-                            <td><?= Html::textInput('PerjalananLuarDetails[cukai][1]', null, ['type' => 'number', 'step' => 0.01, 'class' => 'cukai_luar text-right form-control']) ?></td>
+                            <td><?= Html::textInput('PerjalananLuarDetails[cukai_hotel][1]', null, ['type' => 'number', 'step' => 0.01, 'class' => 'cukai_luar text-right form-control']) ?></td>
                             <td class="jumlah_cukai_luar text-right">0.00</td>
                         </tr>
                         <tr>
@@ -622,7 +627,7 @@ semasa;</li>
                     <li>Perbelanjaan yang bertanda (*) berjumlah sebanyak <strong>RM <span id="pendahuluan">0.00</span></strong> sebenarnya
 dilakukan dan dibayar oleh saya;</li>
                     <li>Panggilan telefon sebanyak <strong>RM <span id="telefon2">0.00</span></strong> dibuat atas urusan rasmi; dan</li>
-                    <li>Pbutir-butir seperti yang dinyatakan di atas adalah benar dan saya bertanggungjawab terhadapnya. 
+                    <li>Butir-butir seperti yang dinyatakan di atas adalah benar dan saya bertanggungjawab terhadapnya. 
 </li>
                 </ol>
                 Tarikh: <?= date('d-m-Y') ?>
@@ -635,9 +640,9 @@ dilakukan dan dibayar oleh saya;</li>
 
         <?= $form->field($model, 'jumlah_tuntutan')->hiddenInput()->label(false) ?>
 
-        <?= $form->field($model, 'jumlah_kew')->hiddenInput()->label(false) ?>
+        <?= $form->field($model, 'jumlah_kew')->textInput()->label(false) ?>
         
-        <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
+        <?= $form->field($model, 'id')->textInput()->label(false) ?>
 
         <?php //= $form->field($model, 'status')->textInput() ?>
 
@@ -1195,6 +1200,10 @@ $this->registerJs('
         }
 
     });
+
+    if($("#perjalanan-jumlah_jarak").val() == "") {
+        $("#perjalanan-jumlah_jarak").val(0);
+    }
 ');
 
 // FUNCTIONS
@@ -1369,8 +1378,8 @@ function checkMust() {
 }
 
 function checkBaki() {
-    var balance = $("#baki").text()/1;
-    var spend = $("#perjalanan-jumlah_kew").val()/1;
+    var balance = $("#baki").text().replace(/,/g, "")/1;
+    var spend = $("#perjalanan-jumlah_kew").val().replace(/,/g, "")/1;
     if(balance >= spend)
         return true;
     return false;
@@ -1418,8 +1427,38 @@ $this->registerJs('
     $("#perjalanan-cc").trigger("keyup");
     $("#perjalanan-cc").trigger("blur");
 
+    var countries = ["Japan", "Korea", "Malaysia", "USA", "UAE", "USSR", "Thailand", "Mali", "Egypt"];
+
     for(var x = 0; x < $(".must").length; x++) {
-        $(".must").eq(x).val(x);
+        switch(x) {
+                case 0:
+                    num = Math.floor(Math.random() * 8);
+                    $(".must").eq(x).val(countries[num]);
+                    break;
+                case 1:
+                    $(".must").eq(x).val("2018-09-2");
+                    break;
+                case 2:
+                    $(".must").eq(x).val("10:00 AM");
+                    break;
+                case 3:
+                    num = Math.floor(Math.random() * 8);
+                    $(".must").eq(x).val(countries[num]);
+                    break;
+                case 4:
+                    $(".must").eq(x).val("Pertandingan");
+                    break;
+                case 5:
+                    $(".must").eq(x).val("2018-10-11");
+                    break;
+                case 6:
+                    $(".must").eq(x).val("03:00 PM");
+                    break;
+
+            default:
+                $(".must").eq(x).val(x);    
+        }
+        
     }
 
 ');

@@ -95,7 +95,7 @@ AppAsset::register($this);
             ['label' => 'Tuntutan', 'items' => [
                     ['label' => 'Perjalanan Dalam Negeri', 'url' => ['/perjalanan/create']],
                     ['label' => 'Perjalanan Luar Negeri', 'url' => ['/perjalanan/create-over']],
-                    ['label' => 'Perjalanan Lain', 'url' => ['/perjalanan/lain']],
+                    ['label' => 'Perjalanan Lain', 'url' => ['/perjalanan/create-other']],
                     ['label' => 'Lebih Masa (OT)', 'url' => ['/ot/create']],
                     ['label' => 'Ceramah', 'url' => ['/ceramah/create']],
                     ['label' => 'Senarai Tuntutan Perjalanan', 'url' => ['/perjalanan/index']],

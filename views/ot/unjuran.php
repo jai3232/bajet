@@ -3,9 +3,9 @@ use app\models\Unjuran;
 use app\models\Jabatan;
 // use app\models\Perolehan;
 // use app\models\Perbelanjaan;
-// use app\models\Ot;
+use app\models\Ot;
 // use app\models\Penceramah;
-use app\models\Perjalanan;
+// use app\models\Perjalanan;
 
 
 // function bakiUnjuran($kod_unjuran)
@@ -27,7 +27,7 @@ use app\models\Perjalanan;
 $currentYear = date("Y");
 $id_jabatan = Yii::$app->user->identity->id_jabatan;
 
-$sql = "SELECT * FROM unjuran WHERE ((os = '21000' OR os = 'AMANAH' OR os LIKE '4%' OR os LIKE 'P%' OR os LIKE 'B%')  AND sah=1 AND tahun='$currentYear' AND kod='A' AND (id_jabatan=$id_jabatan OR FIND_IN_SET('$id_jabatan', unjuran.kongsi) ))";
+$sql = "SELECT * FROM unjuran WHERE ((os = '14000' OR os = 'AMANAH' OR os LIKE '4%' OR os LIKE 'P%' OR os LIKE 'B%')  AND sah=1 AND tahun='$currentYear' AND kod='A' AND (id_jabatan=$id_jabatan OR FIND_IN_SET('$id_jabatan', unjuran.kongsi) ))";
 
 $unjurans = Yii::$app->db->createCommand($sql)->queryAll();				  					  
 ?>
@@ -75,9 +75,9 @@ $this->registerJs('
 
 	$("#myTable tr").on("click", function(){
 		var td = $(this).children();
-		$("#perolehan-kod_unjuran").val(td.eq(1).html());
-		$("#perjalanan-kod_unjuran").val(td.eq(1).html());
-		$("#perjalanan-bahagian").val(td.eq(6).children().attr("id"));
+		// $("#perolehan-kod_unjuran").val(td.eq(1).html());
+		$("#ot-kod_unjuran").val(td.eq(1).html());
+		$("#ot-bahagian").val(td.eq(6).children().attr("id"));
 		$("#kod-unjuran").html(td.eq(1).html());
 		$("#os").html(td.eq(2).html());
 		$("#butiran").html(td.eq(3).html());
@@ -86,7 +86,7 @@ $this->registerJs('
 		$("#jabatan").html(td.eq(6).children().prop("title"));
 		$("#perjalanan-id_jabatan").val(td.eq(6).children().prop("id"));
 		$("#unjuran_info").slideDown(150);
-		$(".perjalanan-form").slideDown(200);
+		$(".ot-form").slideDown(200);
 		// $(".perbelanjaan-form").slideDown(200);
 		$(".first").show(100);
 	});

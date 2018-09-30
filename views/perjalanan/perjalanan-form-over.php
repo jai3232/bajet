@@ -984,9 +984,11 @@ $("#btnPrint").on("click", function () {
 
 ');
 
+$jumlah_jarak = $model->jumlah_jarak == '' ? 0 : $model->jumlah_jarak;
 $this->registerJs('
 	setClass("'.$model->kelas_tuntutan.'");	
-	setJarak('.$model->jumlah_jarak == '' ? 0 : $model->jumlah_jarak.');
+
+	setJarak('.$jumlah_jarak.');
 	jumlahKadarJarak();
 	setJumlahElaun();
 	$("#jumlah_tuntutan").text(($("#jumlah_kadar_jarak2").text()/1 + $("#jumlah_elaun_makan_harian").text()/1 + $("#jumlah_elaun_penginapan").text()/1 + $("#jumlah_tambang").text()/1 + $("#jumlah_pelbagai").text()/1 + jumlah_luar()).toFixed(2) );

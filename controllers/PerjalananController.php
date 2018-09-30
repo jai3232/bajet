@@ -221,7 +221,7 @@ class PerjalananController extends Controller
     {
         $model = new Perjalanan();
 
-        $post = Yii::$app->request->post();
+        $post = Yii::$app->request->post(); 
         if($post && $post['Perjalanan']['id'] != '') { // save only
             $model_id = $post['Perjalanan']['id'];
             $model = Perjalanan::findONe($model_id);
@@ -315,10 +315,34 @@ class PerjalananController extends Controller
             $model->kod_id = self::generateCodeReset('J', $model);
             if(isset($post['Perjalanan']['akuan']) && $post['Perjalanan']['akuan']/1 == 1)
                 $model->status = 'A';
+            // $model->kod_unjuran = $post['Perjalanan']['kod_unjuran'];
+            // $model->id_jabatan = $post['Perjalanan']['id_jabatan'];
+            // $model->id_unit = $post['Perjalanan']['id_unit'];
+            // $model->nama = $post['Perjalanan']['nama'];
+            // $model->no_kp = $post['Perjalanan']['no_kp'];
+            // $model->no_hp = $post['Perjalanan']['no_hp'];
+            // $model->bulan = $post['Perjalanan']['bulan'];
+            // $model->tahun = $post['Perjalanan']['tahun'];
+            // $model->jawatan = $post['Perjalanan']['jawatan'];
+            // $model->no_gaji = $post['Perjalanan']['no_gaji'];
+            // $model->gaji_asas = $post['Perjalanan']['gaji_asas'];
+            // $model->elaun = $post['Perjalanan']['elaun'];
+            // $model->bank = $post['Perjalanan']['bank'];
+            // $model->cawangan_bank = $post['Perjalanan']['cawangan_bank'];
+            // $model->akaun_bank = $post['Perjalanan']['akaun_bank'];
+            // $model->model_kereta = $post['Perjalanan']['model_kereta'];
+            // $model->no_plate = $post['Perjalanan']['no_plate'];
+            // $model->cc = $post['Perjalanan']['cc'];
+            // $model->kelas_tuntutan = $post['Perjalanan']['kelas_tuntutan'];
+            // $model->alamat_rumah = $post['Perjalanan']['alamat_rumah'];
+            // $model->alamat_pejabat = $post['Perjalanan']['alamat_pejabat'];
+            // $model->jumlah_tuntutan = $post['Perjalanan']['jumlah_tuntutan'];
+            // $model->jenis = $post['Perjalanan']['jenis'];
+
             if(!$model->save())
                 return print_r($model->getErrors());
             $model_id = $model->id;
-
+            //return isset($model_id) ? $model_id : 'xxx';
             $perjalanan = Yii::$app->request->post('Perjalanan');
             $details = Yii::$app->request->post('PerjalananDetails');
             $hotels = Yii::$app->request->post('PerjalananHotel');
@@ -394,6 +418,37 @@ class PerjalananController extends Controller
         return $this->render('create-over', [
             'model' => $model,
             //'model_luar_details' => $model_luar_details,
+        ]);
+    }
+
+    public function actionCreateOther()
+    {
+        $model = new Perjalanan();
+        $id_pengguna = Yii::$app->user->identity->id;
+        $latest_model = Perjalanan::find()->where(['user' => $id_pengguna])
+                                          ->andWhere(['<>', 'status', 'X'])
+                                          ->orderBy(['id' => SORT_DESC])->one();
+        $post = Yii::$app->request->post();
+
+        //return print_r($post);
+        if ($model->load($post)) { // save, submit and print
+
+            $model->user = $id_pengguna;
+            $model->kod_id = self::generateCodeReset('J', $model);
+            if(isset($post['Perjalanan']['akuan']) && $post['Perjalanan']['akuan']/1 == 1)
+                $model->status = 'A';
+            if(!$model->save())
+                return print_r($model->getErrors());
+            if(isset($post['Perjalanan']['akuan']) && $post['Perjalanan']['akuan']/1 == 1)
+                return $this->redirect(['form-other', 'id' => $model->id]);
+
+            return $model->id;
+        }
+
+
+        return $this->render('create-other', [
+            'model' => $model,
+            'latest_model' => $latest_model
         ]);
     }
 
@@ -506,6 +561,17 @@ class PerjalananController extends Controller
             'model_details' => $model_details,
             'model_hotels' => $model_hotels,
             'model_luar_details' => $model_luar_details,
+        ]);
+    }
+
+    public function actionFormOther($id = 0)
+    {
+        $model = Perjalanan::findOne($id);
+        if(count($model) == 0)
+            return $this->render('perjalanan-form', ['error' => 404]);
+
+        return $this->render('perjalanan-form-other', [
+            'model' => $model,
         ]);
     }
 

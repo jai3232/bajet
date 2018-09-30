@@ -125,7 +125,7 @@ class Perjalanan extends \yii\db\ActiveRecord
             [['bank', 'cawangan_bank'], 'string', 'max' => 50],
             [['akaun_bank'], 'string', 'max' => 20],
             [['kelas_tuntutan', 'status'], 'string', 'max' => 1],
-            [['alamat_pejabat', 'alamat_rumah'], 'string', 'max' => 150],
+            [['alamat_pejabat', 'alamat_rumah'], 'string', 'max' => 250],
             [['kod_id'], 'unique'],
             [['kod_unjuran'], 'exist', 'skipOnError' => true, 'targetClass' => Unjuran::className(), 'targetAttribute' => ['kod_unjuran' => 'kod_id']],
         ];

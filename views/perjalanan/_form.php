@@ -467,7 +467,7 @@ semasa;</li>
                     <li>Perbelanjaan yang bertanda (*) berjumlah sebanyak <strong>RM <span id="pendahuluan">0.00</span></strong> sebenarnya
 dilakukan dan dibayar oleh saya;</li>
                     <li>Panggilan telefon sebanyak <strong>RM <span id="telefon2">0.00</span></strong> dibuat atas urusan rasmi; dan</li>
-                    <li>Pbutir-butir seperti yang dinyatakan di atas adalah benar dan saya bertanggungjawab terhadapnya. 
+                    <li>Butir-butir seperti yang dinyatakan di atas adalah benar dan saya bertanggungjawab terhadapnya. 
 </li>
                 </ol>
                 Tarikh: <?= date('d-m-Y') ?>

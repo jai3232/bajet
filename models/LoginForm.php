@@ -51,7 +51,7 @@ class LoginForm extends Model
                 $this->addError($attribute, 'Login / Katalaluan salah.');
             }
 
-            if($user->aktif == 0)
+            if($user && $user->aktif == 0)
                 $this->addError($attribute, 'Akaun anda tidak aktif');
         }
     }

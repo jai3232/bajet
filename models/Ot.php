@@ -10,10 +10,9 @@ use Yii;
  * @property int $id
  * @property string $kod_unjuran
  * @property string $kod_id
- * @property string $os
- * @property string $bahagian
- * @property string $bahagian_asal
- * @property string $unit
+ * @property int $bahagian
+ * @property int $bahagian_asal
+ * @property int $unit
  * @property string $nama
  * @property string $no_kp
  * @property string $no_hp
@@ -32,8 +31,9 @@ use Yii;
  * @property double $jumlah_kew
  * @property int $status
  * @property string $catatan
- * @property string $user
- * @property string $date
+ * @property int $user
+ * @property string $tarikh_jadi
+ * @property string $tarikh_kemaskini
  *
  * @property Unjuran $kodUnjuran
  */
@@ -53,19 +53,17 @@ class Ot extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['kod_unjuran', 'kod_id', 'os', 'bahagian', 'unit', 'nama', 'no_kp', 'no_hp', 'bulan', 'tahun', 'gred_jawatan', 'jawatan', 'no_gaji', 'gaji_asas', 'kadar_sejam', 'bank', 'akaun_bank', 'catatan', 'user'], 'required'],
-            [['bulan', 'tahun', 'tanggung_kerja', 'status'], 'integer'],
+            [['kod_unjuran', 'kod_id', 'bahagian', 'unit', 'nama', 'no_kp', 'no_hp', 'bulan', 'tahun', 'gred_jawatan', 'jawatan', 'no_gaji', 'gaji_asas', 'kadar_sejam', 'bank', 'akaun_bank', 'catatan', 'user'], 'required'],
+            [['bahagian', 'bahagian_asal', 'unit', 'bulan', 'tahun', 'tanggung_kerja', 'status', 'user'], 'integer'],
             [['gaji_asas', 'kadar_sejam', 'jumlah_OT', 'jumlah_kew'], 'number'],
             [['catatan'], 'string'],
-            [['date'], 'safe'],
+            [['tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
             [['kod_unjuran', 'kod_id'], 'string', 'max' => 10],
-            [['os'], 'string', 'max' => 16],
-            [['bahagian', 'bahagian_asal'], 'string', 'max' => 3],
-            [['unit', 'bank'], 'string', 'max' => 50],
-            [['nama', 'email', 'user'], 'string', 'max' => 100],
+            [['nama', 'email'], 'string', 'max' => 100],
             [['no_kp', 'no_hp'], 'string', 'max' => 12],
             [['gred_jawatan', 'jawatan'], 'string', 'max' => 25],
             [['no_gaji'], 'string', 'max' => 15],
+            [['bank'], 'string', 'max' => 50],
             [['akaun_bank'], 'string', 'max' => 20],
             [['kod_id'], 'unique'],
             [['kod_unjuran'], 'exist', 'skipOnError' => true, 'targetClass' => Unjuran::className(), 'targetAttribute' => ['kod_unjuran' => 'kod_id']],
@@ -81,7 +79,6 @@ class Ot extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'kod_unjuran' => Yii::t('app', 'Kod Unjuran'),
             'kod_id' => Yii::t('app', 'Kod ID'),
-            'os' => Yii::t('app', 'Os'),
             'bahagian' => Yii::t('app', 'Bahagian'),
             'bahagian_asal' => Yii::t('app', 'Bahagian Asal'),
             'unit' => Yii::t('app', 'Unit'),
@@ -104,7 +101,8 @@ class Ot extends \yii\db\ActiveRecord
             'status' => Yii::t('app', 'Status'),
             'catatan' => Yii::t('app', 'Catatan'),
             'user' => Yii::t('app', 'User'),
-            'date' => Yii::t('app', 'Date'),
+            'tarikh_jadi' => Yii::t('app', 'Tarikh Jadi'),
+            'tarikh_kemaskini' => Yii::t('app', 'Tarikh Kemaskini'),
         ];
     }
 
