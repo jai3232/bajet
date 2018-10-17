@@ -10,7 +10,6 @@ use Yii;
  * @property int $id
  * @property string $kod_unjuran
  * @property string $kod_id
- * @property string $os
  * @property int $jenis_penceramah
  * @property int $nilai_kumpulan
  * @property int $tugas
@@ -20,7 +19,10 @@ use Yii;
  * @property string $unit
  * @property string $no_kp
  * @property string $jawatan
+ * @property string $gred_jawatan
+ * @property int $taraf_jawatan
  * @property int $kelayakan
+ * @property string $no_gaji
  * @property double $gaji
  * @property string $jabatan
  * @property string $alamat_jabatan
@@ -32,10 +34,11 @@ use Yii;
  * @property string $akaun_bank
  * @property double $jumlah_tuntutan
  * @property double $jumlah_kew
- * @property int $status
+ * @property string $status
  * @property string $catatan
- * @property string $user
- * @property string $date
+ * @property int $user
+ * @property string $tarikh_jadi
+ * @property string $tarikh_kemaskini
  *
  * @property Unjuran $kodUnjuran
  */
@@ -55,20 +58,21 @@ class Penceramah extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['kod_unjuran', 'kod_id', 'os', 'nama', 'bahagian', 'unit', 'no_kp', 'alamat_jabatan', 'no_hp', 'bulan', 'tahun', 'bank', 'akaun_bank', 'jumlah_tuntutan', 'catatan', 'user'], 'required'],
-            [['jenis_penceramah', 'nilai_kumpulan', 'tugas', 'kelayakan', 'bulan', 'tahun', 'status'], 'integer'],
+            [['kod_unjuran', 'kod_id', 'nama', 'bahagian', 'unit', 'no_kp', 'gred_jawatan', 'taraf_jawatan', 'no_gaji', 'alamat_jabatan', 'no_hp', 'bulan', 'tahun', 'bank', 'akaun_bank', 'jumlah_tuntutan', 'catatan', 'user'], 'required'],
+            [['jenis_penceramah', 'nilai_kumpulan', 'tugas', 'taraf_jawatan', 'kelayakan', 'bulan', 'tahun', 'user'], 'integer'],
             [['gaji', 'jumlah_tuntutan', 'jumlah_kew'], 'number'],
             [['catatan'], 'string'],
-            [['date'], 'safe'],
-            [['kod_unjuran', 'kod_id'], 'string', 'max' => 10],
-            [['os'], 'string', 'max' => 16],
-            [['nama', 'user'], 'string', 'max' => 100],
+            [['tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
+            [['kod_unjuran', 'kod_id', 'no_gaji'], 'string', 'max' => 10],
+            [['nama'], 'string', 'max' => 100],
             [['bahagian', 'bahagian_asal'], 'string', 'max' => 3],
             [['unit', 'email'], 'string', 'max' => 50],
             [['no_kp', 'no_hp'], 'string', 'max' => 12],
             [['jawatan', 'jabatan', 'bank'], 'string', 'max' => 25],
+            [['gred_jawatan'], 'string', 'max' => 7],
             [['alamat_jabatan'], 'string', 'max' => 125],
             [['akaun_bank'], 'string', 'max' => 20],
+            [['status'], 'string', 'max' => 1],
             [['kod_id'], 'unique'],
             [['kod_unjuran'], 'exist', 'skipOnError' => true, 'targetClass' => Unjuran::className(), 'targetAttribute' => ['kod_unjuran' => 'kod_id']],
         ];
@@ -83,7 +87,6 @@ class Penceramah extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'kod_unjuran' => Yii::t('app', 'Kod Unjuran'),
             'kod_id' => Yii::t('app', 'Kod ID'),
-            'os' => Yii::t('app', 'Os'),
             'jenis_penceramah' => Yii::t('app', 'Jenis Penceramah'),
             'nilai_kumpulan' => Yii::t('app', 'Nilai Kumpulan'),
             'tugas' => Yii::t('app', 'Tugas'),
@@ -93,7 +96,10 @@ class Penceramah extends \yii\db\ActiveRecord
             'unit' => Yii::t('app', 'Unit'),
             'no_kp' => Yii::t('app', 'No Kp'),
             'jawatan' => Yii::t('app', 'Jawatan'),
+            'gred_jawatan' => Yii::t('app', 'Gred Jawatan'),
+            'taraf_jawatan' => Yii::t('app', 'Taraf Jawatan'),
             'kelayakan' => Yii::t('app', 'Kelayakan'),
+            'no_gaji' => Yii::t('app', 'No Gaji'),
             'gaji' => Yii::t('app', 'Gaji'),
             'jabatan' => Yii::t('app', 'Jabatan'),
             'alamat_jabatan' => Yii::t('app', 'Alamat Jabatan'),
@@ -108,7 +114,8 @@ class Penceramah extends \yii\db\ActiveRecord
             'status' => Yii::t('app', 'Status'),
             'catatan' => Yii::t('app', 'Catatan'),
             'user' => Yii::t('app', 'User'),
-            'date' => Yii::t('app', 'Date'),
+            'tarikh_jadi' => Yii::t('app', 'Tarikh Jadi'),
+            'tarikh_kemaskini' => Yii::t('app', 'Tarikh Kemaskini'),
         ];
     }
 

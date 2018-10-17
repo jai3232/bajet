@@ -105,12 +105,10 @@ $months = [
         <?= $form->field($model, 'kod_unjuran')->hiddenInput(['maxlength' => true])->label(false) ?>
 
         <?php //= $form->field($model, 'kod_id')->textInput(['maxlength' => true]) ?>
-        
-        <?php //= $form->field($model, 'id')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'bahagian')->hiddenInput(['maxlength' => true])->label(false) ?>
 
-        <?= $form->field($model, 'bahagian_asal')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_jabatan])->label(false)?>
+        <?= $form->field($model, 'bahagian_asal')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_jabatan]) ->label(false)?>
 
         <?= $form->field($model, 'unit')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_unit ])->label(false) ?>
 
@@ -151,22 +149,19 @@ $months = [
             </div>
         </div>
         <div class="row">
-            <div class="col-4 col-sm-4">
+            <div class="col-6 col-sm-6">
                 <?= $form->field($model, 'bank')->textInput(['maxlength' => true]) ?>
             </div>
-            <div class="col-4 col-sm-4">
-                <?= $form->field($model, 'cawangan_bank')->textInput(['maxlength' => true]) ?>
-            </div>
-            <div class="col-4 col-sm-4">
+            <div class="col-6 col-sm-6">
                 <?= $form->field($model, 'akaun_bank')->textInput(['maxlength' => true]) ?>
             </div>
         </div>
 
-        <?= $form->field($model, 'jumlah_OT')->hiddenInput()->label(false) ?>
+        <?= $form->field($model, 'jumlah_OT')->textInput() ?>
 
-        <?= $form->field($model, 'jumlah_kew')->hiddenInput()->label(false) ?>
+        <?= $form->field($model, 'jumlah_kew')->textInput() ?>
 
-        <?= $form->field($model, 'status')->hiddenInput(['value' => 'A'])->label(false) ?>
+        <?= $form->field($model, 'status')->textInput(['value' => 'A']) ?>
 
         <?php //= $form->field($model, 'user')->textInput() ?>
         <div class="hidden">
@@ -186,7 +181,7 @@ $months = [
         <table id="maklumat-ot" class="table table-condensed table-striped table-bordered table-hover table-responsive">
             <thead>
                 <tr>
-                    <th>No.</th><th>Tarikh</th><th>Hari</th><th>Kod Hari</th><th>Kod Waktu</th><th>Waktu Masuk Kerja</th><th>Waktu Pulang Kerja</th><th>Masa Mula OT</th><th>Masa Tamat OT</th><!-- <th>Jumlah Jam</th> --><th>Jam Layak</th><!-- <th>Lampiran Rujukan</th> --><th>Butiran Tugas</th><th>Padam</th>
+                    <th>No.</th><th>Tarikh</th><th>Hari</th><th>Kod Hari</th><th>Kod Waktu</th><th>Waktu Pulang</th><th>Masa Mula OT</th><th>Masa Tamat OT</th><th>Jumlah Jam</th><th>Jumlah Jam Layak</th><th>Lampiran Rujukan</th><th>Butiran Tugas</th><th>Padam</th>
                 </tr>
             </thead>
             <tbody>
@@ -205,10 +200,7 @@ $months = [
                         <?= Html::dropdownList('OtDetails[kod_waktu][1]', null, [1 => 1, 2 => 2], ['class' => 'form-control kod-waktu kod must', 'prompt' => 'Sila Pilih']); ?>
                     </td>
                     <td>
-                        <?= Html::dropdownList('OtDetails[waktu_masuk][1]', null, [1 => '7:30 AM', '8:00 AM', '8:30 AM', '9:00 AM'], ['class' => 'form-control waktu-masuk kod must', 'prompt' => 'Sila Pilih']); ?>
-                    </td>
-                    <td>
-                        <?= Html::dropdownList('OtDetails[waktu_pulang][1]', null, [1 => '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM'], ['class' => 'form-control waktu-pulang kod must', 'prompt' => 'Sila Pilih']); ?>
+                        <?= Html::dropdownList('OtDetails[waktu_pejabat[1]', null, [1 => '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM'], ['class' => 'form-control waktu-pejabat kod must', 'prompt' => 'Sila Pilih']); ?>
                     </td>
                     <td>
                         <div class="bootstrap-timepicker input-group">
@@ -222,39 +214,30 @@ $months = [
                             <span class="input-group-addon picker"><i class="glyphicon glyphicon-time"></i></span>
                         </div>
                     </td>
-                    <!-- <td>
+                    <td>
                         <?= Html::textInput('OtDetails[jumlah_jam][1]', null, ['class' => 'form-control jumlah-jam', 'readonly' => true]) ?>
-                    </td> -->
-                    <td>
-                        <?= Html::textInput('OtDetails[jam_layak][1]', null, ['class' => 'form-control jam-layak', 'readonly' => true, 'size' => '10']) ?>
                     </td>
-                    <!-- <td>
-                        &nbsp;
-                    </td> -->
                     <td>
-                        <?= Html::textarea('OtDetails[butiran][1]', null, ['class' => 'form-control must', 'cols' => 50]) ?>
+                        <?= Html::textInput('OtDetails[jam_layak][1]', null, ['class' => 'form-control jam-layak', 'readonly' => true]) ?>
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        <?= Html::textarea('OtDetails[butiran[1]', null, ['class' => 'form-control']) ?>
                     </td>
                     <td class="remove">
                         
                     </td>
                 </tr>
             </tbody>
-            <tfoot>
-                <tr>
-                    <th colspan="9" id="perkiraan">Jumlah</th>
-                    <th id="jumlah-jam-ot"></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </tfoot>
         </table>
         <div class="form-group">
             <button class="btn btn-primary" id="btn-ot" title="Tambah OT" type="button"><span class="glyphicon glyphicon-plus-sign icon-size"></span></button>
         </div>
 
         <div class="form-group">
-            <?php //= Html::button("Kira", ['class' => 'btn btn-primary kira']) ?>
-            <?= Html::submitButton(Yii::t('app', 'Hantar'), ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
         </div>
     </div>
     <?php ActiveForm::end(); ?>
@@ -314,10 +297,6 @@ $this->registerJs('
         $("#ot-kadar_sejam").val(($(this).val()*12/2504).toFixed(2));
     });
 
-    $("#ot-gaji_asas").change(function(){
-        $(".time-picker").trigger("blur");
-    });
-
     // $( ".datepicker" ).datepicker({
     //       numberOfMonths: 2,
     //       minDate: "-2M",
@@ -349,111 +328,76 @@ $this->registerJs('
         // showInputs: false,
         // minuteStep: 5
     });
-    
-    var time_picker_mula = false;
-    var time_picker_akhir = false;
 
-    $(document).on("blur", ".time-picker", function(e){
+    $(document).on("change", ".time-picker", function(){
         // $(this).timepicker({ defaultTime: false, minuteStep: 5});
         if($(this).attr("name").indexOf("jam_mula") > -1) {
-            jam_mula = time_dec24($(this).val());
+            d1 = new Date("2000 10 10 " + time24($(this).val()));
             time_index = $(this).index(".time-picker-mula");
-            jam_akhir = time_dec24($(".time-picker-akhir").eq(time_index).val());
-            time_picker_mula = true;
-            time_picker_akhir = false;
+            d2 = new Date("2000 10 10 " + time24($(".time-picker-akhir").eq(time_index).val()));
         }
 
         if($(this).attr("name").indexOf("jam_akhir") > -1) {
-            jam_akhir = time_dec24($(this).val());
+            d2 = new Date("2000 10 10 " + time24($(this).val()));
             time_index = $(this).index(".time-picker-akhir");
-            jam_mula = time_dec24($(".time-picker-mula").eq(time_index).val());
-            time_picker_mula = false;
-            time_picker_akhir = true;
+            d1 = new Date("2000 10 10 " + time24($(".time-picker-mula").eq(time_index).val()));
         }
-        
-        kod_hari = $(".kod-hari").eq(time_index).val();
-        kod_waktu = $(".kod-waktu").eq(time_index).val()/1;
-        waktu_masuk = time_dec24($(".waktu-masuk option:selected").eq(time_index).text());
-        waktu_pulang = time_dec24($(".waktu-pulang option:selected").eq(time_index).text());
 
-        if(kod_hari == "A" && kod_waktu == 1) {            
-            if(waktu_pulang > jam_mula && jam_mula >= waktu_masuk) {
-                alert("Waktu mula OT mestilah sama atau lebih daripada waktu pulang pejabat");
-                $(".time-picker-mula").eq(time_index).val("");
-                return false;
-            }
-            if(jam_akhir > 22) {
-                alert("Waktu berakhir OT untuk kod 1 adalah jam 10:00 PM");
-                $(".time-picker-akhir").eq(time_index).val("");
-                return false;
-            }
-            if(jam_mula != -1 && jam_mula < 6) {
-                alert("Waktu mula OT untuk kod 1 adalah jam 6:00 AM");
-                $(".time-picker-mula").eq(time_index).val("");
-                return false;
-            }
-        }
-        if(kod_hari == "A" && kod_waktu == 2) {   
-            if(jam_mula >= 6 && jam_mula <= 22) {
-                alert("Waktu OT untuk kod waktu 2 adalah antara 10:00 PM sehingga 6:00 AM");
-                $(".time-picker-mula").eq(time_index).val("");
-            }
-            if(jam_akhir >= 6 && jam_akhir <= 22) {
-                alert("Waktu OT untuk kod waktu 2 adalah antara 10:00 PM sehingga 6:00 AM");
-                $(".time-picker-akhir").eq(time_index).val("");
-            }
-        }
-        if(kod_hari != "A" && kod_waktu == 1) {
-            if(jam_mula != -1 && jam_akhir != -1)
-                if(!(jam_mula >= 6 && jam_mula <= 22 && jam_akhir >= 6 && jam_akhir <= 22)) {
-                    alert("Kod waktu 1 mestilah bermula daripada 6:00 AM sehingga 10:00 PM");
-                    return false;
-                }
-        }
-        if(kod_hari != "A" && kod_waktu == 2) {
-            if(jam_mula >= 6 && jam_mula < 22 && time_picker_mula == true ) {
-                alert("Kod waktu 2 mestilah bermula antara jam 10:00 PM dan 5:00 AM");
-                $(".time-picker-mula").eq(time_index).val("");
-                $(".time-picker-akhir").eq(time_index).val("");
-            }
-            if(jam_akhir >= 6 && jam_akhir <= 22 && time_picker_akhir == true) {
-                alert("Kod waktu 2 mestilah berakhir selepas jam 10:00 PM dan sebelum 6:00 AM");
-                $(".time-picker-mula").eq(time_index).val("");
-                $(".time-picker-akhir").eq(time_index).val("");
-            }
-        }
-        if(jam_mula != -1 && jam_akhir != -1) {
-            var tambah_jam = 0;
-            if(kod_waktu == 1 && jam_mula > jam_akhir)
-                alert("Untuk kod waktu 1, jam tamat mestilah lebih lewat dari jam mula")
-            if(kod_waktu == 2 && jam_mula > jam_akhir)
-                jam_akhir += 24;
-            if(kod_hari == "A" && kod_waktu == 1 && jam_mula < waktu_masuk)
-                tambah_jam = (waktu_pulang - waktu_masuk) * -1;
-            $(".jumlah-jam").eq(time_index).val(jam_layak((jam_akhir - jam_mula + tambah_jam).toFixed(2)));
-            // $(".jam-layak").eq(time_index).val(ot_layak((jam_akhir - jam_mula + tambah_jam).toFixed(2), time_index));
-            var jam = jam_layak((jam_akhir - jam_mula + tambah_jam).toFixed(2));
-            $(".jam-layak").eq(time_index).val(ot_layak(jam, time_index).toFixed(2));
-            
-            var jumlah_jam_ot = 0;
-            for(var j = 0; j < $(".jam-layak").length; j++) {
-                temp_jam = $(".jam-layak").eq(j).val() * getRateDay($(".kod-hari").eq(j).val(), $(".kod-waktu").eq(j).val());
-                //console.log(j+"# jam-layak:" + $(".jam-layak").eq(j).val() + ", rate:" + getRateDay($(".kod-hari").eq(j).val(), $(".kod-waktu").eq(j).val()));
-                temp_jam = temp_jam.toFixed(3);
-                if(temp_jam/1 > 0)
-                    jumlah_jam_ot += temp_jam/1;
-            }
-            console.log("J:" + jumlah_jam_ot);
-            var jumlah_tuntutan_ot = $("#ot-kadar_sejam").val() * jumlah_jam_ot;
-            $("#perkiraan").html("Jumlah: RM" + $("#ot-kadar_sejam").val() + " X " + jumlah_jam_ot + " = RM" + jumlah_tuntutan_ot.toFixed(2));
-            
-            $("#ot-jumlah_kew, #ot-jumlah_ot").val(jumlah_tuntutan_ot.toFixed(2));
-        }
-        
+        if($(".time-picker-mula").eq(time_index).val() != "" && $(".time-picker-akhir").eq(time_index).val() != "")
+            $(".jumlah-jam").eq(time_index).val(diff_hours(d2, d1));
+        else
+            $(".jumlah-jam").eq(time_index).val("");
+
+        // console.log(diff_hours(d2, d1));
     });
 
+    $(document).on("blur", ".time-picker", function(){
+        console.log("index:" + time_index);
+        var kod_waktu = $(".kod-waktu").eq(time_index).val()/1;
+        var kod_hari = $(".kod-hari").eq(time_index).val()/1;
+        var waktu_pulang = time24($(".waktu-pejabat option:selected").eq(time_index).text());
+        waktu_mula = $(".time-picker-mula").eq(time_index).val();
+        waktu_akhir = $(".time-picker-akhr").eq(time_index).val();
+        
+        if($(this).attr("name").indexOf("jam_mula") > -1) {
+            time_index = $(this).index(".time-picker-mula");
+            waktu_mula = time24($(this).val());
+            waktu_akhir = time24($(".time-picker-akhir").eq(time_index).val());
+        }
+        if($(this).attr("name").indexOf("jam_akhir") > -1) {
+            time_index = $(this).index(".time-picker-akhir");
+            waktu_mula = time24($(".time-picker-mula").eq(time_index).val());
+            waktu_akhir = time24($(this).val());
+        }
 
-    //TIME PICKER CLICK
+        if(kod_hari = "A" && kod_waktu == 1) {
+            if(time_dec(waktu_mula) < time_dec(waktu_pulang))
+                alert("Waktu mula OT mesti sama atau lebih daripada waktu pulang pejabat");
+            if(time_dec(waktu_mula) > time_dec(waktu_akhir) && $(".time-picker-mula").eq(time_index).val() != "" && $(".time-picker-akhir").eq(time_index).val() != "")
+                alert("Waktu akhir mesti lebih lewat daripada maktu mula");
+
+            console.log("Pulang:" + time_dec(waktu_pulang) + " Mula:" + time_dec(waktu_mula) + " Akhir:" + time_dec(waktu_akhir));
+        }
+
+        if(kod_hari != "A" && kod_waktu == 1) {
+            console.log("Mula: " + time_dec(waktu_mula) + " Akhir:" + time_dec(waktu_akhir))
+            if(!(time_dec(waktu_mula) >= 6 && time_dec(waktu_akhir) <= 22)) {
+                alert("Waktu dibenarkan OT untuk Kod 1 adalah 6:00 AM sehingga 10:00 PM sahaja.");
+                return false;
+            }
+        }
+
+        if(kod_hari != "A" && kod_waktu == 2) {
+            if(!(time_dec(waktu_mula) >= 22 && (time_dec(waktu_akhir) <= 6 || time_dec(waktu_akhir) >= 22))) {
+                alert("Waktu dibenarkan OT untuk Kod 2 adalah 10:00 PM sehingga 6:00 AM sahaja.");
+                return false;
+            }
+        }
+        
+        
+
+    });
+
     $(document).on("click", ".time-picker", function(){
         if($(this).attr("name").indexOf("jam_mula") > -1) {
             time_index = $(this).index(".time-picker-mula");
@@ -487,8 +431,6 @@ $this->registerJs('
         $(".remove:last").html(btn_minus);
         $("tr.clone:last").html($("tr.clone:last").html().replace("<td>1</td>", "<td>" + nth_row + "</td>"));
         $("tr.clone:last").html($("tr.clone:last").html().replace(/\[.1?\]/g, "[" + nth_row + "]"));
-        //$("tr.clone:last").html($("tr.clone:last").html().replace(/id/g, "src"));
-        $("tr.clone:last").html($("tr.clone:last").html().replace(/id\=\"\w*\d*\"/g, ""));
         $(".time-picker").timepicker({
             defaultTime: false,
             minuteStep: 5
@@ -503,30 +445,23 @@ $this->registerJs('
         if($(this).prop("class").indexOf("kod-waktu") > -1) {
             var index = $(this).index(".kod-waktu");
         }
-        if($(this).prop("class").indexOf("waktu-pulang") > -1) {
-            var index = $(this).index(".waktu-pulang");
+        if($(this).prop("class").indexOf("waktu-pejabat") > -1) {
+            var index = $(this).index(".waktu-pejabat");
             var time_out = time24($("option:selected", this).text());
             console.log("out: " + time_out);
-        } 
-        $(".time-picker").trigger("blur"); 
+        }   
         // console.log($(this).prop("class") + ":" + index);
 
-    });
-
-    $("#ot-tanggung_kerja").click(function(){
-        $(".time-picker").trigger("blur");
     });
 
 
     $("form#ot-form").on("beforeValidate", function(){
         if(!checkMust())
-            return false;
-        if(confirm("Hantar tuntutan ini?"))
-            return true;
+            return false; 
         return false;
     });
 
-    //console.log(time_dec24(""));
+    //console.log(hour_dec("12:15"));
 ');
 
 // FUNCTIONS
@@ -545,14 +480,6 @@ $this->registerJs('
     }
 
     function time_dec24(time) {
-        if(time == "")
-            return -1;
-        if(time.indexOf(":") < 0){
-            time = time.replace("PM", "");
-            time = time.replace("AM", "");
-            time = time.replace(" ", "");
-            return Number(time);
-        }
         var t = time24(time).split(":");
         h = t[0];
         m = t[1]/60;
@@ -567,39 +494,6 @@ $this->registerJs('
         return /*Math.abs*/(diff.toFixed(2));
     }
 
-    function jam_layak(time)
-    {
-        var t = time.split(".");
-        var h = t[0]/1;
-        var m = t[1]/1;
-
-        if(m < 25)
-            aqm = 0; //actual qualified minit
-        else if(m < 50)
-            aqm = 0.25;
-        else if(m < 75)
-            aqm = 0.5;
-        else
-            aqm = 0.75;
-
-        return (h/1 + aqm/1);
-
-    }
-
-    function ot_layak(jam, index)
-    {
-        if(jam > 8)
-            jam -= 1;
-
-        if($("#ot-tanggung_kerja").prop("checked")) {
-            if($(".datepicker").eq(index).val() != $(".datepicker").eq(index-1).val())
-                jam -= 2.25;
-            if(index == 0)
-                jam -= 2.25;
-        }
-        return jam;
-    }
-
     function checkMust() {
         for(var i = 0; i < $(".must").length; i++) {
             $(".must").eq(i).css("background-color", "");
@@ -611,48 +505,7 @@ $this->registerJs('
             }
         }
         return true;    
-    }
-
-    function getRateDay(day, time){
-        if(day == "A" && time == "1")
-            return 1.125;
-        if(day == "A" && time == "2")
-            return 1.25;
-        if(day == "B" && time == "1")
-            return 1.25;
-        if(day == "B" && time == "2")
-            return 1.5;
-        if(day == "C" && time == "1")
-            return 1.75;    
-        if(day == "C" && time == "2")
-            return 2;
-        return -1;
-    }
-
-', \yii\web\View::POS_HEAD);
-
-?>
-
-<?php
-
-//TESTING SCRIPT
-
-$this->registerJs('
-
-$("#ot-nama").val(Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
-    $("#ot-no_hp").val((Math.random() * 40000000).toFixed(0));
-    $("#ot-email").val(Math.random().toString(36).substr(2, 5) + "@" + Math.random().toString(36).substr(2, 5) + ".com");
-    $("#ot-gred_jawatan").val(Math.random().toString(36).substr(2, 5));
-    $("#ot-jawatan").val(Math.random().toString(36).substr(2, 5));
-    $("#ot-no_gaji").val(Math.random().toString(36).substr(2, 5));
-    $("#ot-gaji_asas").val((Math.random()* 10000).toFixed(2));
-    $("#ot-gaji_asas").blur(function(){
-        $(this).trigger("keyup");
-    });
-    $("#ot-bank").val(Math.random().toString(36).substr(2, 5));
-    $("#ot-cawangan_bank").val(Math.random().toString(36).substr(2, 5));
-    $("#ot-akaun_bank").val((Math.random() * 100000000000).toFixed(0));
-
+}
 ');
 
 ?>

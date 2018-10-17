@@ -2,22 +2,21 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\OtSearch */
+/* @var $searchModel app\models\PenceramahSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Senarai Tuntutan OT');
+$this->title = Yii::t('app', 'Penceramahs');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="ot-index">
+<div class="penceramah-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Buat Tuntutan OT'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Penceramah'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -29,25 +28,29 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'kod_unjuran',
             'kod_id',
-            //'os',
-            'bahagian',
+            'jenis_penceramah',
+            'nilai_kumpulan',
+            //'tugas',
+            //'nama',
+            //'bahagian',
             //'bahagian_asal',
             //'unit',
-            //'nama',
             //'no_kp',
+            //'jawatan',
+            //'gred_jawatan',
+            //'taraf_jawatan',
+            //'kelayakan',
+            //'no_gaji',
+            //'gaji',
+            //'jabatan',
+            //'alamat_jabatan',
             //'no_hp',
             //'email:email',
             //'bulan',
             //'tahun',
-            //'gred_jawatan',
-            //'tanggung_kerja',
-            //'jawatan',
-            //'no_gaji',
-            //'gaji_asas',
-            //'kadar_sejam',
             //'bank',
             //'akaun_bank',
-            //'jumlah_OT',
+            //'jumlah_tuntutan',
             //'jumlah_kew',
             //'status',
             //'catatan:ntext',
@@ -58,5 +61,4 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-    <?php Pjax::end(); ?>
 </div>

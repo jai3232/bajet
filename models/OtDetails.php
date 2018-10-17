@@ -13,11 +13,11 @@ use Yii;
  * @property string $hari
  * @property string $kod_hari
  * @property int $kod_waktu
- * @property int $waktu_pejabat
+ * @property int $waktu_masuk
+ * @property int $waktu_pulang
  * @property string $ot_mula
  * @property string $ot_akhir
  * @property double $jam_layak
- * @property int $rujukan
  * @property string $butiran
  * @property string $date
  *
@@ -39,8 +39,8 @@ class OtDetails extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_ot', 'tarikh', 'hari', 'kod_hari', 'kod_waktu', 'waktu_pejabat', 'ot_mula', 'ot_akhir', 'jam_layak'], 'required'],
-            [['id_ot', 'kod_waktu', 'waktu_pejabat', 'rujukan'], 'integer'],
+            [['id_ot', 'tarikh', 'hari', 'kod_hari', 'kod_waktu', 'waktu_masuk', 'waktu_pulang', 'ot_mula', 'ot_akhir', 'jam_layak'], 'required'],
+            [['id_ot', 'kod_waktu', 'waktu_masuk', 'waktu_pulang'], 'integer'],
             [['tarikh', 'ot_mula', 'ot_akhir', 'date'], 'safe'],
             [['jam_layak'], 'number'],
             [['butiran'], 'string'],
@@ -62,11 +62,11 @@ class OtDetails extends \yii\db\ActiveRecord
             'hari' => Yii::t('app', 'Hari'),
             'kod_hari' => Yii::t('app', 'Kod Hari'),
             'kod_waktu' => Yii::t('app', 'Kod Waktu'),
-            'waktu_pejabat' => Yii::t('app', 'Waktu Pejabat'),
+            'waktu_masuk' => Yii::t('app', 'Waktu Masuk'),
+            'waktu_pulang' => Yii::t('app', 'Waktu Pulang'),
             'ot_mula' => Yii::t('app', 'Ot Mula'),
             'ot_akhir' => Yii::t('app', 'Ot Akhir'),
             'jam_layak' => Yii::t('app', 'Jam Layak'),
-            'rujukan' => Yii::t('app', 'Rujukan'),
             'butiran' => Yii::t('app', 'Butiran'),
             'date' => Yii::t('app', 'Date'),
         ];

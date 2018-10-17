@@ -97,10 +97,10 @@ AppAsset::register($this);
                     ['label' => 'Perjalanan Luar Negeri', 'url' => ['/perjalanan/create-over']],
                     ['label' => 'Perjalanan Lain', 'url' => ['/perjalanan/create-other']],
                     ['label' => 'Lebih Masa (OT)', 'url' => ['/ot/create']],
-                    ['label' => 'Ceramah', 'url' => ['/ceramah/create']],
+                    ['label' => 'Penceramah', 'url' => ['/penceramah/create']],
                     ['label' => 'Senarai Tuntutan Perjalanan', 'url' => ['/perjalanan/index']],
                     ['label' => 'Senarai Tuntutan Lebih Masa (OT)', 'url' => ['/ot/index']],
-                    ['label' => 'Senarai Tuntutan Ceramah', 'url' => ['/ceramah/index']],
+                    ['label' => 'Senarai Tuntutan Penceramah', 'url' => ['/penceramah/index']],
                     
                 ],
                 'visible' => !Yii::$app->user->isGuest,
@@ -148,9 +148,9 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="pull-left">&copy; IntraBudget <?= date('Y') ?></p>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-right"><?php //= Yii::powered() ?></p>
     </div>
 </footer>
 

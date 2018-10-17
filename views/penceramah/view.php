@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Ot */
+/* @var $model app\models\Penceramah */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ots'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Penceramahs'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="ot-view">
+<div class="penceramah-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -31,27 +31,32 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'kod_unjuran',
             'kod_id',
-            // 'os',
+            'jenis_penceramah',
+            'nilai_kumpulan',
+            'tugas',
+            'nama',
             'bahagian',
             'bahagian_asal',
             'unit',
-            'nama',
             'no_kp',
+            'jawatan',
+            'gred_jawatan',
+            'taraf_jawatan',
+            'kelayakan',
+            'no_gaji',
+            'gaji',
+            'jabatan',
+            'alamat_jabatan',
             'no_hp',
             'email:email',
             'bulan',
             'tahun',
-            'gred_jawatan',
-            'tanggung_kerja',
-            'jawatan',
-            'no_gaji',
-            'gaji_asas',
-            'kadar_sejam',
             'bank',
             'akaun_bank',
-            'jumlah_OT',
+            'jumlah_tuntutan',
             'jumlah_kew',
             'status',
+            'catatan:ntext',
             'user',
             'tarikh_jadi',
             'tarikh_kemaskini',

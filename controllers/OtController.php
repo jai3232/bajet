@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Ot;
+use app\models\OtDetails;
 use app\models\OtSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -65,9 +66,53 @@ class OtController extends Controller
     public function actionCreate()
     {
         $model = new Ot();
+        $id_pengguna = Yii::$app->user->identity->id;
+        $latest_model = Ot::find()->where(['user' => $id_pengguna])
+                                          ->andWhere(['<>', 'status', 'X'])
+                                          ->orderBy(['id' => SORT_DESC])->one();
+        $post = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+
+        if(!$post /*&& $post['Ot']['id'] != ''*/) { // save only
+
+        }
+
+        if ($model->load($post)) {
+            $Ot = $post['Ot'];
+            $details = $post['OtDetails'];
+
+            $model->user = $id_pengguna;
+            $model->kod_id = self::generateCodeReset('T', $model);
+            // if(isset($post['Perjalanan']['akuan']) && $post['Perjalanan']['akuan']/1 == 1)
+            $model->status = 'A';
+            if(!$model->save())
+                return print_r($model->getErrors());
+            $model_id = $model->id;
+
+            $out = array();
+            foreach($details as $key => $a){
+                foreach($a as $k => $v){
+                    $out[$k][$key] = $v;
+                }
+            }
+
+            foreach ($out as $key => $value) {
+                $details_model = new OtDetails();
+                $details_model->id_ot = $model_id;
+                $details_model->tarikh = Yii::$app->formatter->asDate($value['tarikh'], 'yyyy-MM-dd');
+                $details_model->hari = $value['hari'];
+                $details_model->kod_hari = $value['kod_hari'];
+                $details_model->kod_waktu = $value['kod_waktu'];
+                $details_model->waktu_masuk = $value['waktu_masuk'];
+                $details_model->waktu_pulang = $value['waktu_pulang'];
+                $details_model->ot_mula = date('H:i', strtotime($value['jam_mula']));
+                $details_model->ot_akhir = date('H:i', strtotime($value['jam_akhir']));
+                $details_model->jam_layak = $value['jam_layak'];
+                $details_model->butiran = $value['butiran'];
+                if(!$details_model->save())
+                    return print_r($details_model->getErros());
+            }
+            return $this->redirect(['form', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -123,6 +168,57 @@ class OtController extends Controller
         $os = $post['os'];
 
         return Ot::find()->joinWith('kodUnjuran')->where(['no_kp' => $no_kp, 'bulan' => $bulan, 'ot.tahun' => $tahun, 'unjuran.os' => $os])->count();
+    }
+
+    public function actionForm($id = 0)
+    {
+        $model = Ot::findOne($id);
+        if(count($model) == 0)
+            return $this->render('perjalanan-form', ['error' => 404]);
+        $model_details = OtDetails::find()->where(['id_ot' => $id])->all();
+
+        return $this->render('ot-form', [
+            'model' => $model,
+            'model_details' => $model_details,
+        ]);
+    }
+
+    static function generateCodeReset($c, $model) 
+    {
+        
+        $c = $c.date('y');
+        $data = empty($model->find()->where(['LIKE', 'kod_id', $c.'%', false])->max('kod_id')) ? 
+                    '0000000' : $model->find()->where(['LIKE', 'kod_id', $c.'%', false])->max('kod_id');
+        $data = substr($data, 3) / 1;
+        $data++;
+        $dLength = strlen($data);
+        $str = $c;
+        $sLength = strlen($c);
+        for($i = 0; $i < (10 - $dLength - $sLength); $i++)
+            $str .= "0";
+        return ($str.$data);
+    }
+
+    public function getRateDay($day)
+    {
+        if($day == 'A1')
+            return 1.125;
+        if($day == 'A2')
+            return 1.25;
+        if($day == 'B1')
+            return 1.25;
+        if($day == 'B2')
+            return 1.5;
+        if($day == 'C1')
+            return 1.75;    
+        if($day == 'C2')
+            return 2;
+    }
+
+    public function actionTest()
+    {
+        return $this->asJson(\app\models\Perjalanan::find()->where(['id' => 50])->asArray()->all());
+        return json_encode(\app\models\Perjalanan::find()->where(['id' => 50])->asArray()->all());
     }
 
     /**
