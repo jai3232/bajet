@@ -10,9 +10,9 @@ use Yii;
  * @property int $id
  * @property string $kod_unjuran
  * @property string $kod_id
- * @property int $bahagian
- * @property int $bahagian_asal
- * @property int $unit
+ * @property int $id_jabatan
+ * @property int $id_jabatan_asal
+ * @property int $id_unit
  * @property string $nama
  * @property string $no_kp
  * @property string $no_hp
@@ -55,10 +55,10 @@ class Ot extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['kod_unjuran', 'kod_id', 'bahagian', 'unit', 'nama', 'no_kp', 'no_hp', 'bulan', 'tahun', 'gred_jawatan', 'jawatan', 'no_gaji', 'gaji_asas', 'kadar_sejam', 'bank', 'cawangan_bank', 'akaun_bank', 'user'], 'required'],
-            [['bahagian', 'bahagian_asal', 'unit', 'bulan', 'tahun', 'tanggung_kerja', 'user'], 'integer'],
+            [['kod_unjuran', 'kod_id', 'id_jabatan', 'id_unit', 'nama', 'no_kp', 'no_hp', 'bulan', 'tahun', 'gred_jawatan', 'jawatan', 'no_gaji', 'gaji_asas', 'kadar_sejam', 'bank', 'cawangan_bank', 'akaun_bank', 'user'], 'required'],
+            [['id_jabatan', 'id_jabatan_asal', 'id_unit', 'bulan', 'tahun', 'tanggung_kerja', 'user'], 'integer'],
             [['gaji_asas', 'kadar_sejam', 'jumlah_OT', 'jumlah_kew'], 'number'],
-            [['catatan'], 'string'],
+            [['status', 'catatan'], 'string'],
             [['tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
             [['kod_unjuran', 'kod_id'], 'string', 'max' => 10],
             [['nama', 'email'], 'string', 'max' => 100],
@@ -82,9 +82,9 @@ class Ot extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'kod_unjuran' => Yii::t('app', 'Kod Unjuran'),
             'kod_id' => Yii::t('app', 'Kod ID'),
-            'bahagian' => Yii::t('app', 'Bahagian'),
-            'bahagian_asal' => Yii::t('app', 'Bahagian Asal'),
-            'unit' => Yii::t('app', 'Unit'),
+            'id_jabatan' => Yii::t('app', 'Jabatan'),
+            'id_jabatan_asal' => Yii::t('app', 'Jabatan Asal'),
+            'id_unit' => Yii::t('app', 'Unit'),
             'nama' => Yii::t('app', 'Nama'),
             'no_kp' => Yii::t('app', 'No Kp'),
             'no_hp' => Yii::t('app', 'No Hp'),

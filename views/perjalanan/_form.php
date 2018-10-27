@@ -111,7 +111,7 @@ $months = [
 
     </div>
 
-    <div class="second" style="display: nonex;">
+    <div class="second" style="display: none;">
         <fieldset><legend>Maklumat Personal</legend>
         <?php //= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(Unit::find()->where(['id_jabatan' => yii::$app->user->identity->id_jabatan])->all(), 'id', 'unit'),['prompt' => '- Sila Pilih -']) ?>
 
@@ -1103,21 +1103,21 @@ $this->registerCss('
 $this->registerJs('
     //$("#perjalanan-nama").val(Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
     //$("#perjalanan-no_hp").val((Math.random() * 40000000).toFixed(0));
-    $("#perjalanan-email").val(Math.random().toString(36).substr(2, 5) + "@" + Math.random().toString(36).substr(2, 5) + ".com");
-    $("#perjalanan-jawatan").val(Math.random().toString(36).substr(2, 5));
-    $("#perjalanan-no_gaji").val(Math.random().toString(36).substr(2, 5));
-    $("#perjalanan-gaji_asas").val((Math.random()* 10000).toFixed(2));
-    $("#perjalanan-elaun").val((Math.random() * 10000).toFixed(2));
-    $("#perjalanan-bank").val(Math.random().toString(36).substr(2, 5));
-    $("#perjalanan-cawangan_bank").val(Math.random().toString(36).substr(2, 5));
-    $("#perjalanan-akaun_bank").val((Math.random() * 100000000000).toFixed(0));
-    $("#perjalanan-model_kereta").val("Citroen " + Math.random().toString(36).substr(2, 5));
-    $("#perjalanan-no_plate").val("TL " + Math.random().toString(36).substr(2, 5));
-    $("#perjalanan-cc").val((Math.random() * 3000).toFixed(0));
-    $("#perjalanan-alamat_pejabat").val(Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
-    $("#perjalanan-alamat_rumah").val(Math.random() * 10 + Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
-    $("#perjalanan-cc").trigger("keyup");
-    $("#perjalanan-cc").trigger("blur");
+    // $("#perjalanan-email").val(Math.random().toString(36).substr(2, 5) + "@" + Math.random().toString(36).substr(2, 5) + ".com");
+    // $("#perjalanan-jawatan").val(Math.random().toString(36).substr(2, 5));
+    // $("#perjalanan-no_gaji").val(Math.random().toString(36).substr(2, 5));
+    // $("#perjalanan-gaji_asas").val((Math.random()* 10000).toFixed(2));
+    // $("#perjalanan-elaun").val((Math.random() * 10000).toFixed(2));
+    // $("#perjalanan-bank").val(Math.random().toString(36).substr(2, 5));
+    // $("#perjalanan-cawangan_bank").val(Math.random().toString(36).substr(2, 5));
+    // $("#perjalanan-akaun_bank").val((Math.random() * 100000000000).toFixed(0));
+    // $("#perjalanan-model_kereta").val("Citroen " + Math.random().toString(36).substr(2, 5));
+    // $("#perjalanan-no_plate").val("TL " + Math.random().toString(36).substr(2, 5));
+    // $("#perjalanan-cc").val((Math.random() * 3000).toFixed(0));
+    // $("#perjalanan-alamat_pejabat").val(Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
+    // $("#perjalanan-alamat_rumah").val(Math.random() * 10 + Math.random().toString(36).substr(2, 5) + " " + Math.random().toString(36).substr(2, 5));
+    // $("#perjalanan-cc").trigger("keyup");
+    // $("#perjalanan-cc").trigger("blur");
 
 ');
 ?>

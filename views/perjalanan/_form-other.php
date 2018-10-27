@@ -111,7 +111,7 @@ $months = [
 
     </div>
 
-    <div class="second" style="display: nonex;">
+    <div class="second" style="display: none;">
         <fieldset><legend>Maklumat Personal</legend>
         <?php //= $form->field($model, 'unit')->dropDownList(ArrayHelper::map(Unit::find()->where(['id_jabatan' => yii::$app->user->identity->id_jabatan])->all(), 'id', 'unit'),['prompt' => '- Sila Pilih -']) ?>
 

@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Penceramah;
 use app\models\PenceramahSearch;
+use app\models\PenceramahDetails;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -65,8 +66,40 @@ class PenceramahController extends Controller
     public function actionCreate()
     {
         $model = new Penceramah();
+        $id_pengguna = Yii::$app->user->identity->id;
+        $latest_model = Penceramah::find()->where(['user' => $id_pengguna])
+                                          ->andWhere(['<>', 'status', 'X'])
+                                          ->orderBy(['id' => SORT_DESC])->one();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $post = Yii::$app->request->post();
+        if ($model->load($post)) {
+            $details = $post['PenceramahDetails'];
+
+            $model->user = $id_pengguna;
+            $model->kod_id = self::generateCodeReset('C', $model);
+            if(!$model->save())
+                return print_r($model->getErrors());
+            $model_id = $model->id;
+
+            $out = array();
+            foreach($details as $key => $a){
+                foreach($a as $k => $v){
+                    $out[$k][$key] = $v;
+                }
+            }
+
+            foreach ($out as $key => $value) {
+                $details_model = new PenceramahDetails();
+                $details_model->id_penceramah = $model_id;
+                $details_model->tarikh = Yii::$app->formatter->asDate($value['tarikh'], 'yyyy-MM-dd');
+                $details_model->nama_ceramah= $value['nama_ceramah'];
+                $details_model->tempoh = $value['tempoh'];
+                $details_model->jumlah = $value['jumlah'];
+                if(!$details_model->save())
+                    return print_r($details_model->getErrors());
+            }
+            return $this->redirect(['form', 'id' => $model->id]);
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -122,7 +155,51 @@ class PenceramahController extends Controller
         $tahun = $post['tahun'];
         $os = $post['os'];
 
-        return Penceramah::find()->joinWith('kodUnjuran')->where(['no_kp' => $no_kp, 'bulan' => $bulan, 'penceramah.tahun' => $tahun, 'unjuran.os' => $os])->count();
+        return Penceramah::find()->joinWith('kodUnjuran')->where(['no_kp' => $no_kp, 'bulan' => $bulan, 'penceramah.tahun' => $tahun, 'unjuran.os' => $os])->andWhere(['!=', 'penceramah.status', 'C'])->count();
+    }
+
+    public function actionFinance($id)
+    {
+        $post = yii::$app->request->post('Penceramah');
+        $model = $this->findModel($id);
+        if($post) {
+            // return print_r($post);
+            $model->jumlah_kew = $post['jumlah_tuntutan'];
+            $model->status = $post['status'];//$post['lulus'] > 1 ? 'C' : 'B';
+            if(!$model->save())
+                return print_r($model->getErrors());
+            return true;
+        }
+        return $this->renderAjax('finance', ['model' => $model]);
+    }
+
+    static function generateCodeReset($c, $model) 
+    {
+        
+        $c = $c.date('y');
+        $data = empty($model->find()->where(['LIKE', 'kod_id', $c.'%', false])->max('kod_id')) ? 
+                    '0000000' : $model->find()->where(['LIKE', 'kod_id', $c.'%', false])->max('kod_id');
+        $data = substr($data, 3) / 1;
+        $data++;
+        $dLength = strlen($data);
+        $str = $c;
+        $sLength = strlen($c);
+        for($i = 0; $i < (10 - $dLength - $sLength); $i++)
+            $str .= "0";
+        return ($str.$data);
+    }
+
+    public function actionForm($id = 0)
+    {
+        $model = Penceramah::findOne($id);
+        if(count($model) == 0)
+            return $this->render('penceramah-form', ['error' => 404]);
+        $model_details = PenceramahDetails::find()->where(['id_penceramah' => $id])->all();
+
+        return $this->render('penceramah-form', [
+            'model' => $model,
+            'model_details' => $model_details,
+        ]);
     }
 
     /**

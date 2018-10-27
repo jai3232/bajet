@@ -102,57 +102,66 @@ $months = [
 
     </div>
 
-    <?= $form->field($model, 'kod_unjuran')->hiddenInput(['maxlength' => true])->label(false) ?>
+    <div class="second" style="display: none;">
 
-    <?= $form->field($model, 'jenis_penceramah')->radioList([0 => 'Kerajaan', 1 => 'Swasta']); ?>
+        <?= $form->field($model, 'kod_unjuran')->hiddenInput(['maxlength' => true])->label(false) ?>
 
-    <?= $form->field($model, 'tugas')->radioList([0 => 'Penceramah/Pensyarah', 1 => 'Fasilitator']); ?>
+        <?= $form->field($model, 'jenis_penceramah')->radioList([0 => 'Kerajaan', 1 => 'Swasta'], ['value' => 0]); ?>
 
-    <?= $form->field($model, 'nilai_kumpulan')->dropDownList(
-            [
-                300 => 'Pengurusan Tertinggi', 
-                200 => 'Pengurusan & Profesional (53-54)',
-                150 => 'Pengurusan  Profesional (45-52)',
-                120 => 'Pengurusan & Profesional (41-44)',
-                80 => 'Sokongan'
-            ], 
-            ['prompt' => '- Sila Pilih -']
-        )->label('Kumpulan'); 
-    ?>
+        <?= $form->field($model, 'tugas')->radioList([0 => 'Penceramah/Pensyarah', 1 => 'Fasilitator']); ?>
 
-    <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'nilai_kumpulan')->dropDownList(
+                [
+                    300 => 'Pengurusan Tertinggi', 
+                    200 => 'Pengurusan & Profesional (53-54)',
+                    150 => 'Pengurusan  Profesional (45-52)',
+                    120 => 'Pengurusan & Profesional (41-44)',
+                    80 => 'Sokongan'
+                ], 
+                ['prompt' => '- Sila Pilih -']
+            )->label('Kumpulan Jawatan'); 
+        ?>
+        
+        <?= $form->field($model, 'kelayakan')->dropDownList(
+                [
+                    400 => 'PhD', 
+                    300 => 'Sarjana',
+                    200 => 'Sarjana Muda',
+                    120 => 'Diploma / Siji',
+                ], 
+                ['prompt' => '- Sila Pilih -']
+            )->label('Kelayakan'); 
+        ?>
 
-    <?= $form->field($model, 'bahagian')->hiddenInput(['maxlength' => true])->label(false) ?>
+        <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'bahagian_asal')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_jabatan])->label(false) ?>
+        <?= $form->field($model, 'id_jabatan')->hiddenInput(['maxlength' => true])->label(false) ?>
 
-    <?= $form->field($model, 'unit')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_unit])->label(false) ?>
+        <?= $form->field($model, 'id_jabatan_asal')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_jabatan])->label(false) ?>
 
-    <div class="row">
+        <?= $form->field($model, 'id_unit')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_unit])->label(false) ?>
 
-        <div class="col-4 col-sm-4">
+        <div class="row">
 
-            <?= $form->field($model, 'jawatan')->textInput(['maxlength' => true])->label('Nama Jawatan') ?>
+            <div class="col-4 col-sm-4">
+
+                <?= $form->field($model, 'jawatan')->textInput(['maxlength' => true])->label('Nama Jawatan') ?>
+
+            </div>
+
+            <div class="col-4 col-sm-4">
+
+                <?= $form->field($model, 'gred_jawatan')->textInput(['maxlength' => true]) ?>
+
+            </div>
+
+            <div class="col-4 col-sm-4">
+
+                <?= $form->field($model, 'taraf_jawatan')->radioList([0 => 'Tetap', 1 => 'Sementara', 2 => 'Lain-lain']); ?>
+
+            </div>
 
         </div>
-
-        <div class="col-4 col-sm-4">
-
-            <?= $form->field($model, 'gred_jawatan')->textInput(['maxlength' => true]) ?>
-
-        </div>
-
-        <div class="col-4 col-sm-4">
-
-            <?= $form->field($model, 'taraf_jawatan')->radioList([0 => 'Tetap', 1 => 'Sementara', 2 => 'Lain-lain']); ?>
-
-        </div>
-
-    </div>
-
-    <div class="second" style="display: nonex;">
-
-        <?= $form->field($model, 'kelayakan')->textInput() ?>
 
         <div class="row">
             <div class="col-6 col-sm-6">
@@ -187,86 +196,91 @@ $months = [
 
         <?= $form->field($model, 'jabatan')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'alamat_jabatan')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'alamat_jabatan')->textarea(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'jumlah_tuntutan')->textInput() ?>
+        <?= $form->field($model, 'jumlah_tuntutan')->hiddenInput() ?>
 
-        <?= $form->field($model, 'jumlah_kew')->textInput() ?>
+        <?= $form->field($model, 'jumlah_kew')->hiddenInput() ?>
 
-        <?= $form->field($model, 'status')->textInput(['maxlength' => true, 'value' => 'A']) ?>
+        <?= $form->field($model, 'status')->hiddenInput(['maxlength' => true, 'value' => 'A']) ?>
 
-    </div>
-    <div class="hidden">
-        <?= DatePicker::widget(['options' => ['class' => 'hidden']]); ?>        
-    </div>
-    <table id="maklumat-ceramah" class="table table-condensed table-striped table-bordered table-hover table-responsive">
-        <thead>
-            <tr><th colspan="6" class="text-center">Maklumat Ceramah</th></tr>
-            <tr>
-                <th>No.</th>
-                <th>Tarikh</th>
-                <th>Nama Penganjur / Ceramah</th>
-                <th>Tempoh (jam)</th>
-                <th>Jumlah (RM)</th>
-                <th>Padam</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="clone">
-                <td>1</td>
-                <td>
-                    <?= Html::textInput('PenceramahDetails[tarikh][1]', null, ['class' => 'form-control datepicker must', 'readonly' => true]) ?>
-                </td>
-                <td>
-                    <?= Html::textarea('PenceramahDetails[nama_ceramah][1]', null, ['class' => 'form-control must', 'cols' => 50, 'rows' => 1]); ?>
-                </td>
-                <td>
-                    <?= Html::textInput('PenceramahDetails[tempoh][1]', null, ['class' => 'form-control must', 'type' => 'number', 'step' => 0.1]) ?>
-                </td>
-                <td>
-                    <?= Html::textInput('PenceramahDetails[tuntutan][1]', null, ['class' => 'form-control', 'readonly' => true]) ?>
-                </td>
-                <td class="remove"></td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <th colspan="6" class="text-center">Pengakuan</th>
-            </tr>
-            <tr>
-                <td colspan="6">
-                    <p>
-                        <input type="checkbox" name="akuan" id="akuan">
-                        Saya mengaku bahawa (sila tik di sini)<br>
-                        <?= Html::checkbox('agree', true, ['label' => 'I agree']) ?>
-                    </p>
-                    <ol type="a">
-                        <li> Perjalanan pada tarikh-tarikh tersebut adalah benar dan telah dibuat atas urusan rasmi; </li>
-                        <li>Tuntutan ini dibuat mengikut kadar dan syarat seperti yang dinyatakan di bawah peraturan- 
-                        peraturan bagi pegawai bertugas rasmi dan/atau pegawai berkursus yang berkuatkuasa 
-                        semasa;</li>
-                        <li>butir-butir seperti yang dinyatakan di atas adalah benar dan saya bertanggungjawab terhadapnya. 
-                            <br>
-                            <br>
-                            Tarikh : ??? <br>
-                        </li>
-                    <p></p>
-                    </ol>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
-    <div class="form-group">
-            <button class="btn btn-primary" id="btn-ceramah" title="Tambah Ceramah" type="button"><span class="glyphicon glyphicon-plus-sign icon-size"></span></button>
+    
+        <div class="hidden">
+            <?= DatePicker::widget(['options' => ['class' => 'hidden']]); ?>        
+        </div>
+        <table id="maklumat-ceramah" class="table table-condensed table-striped table-bordered table-hover table-responsive">
+            <thead>
+                <tr><th colspan="6" class="text-center">Maklumat Ceramah</th></tr>
+                <tr>
+                    <th>No.</th>
+                    <th>Tarikh</th>
+                    <th>Nama Penganjur / Ceramah</th>
+                    <th>Tempoh (jam)</th>
+                    <th>Jumlah (RM)</th>
+                    <th>Padam</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="clone">
+                    <td>1</td>
+                    <td>
+                        <?= Html::textInput('PenceramahDetails[tarikh][1]', null, ['class' => 'form-control datepicker must', 'readonly' => true]) ?>
+                    </td>
+                    <td>
+                        <?= Html::textarea('PenceramahDetails[nama_ceramah][1]', null, ['class' => 'form-control must', 'cols' => 50, 'rows' => 1]); ?>
+                    </td>
+                    <td>
+                        <?= Html::textInput('PenceramahDetails[tempoh][1]', null, ['class' => 'form-control tempoh must', 'type' => 'number', 'step' => 0.1]) ?>
+                    </td>
+                    <td>
+                        <?= Html::textInput('PenceramahDetails[jumlah][1]', null, ['class' => 'form-control jumlah text-right', 'readonly' => true]) ?>
+                    </td>
+                    <td class="remove"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="4">Jumlah</th>
+                    <th id="jumlah-besar" class="text-right"></th>
+                    <th>
+                        <div class="form-group">
+                            <button class="btn btn-primary" id="btn-ceramah" title="Tambah Ceramah" type="button"><span class="glyphicon glyphicon-plus-sign icon-size"></span></button>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="6" class="text-center">Pengakuan</th>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <p>
+                            <?= Html::checkbox('agree', false, ['label' => 'Saya mengaku bahawa (sila tik di sini)' , 'id' => 'akuan']) ?>
+                        </p>
+                        <ol type="a">
+                            <li> Tugas-tugas pada tarikh-tarikh tersebut adalah benar dan telah dibuat atas urusan rasmi; </li>
+                            <li>Tuntutan ini dibuat mengikut kadar dan syarat seperti yang dinyatakan di bawah peraturan- 
+                            peraturan bagi pegawai bertugas rasmi dan/atau pegawai berkursus yang berkuatkuasa 
+                            semasa;</li>
+                            <li>butir-butir seperti yang dinyatakan di atas adalah benar dan saya bertanggungjawab terhadapnya. 
+                                <br>
+                                <br>
+                                Tarikh : <?= date('d-m-Y') ?> <br>
+                            </li>
+                        <p></p>
+                        </ol>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="form-group">
+            <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
         </div>
 
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?php ActiveForm::end(); ?>
     </div>
 
-    <?php ActiveForm::end(); ?>
-
 </div>
+
 
 
 <?php 
@@ -343,6 +357,166 @@ $this->registerJs('
     $(document).on("click", ".btn-penceramah-minus", function(){
         $(this).parent().parent().remove();
     });
+
+    $("form#penceramah-form").on("beforeValidate", function(){
+        if(!checkMust())
+            return false;
+        if(!$("#akuan").prop("checked")) {
+            alert("Sila tik pada akuan");
+            $("#akuan").focus();
+            return false;
+        }
+        if(confirm("Hantar tuntutan ini?"))
+            return true;
+        return false;
+    });
+
+    $(".field-penceramah-kelayakan").hide();
+
+    var jenis_penceramah = 0;
+    var perjam = 0;
+    
+    $("input[name=\'Penceramah[jenis_penceramah]\']").click(function(){
+        if($(this).val() == 0) {
+            jenis_penceramah = 0;
+            $(".field-penceramah-kelayakan").hide();
+            $(".field-penceramah-tugas").show();
+            $(".field-penceramah-nilai_kumpulan").show();
+            $("#penceramah-kelayakan").removeClass("must");
+            $("#penceramah-tugas").addClass("must");
+            $("#penceramah-nilai_kumpulan").addClass("must");
+        }
+        else {
+            jenis_penceramah = 1;
+            $(".field-penceramah-kelayakan").show();
+            $(".field-penceramah-tugas").hide();
+            $(".field-penceramah-nilai_kumpulan").hide();
+            $("#penceramah-kelayakan").addClass("must");
+            $("#penceramah-tugas").removeClass("must");
+            $("#penceramah-nilai_kumpulan").removeClass("must");
+            perjam = $("#penceramah-kelayakan").val();
+        }
+    });
+
+    $(document).on("change", ".tempoh", function(){
+        if(jenis_penceramah == 0 && $("input[name=\'Penceramah[tugas]\']:checked").val() == undefined) {
+            alert("Sila pilih tugas");
+            $("input[name=\'Penceramah[tugas]\']").focus();
+            return false;
+        }
+        else if(jenis_penceramah == 0) {
+            var val = $("#penceramah-nilai_kumpulan").val();
+
+            if(val == "")
+                alert("Sila pilih kumpulan jawatan")
+
+            var tugas = $("input[name=\'Penceramah[tugas]\']:checked").val();
+
+            if(tugas == 1) { 
+                if(val >= 200)
+                    perjam = 100;
+                else if(val == 150)
+                    perjam = 90;
+                else if(val == 120)
+                    perjam = 80;
+                else
+                    perjam = 60;
+            } 
+            else
+                perjam = $("#penceramah-nilai_kumpulan").val();
+        }
+        else if(jenis_penceramah == 1) {
+            if($("#penceramah-kelayakan").val() == "") {
+                alert("Sila pilih kelayakan");
+                $("#penceramah-kelayakan").focus();
+                return false;
+            }
+            else
+                perjam = $("#penceramah-kelayakan").val();
+        }
+
+        index = $(this).index(".tempoh");
+        $(".jumlah").eq(index).val($(this).val() * perjam);//$("#penceramah-nilai_kumpulan").val());
+        setJumlah();
+    });
+
+    $("#penceramah-nilai_kumpulan").change(function(){
+        //$(".tempoh").trigger("change");
+        if($("input[name=\'Penceramah[tugas]\']:checked").val() == 1) {
+            var val = $("#penceramah-nilai_kumpulan").val();
+            if(val >= 200)
+                perjam = 100;
+            else if(val == 150)
+                perjam = 90;
+            else if(val == 120)
+                perjam = 80;
+            else
+                perjam = 60;
+        } 
+        else
+            perjam = $("#penceramah-nilai_kumpulan").val();
+        setJumlah();
+    });
+
+    
+
+    $("input[name=\'Penceramah[tugas]\']").click(function(){
+        
+        if($(this).val() == 1) {
+            var val = $("#penceramah-nilai_kumpulan").val();
+            if(val >= 200)
+                perjam = 100;
+            else if(val == 150)
+                perjam = 90;
+            else if(val == 120)
+                perjam = 80;
+            else
+                perjam = 60;
+        } 
+        else
+            perjam = $("#penceramah-nilai_kumpulan").val();
+         setJumlah();
+    });
+
+    $("#penceramah-kelayakan").change(function(){
+        perjam = $(this).val();
+        setJumlah();
+    });
+
+
+');
+
+?>
+
+<?php
+
+$this->registerJs('
+
+    function checkMust() {
+        for(var i = 0; i < $(".must").length; i++) {
+            $(".must").eq(i).css("background-color", "");
+            if($(".must").eq(i).val() == "") {
+                $(".must").eq(i).css("background-color", "red");    
+                alert("Sila lengkapkan ruangan berwarna merah ");
+                $(".must").eq(i).focus();
+                return false;
+            }
+        }
+        return true;    
+    }
+
+    function setJumlah() {
+        var total = 0;
+        $(".tempoh").each(function(i){
+            if($(this).val() != "") {
+                $(".jumlah").eq(i).val($(this).val() * perjam);
+                total += $(this).val() * perjam;
+            }
+        });
+        $("#jumlah-besar").html("RM" + total);
+        $("#penceramah-jumlah_kew, #penceramah-jumlah_tuntutan").val(total);
+    }
+
 
 ');
 

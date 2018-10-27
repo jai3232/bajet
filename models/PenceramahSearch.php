@@ -15,11 +15,13 @@ class PenceramahSearch extends Penceramah
     /**
      * {@inheritdoc}
      */
+    public $os;
+
     public function rules()
     {
         return [
-            [['id', 'jenis_penceramah', 'nilai_kumpulan', 'tugas', 'taraf_jawatan', 'kelayakan', 'bulan', 'tahun', 'user'], 'integer'],
-            [['kod_unjuran', 'kod_id', 'nama', 'bahagian', 'bahagian_asal', 'unit', 'no_kp', 'jawatan', 'gred_jawatan', 'no_gaji', 'jabatan', 'alamat_jabatan', 'no_hp', 'email', 'bank', 'akaun_bank', 'status', 'catatan', 'tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
+            [['id', 'jenis_penceramah', 'id_jabatan', 'id_jabatan_asal', 'id_unit', 'nilai_kumpulan', 'tugas', 'taraf_jawatan', 'kelayakan', 'bulan', 'tahun', 'user'], 'integer'],
+            [['kod_unjuran', 'kod_id', 'os', 'nama', 'no_kp', 'jawatan', 'gred_jawatan', 'no_gaji', 'jabatan', 'alamat_jabatan', 'no_hp', 'email', 'bank', 'akaun_bank', 'status', 'catatan', 'tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
             [['gaji', 'jumlah_tuntutan', 'jumlah_kew'], 'number'],
         ];
     }
@@ -46,17 +48,33 @@ class PenceramahSearch extends Penceramah
 
         // add conditions that should always apply here
 
+        $level = Yii::$app->user->identity->level;
+        $id_pengguna = Yii::$app->user->identity->id;
+        $id_jabatan = Yii::$app->user->identity->id_jabatan;
+        if($level == 5)
+            $query->where(['id_jabatan_asal' => $id_jabatan]);
+        if($level > 5)
+            $query->where(['user' => $id_pengguna]);
+
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            'query' => $query->joinWith(['kodUnjuran']),
         ]);
 
         $this->load($params);
+
+        $dataProvider->sort->attributes['os'] = [
+            'asc' => ['unjuran.os' => SORT_ASC],
+            'desc' => ['unjuran.os' => SORT_DESC],
+        ];
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
         }
+
+        $this->tahun = isset($this->tahun) ? $this->tahun : date("Y");
+        $this->bulan = isset($this->bulan) ? $this->bulan : date("m");
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -67,8 +85,8 @@ class PenceramahSearch extends Penceramah
             'taraf_jawatan' => $this->taraf_jawatan,
             'kelayakan' => $this->kelayakan,
             'gaji' => $this->gaji,
-            'bulan' => $this->bulan,
-            'tahun' => $this->tahun,
+            'penceramah.bulan' => $this->bulan,
+            'penceramah.tahun' => $this->tahun,
             'jumlah_tuntutan' => $this->jumlah_tuntutan,
             'jumlah_kew' => $this->jumlah_kew,
             'user' => $this->user,
@@ -78,10 +96,11 @@ class PenceramahSearch extends Penceramah
 
         $query->andFilterWhere(['like', 'kod_unjuran', $this->kod_unjuran])
             ->andFilterWhere(['like', 'kod_id', $this->kod_id])
+            ->andFilterWhere(['like', 'unjuran.os', $this->os])
             ->andFilterWhere(['like', 'nama', $this->nama])
-            ->andFilterWhere(['like', 'bahagian', $this->bahagian])
-            ->andFilterWhere(['like', 'bahagian_asal', $this->bahagian_asal])
-            ->andFilterWhere(['like', 'unit', $this->unit])
+            ->andFilterWhere(['like', 'penceramah.id_jabatan', $this->id_jabatan])
+            ->andFilterWhere(['like', 'penceramah.id_jabatan_asal', $this->id_jabatan_asal])
+            ->andFilterWhere(['like', 'penceramah.id_unit', $this->id_unit])
             ->andFilterWhere(['like', 'no_kp', $this->no_kp])
             ->andFilterWhere(['like', 'jawatan', $this->jawatan])
             ->andFilterWhere(['like', 'gred_jawatan', $this->gred_jawatan])

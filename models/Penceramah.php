@@ -14,9 +14,9 @@ use Yii;
  * @property int $nilai_kumpulan
  * @property int $tugas
  * @property string $nama
- * @property string $bahagian
- * @property string $bahagian_asal
- * @property string $unit
+ * @property int $id_jabatan
+ * @property int $id_jabatan_asal
+ * @property int $id_unit
  * @property string $no_kp
  * @property string $jawatan
  * @property string $gred_jawatan
@@ -58,19 +58,18 @@ class Penceramah extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['kod_unjuran', 'kod_id', 'nama', 'bahagian', 'unit', 'no_kp', 'gred_jawatan', 'taraf_jawatan', 'no_gaji', 'alamat_jabatan', 'no_hp', 'bulan', 'tahun', 'bank', 'akaun_bank', 'jumlah_tuntutan', 'catatan', 'user'], 'required'],
-            [['jenis_penceramah', 'nilai_kumpulan', 'tugas', 'taraf_jawatan', 'kelayakan', 'bulan', 'tahun', 'user'], 'integer'],
+            [['kod_unjuran', 'kod_id', 'nama', 'id_jabatan', 'id_unit', 'no_kp', 'gred_jawatan', 'taraf_jawatan', 'no_gaji', 'alamat_jabatan', 'no_hp', 'bulan', 'tahun', 'bank', 'akaun_bank', 'jumlah_tuntutan', 'user'], 'required'],
+            [['jenis_penceramah', 'nilai_kumpulan', 'tugas', 'id_jabatan', 'id_jabatan_asal', 'id_unit', 'taraf_jawatan', 'kelayakan', 'bulan', 'tahun', 'user'], 'integer'],
             [['gaji', 'jumlah_tuntutan', 'jumlah_kew'], 'number'],
             [['catatan'], 'string'],
             [['tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
             [['kod_unjuran', 'kod_id', 'no_gaji'], 'string', 'max' => 10],
             [['nama'], 'string', 'max' => 100],
-            [['bahagian', 'bahagian_asal'], 'string', 'max' => 3],
-            [['unit', 'email'], 'string', 'max' => 50],
             [['no_kp', 'no_hp'], 'string', 'max' => 12],
             [['jawatan', 'jabatan', 'bank'], 'string', 'max' => 25],
             [['gred_jawatan'], 'string', 'max' => 7],
             [['alamat_jabatan'], 'string', 'max' => 125],
+            [['email'], 'string', 'max' => 50], 
             [['akaun_bank'], 'string', 'max' => 20],
             [['status'], 'string', 'max' => 1],
             [['kod_id'], 'unique'],
@@ -91,9 +90,9 @@ class Penceramah extends \yii\db\ActiveRecord
             'nilai_kumpulan' => Yii::t('app', 'Nilai Kumpulan'),
             'tugas' => Yii::t('app', 'Tugas'),
             'nama' => Yii::t('app', 'Nama'),
-            'bahagian' => Yii::t('app', 'Bahagian'),
-            'bahagian_asal' => Yii::t('app', 'Bahagian Asal'),
-            'unit' => Yii::t('app', 'Unit'),
+            'id_jabatan' => Yii::t('app', 'Jabatan'),
+            'id_jabatan_asal' => Yii::t('app', 'Jabatan Asal'),
+            'id_unit' => Yii::t('app', 'Unit'),
             'no_kp' => Yii::t('app', 'No Kp'),
             'jawatan' => Yii::t('app', 'Jawatan'),
             'gred_jawatan' => Yii::t('app', 'Gred Jawatan'),

@@ -11,19 +11,37 @@ use yii\widgets\ActiveForm;
 <div class="penceramah-search">
 
     <?php $form = ActiveForm::begin([
+        'id' => 'penceramah-form',
         'action' => ['index'],
         'method' => 'get',
+        'options' => [
+            'data-pjax' => 1
+        ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="form-group">
+        <div class="col-xs-4 form-inline">
+            <label>Tahun </label>
+            <?= Html::dropDownList('PenceramahSearch[tahun]', $selectedYear, $yearList, 
+                    ['class' => 'form-control', 'onchange' => '$("#penceramah-form").submit()']) 
+            ?>
+            <label>Bulan</label>
+            <?= Html::dropDownList('PenceramahSearch[bulan]', $selectedMonth, $months, 
+                ['class' => 'form-control', 'onchange' => '$("#penceramah-form").submit()']) 
+            ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'kod_unjuran') ?>
 
-    <?= $form->field($model, 'kod_id') ?>
+    <?php //= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'jenis_penceramah') ?>
+    <?php //= $form->field($model, 'kod_unjuran') ?>
 
-    <?= $form->field($model, 'nilai_kumpulan') ?>
+    <?php //= $form->field($model, 'kod_id') ?>
+
+    <?php //= $form->field($model, 'jenis_penceramah') ?>
+
+    <?php //= $form->field($model, 'nilai_kumpulan') ?>
 
     <?php // echo $form->field($model, 'tugas') ?>
 
@@ -80,8 +98,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'tarikh_kemaskini') ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
+        <?php //= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?php //= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

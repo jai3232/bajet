@@ -11,6 +11,7 @@ use yii\widgets\ActiveForm;
 <div class="ot-search">
 
     <?php $form = ActiveForm::begin([
+        'id' => 'ot-form',
         'action' => ['index'],
         'method' => 'get',
         'options' => [
@@ -18,15 +19,28 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="form-group">
+        <div class="col-xs-4 form-inline">
+            <label>Tahun </label>
+            <?= Html::dropDownList('OtSearch[tahun]', $selectedYear, $yearList, 
+                    ['class' => 'form-control', 'onchange' => '$("#ot-form").submit()']) 
+            ?>
+            <label>Bulan</label>
+            <?= Html::dropDownList('OtSearch[bulan]', $selectedMonth, $months, 
+                ['class' => 'form-control', 'onchange' => '$("#ot-form").submit()']) 
+            ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'kod_unjuran') ?>
+    <?php //= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'kod_id') ?>
+    <?php //= $form->field($model, 'kod_unjuran') ?>
 
-    <?= $form->field($model, 'os') ?>
+    <?php //= $form->field($model, 'kod_id') ?>
 
-    <?= $form->field($model, 'bahagian') ?>
+    <?php //= $form->field($model, 'os') ?>
+
+    <?php //= $form->field($model, 'bahagian') ?>
 
     <?php // echo $form->field($model, 'bahagian_asal') ?>
 
@@ -75,8 +89,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'tarikh_kemaskini') ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
+        <?php //= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?php //= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

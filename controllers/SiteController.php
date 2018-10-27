@@ -99,6 +99,13 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
+    public function actionLogout2()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome(); 
+    }
+
     /**
      * Displays contact page.
      *

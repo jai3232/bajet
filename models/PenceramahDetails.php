@@ -8,11 +8,11 @@ use Yii;
  * This is the model class for table "penceramah_details".
  *
  * @property int $id
- * @property string $kod_penceramah
+ * @property int $id_penceramah
  * @property string $nama_ceramah
  * @property string $tarikh
- * @property int $tempoh
- * @property double $tuntutan
+ * @property double $tempoh
+ * @property double $jumlah
  */
 class PenceramahDetails extends \yii\db\ActiveRecord
 {
@@ -30,11 +30,10 @@ class PenceramahDetails extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['kod_penceramah', 'nama_ceramah', 'tarikh', 'tempoh'], 'required'],
+            [['id_penceramah', 'nama_ceramah', 'tarikh', 'tempoh'], 'required'],
+            [['id_penceramah'], 'integer'],
             [['tarikh'], 'safe'],
-            [['tempoh'], 'integer'],
-            [['tuntutan'], 'number'],
-            [['kod_penceramah'], 'string', 'max' => 8],
+            [['tempoh', 'jumlah'], 'number'],
             [['nama_ceramah'], 'string', 'max' => 150],
         ];
     }
@@ -46,11 +45,11 @@ class PenceramahDetails extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'kod_penceramah' => Yii::t('app', 'Kod Penceramah'),
+            'id_penceramah' => Yii::t('app', 'Id Penceramah'),
             'nama_ceramah' => Yii::t('app', 'Nama Ceramah'),
             'tarikh' => Yii::t('app', 'Tarikh'),
             'tempoh' => Yii::t('app', 'Tempoh'),
-            'tuntutan' => Yii::t('app', 'Tuntutan'),
+            'jumlah' => Yii::t('app', 'Jumlah'),
         ];
     }
 }

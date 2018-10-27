@@ -110,7 +110,7 @@ class OtController extends Controller
                 $details_model->jam_layak = $value['jam_layak'];
                 $details_model->butiran = $value['butiran'];
                 if(!$details_model->save())
-                    return print_r($details_model->getErros());
+                    return print_r($details_model->getErrors());
             }
             return $this->redirect(['form', 'id' => $model->id]);
         }
@@ -167,20 +167,35 @@ class OtController extends Controller
         $tahun = $post['tahun'];
         $os = $post['os'];
 
-        return Ot::find()->joinWith('kodUnjuran')->where(['no_kp' => $no_kp, 'bulan' => $bulan, 'ot.tahun' => $tahun, 'unjuran.os' => $os])->count();
+        return Ot::find()->joinWith('kodUnjuran')->where(['no_kp' => $no_kp, 'bulan' => $bulan, 'ot.tahun' => $tahun, 'unjuran.os' => $os])->andWhere(['!=', 'ot.status', 'C'])->count();
     }
 
     public function actionForm($id = 0)
     {
         $model = Ot::findOne($id);
         if(count($model) == 0)
-            return $this->render('perjalanan-form', ['error' => 404]);
+            return $this->render('ot-form', ['error' => 404]);
         $model_details = OtDetails::find()->where(['id_ot' => $id])->all();
 
         return $this->render('ot-form', [
             'model' => $model,
             'model_details' => $model_details,
         ]);
+    }
+
+    public function actionFinance($id)
+    {
+        $post = yii::$app->request->post('Ot');
+        $model = $this->findModel($id);
+        if($post) {
+            // return print_r($post);
+            $model->jumlah_kew = $post['jumlah_OT'];
+            $model->status = $post['status'];//$post['lulus'] > 1 ? 'C' : 'B';
+            if(!$model->save())
+                return print_r($model->getErrors());
+            return true;
+        }
+        return $this->renderAjax('finance', ['model' => $model]);
     }
 
     static function generateCodeReset($c, $model) 

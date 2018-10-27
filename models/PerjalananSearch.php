@@ -15,11 +15,13 @@ class PerjalananSearch extends Perjalanan
     /**
      * {@inheritdoc}
      */
+    public $os;
+
     public function rules()
     {
         return [
             [['id', 'jenis', 'id_jabatan', 'id_jabatan_asal', 'id_unit', 'cc', 'jumlah_jarak', 'jarak_telah_dituntut', 'kali_makan', 'kali_makan_sabah', 'kali_harian', 'kali_harian_sabah', 'kali_elaun_luar', 'kali_lojing', 'resit_teksi', 'resit_bas', 'resit_keretapi', 'resit_terbang', 'resit_feri', 'resit_lain', 'resit_tol', 'resit_pakir', 'resit_dobi', 'resit_pos', 'resit_telefon', 'resit_tukaran', 'tuntutan_lain', 'status', 'cetak', 'user'], 'integer'],
-            [['kod_unjuran', 'kod_id', 'nama', 'no_kp', 'no_hp', 'email', 'bulan', 'tahun', 'jawatan', 'no_gaji', 'bank', 'cawangan_bank', 'akaun_bank', 'model_kereta', 'no_plate', 'kelas_tuntutan', 'alamat_pejabat', 'alamat_rumah', 'no_tg', 'catatan', 'tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
+            [['kod_unjuran', 'kod_id', 'os', 'nama', 'no_kp', 'no_hp', 'email', 'bulan', 'tahun', 'jawatan', 'no_gaji', 'bank', 'cawangan_bank', 'akaun_bank', 'model_kereta', 'no_plate', 'kelas_tuntutan', 'alamat_pejabat', 'alamat_rumah', 'no_tg', 'catatan', 'tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
             [['gaji_asas', 'elaun', 'elaun_mangku', 'elaun_makan', 'elaun_makan_sabah', 'elaun_harian', 'elaun_harian_sabah', 'elaun_luar', 'peratus_elaun_makan', 'peratus_elaun_makan_sabah', 'peratus_elaun_harian', 'peratus_elaun_harian_sabah', 'peratus_elaun_luar', 'cukai', 'lojing', 'teksi', 'bas', 'keretapi', 'terbang', 'feri', 'lain', 'tol', 'pakir', 'dobi', 'pos', 'telefon', 'tukaran', 'pendahuluan', 'jumlah_tuntutan', 'jumlah_kew'], 'number'],
         ];
     }
@@ -42,7 +44,7 @@ class PerjalananSearch extends Perjalanan
      */
     public function search($params)
     {
-        $query = Perjalanan::find();
+        $query = Perjalanan::find()->joinWith(['kodUnjuran']);
 
         // add conditions that should always apply here
 
@@ -64,6 +66,11 @@ class PerjalananSearch extends Perjalanan
 
         $this->load($params);
 
+        $dataProvider->sort->attributes['os'] = [
+            'asc' => ['unjuran.os' => SORT_ASC],
+            'desc' => ['unjuran.os' => SORT_DESC],
+        ];
+
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
@@ -77,9 +84,9 @@ class PerjalananSearch extends Perjalanan
         $query->andFilterWhere([
             'id' => $this->id,
             'jenis' => $this->jenis,
-            'id_jabatan' => $this->id_jabatan,
-            'id_jabatan_asal' => $this->id_jabatan_asal,
-            'id_unit' => $this->id_unit,
+            'perjalanan.id_jabatan' => $this->id_jabatan,
+            'perjalanan.id_jabatan_asal' => $this->id_jabatan_asal,
+            'perjalanan.id_unit' => $this->id_unit,
             'gaji_asas' => $this->gaji_asas,
             'elaun' => $this->elaun,
             'elaun_mangku' => $this->elaun_mangku,
@@ -141,12 +148,13 @@ class PerjalananSearch extends Perjalanan
 
         $query->andFilterWhere(['like', 'kod_unjuran', $this->kod_unjuran])
             ->andFilterWhere(['like', 'kod_id', $this->kod_id])
+            ->andFilterWhere(['like', 'unjuran.os', $this->os])
             ->andFilterWhere(['like', 'nama', $this->nama])
             ->andFilterWhere(['like', 'no_kp', $this->no_kp])
             ->andFilterWhere(['like', 'no_hp', $this->no_hp])
             ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'bulan', $this->bulan])
-            ->andFilterWhere(['like', 'tahun', $this->tahun])
+            ->andFilterWhere(['like', 'perjalanan.bulan', $this->bulan])
+            ->andFilterWhere(['like', 'perjalanan.tahun', $this->tahun])
             ->andFilterWhere(['like', 'jawatan', $this->jawatan])
             ->andFilterWhere(['like', 'no_gaji', $this->no_gaji])
             ->andFilterWhere(['like', 'bank', $this->bank])

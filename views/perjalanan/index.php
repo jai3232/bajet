@@ -1,9 +1,12 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\bootstrap\Modal;
+use app\models\Jabatan;
+use app\models\Unit;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PerjalananSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -32,10 +35,11 @@ else
 
 $this->title = Yii::t('app', 'Senarai Perjalanan');
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="perjalanan-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h2><?= Html::encode($this->title) ?></h2>
     <div class="alert alert-info">
         <h5>Petunjuk: A: Sedang diproses, B: Lulus, C: Tolak, X: Tidak Lengkap (belum dihantar)</h5>
     </div>
@@ -64,7 +68,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'kod_unjuran',
             'kod_id',
-            'kodUnjuran.os',
+            // 'kodUnjuran.os',
+            [
+                'attribute' => 'os',
+                'label' => 'OS',
+                'value' => function($model) {
+                    return $model->kodUnjuran->os;
+                },
+            ],
             'nama',
             'no_kp',
             [
@@ -75,28 +86,31 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => ['Dalam', 'Luar', 'Lain'],
             ],
             [
-                // 'attribute' => 'id_jabatan',
+                'attribute' => 'id_jabatan',
                 'label' => 'Jabatan',
                 'value' => function($model) {
-                    return \app\models\Jabatan::findOne($model->id_jabatan)->jabatan;
-                }
+                    return Jabatan::findOne($model->id_jabatan)->jabatan;
+                },
+                'filter' => ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'),
             ],
+            // [
+            //     // 'attribute' => 'id_jabatan_asal',
+            //     'label' => 'Unjuran Jabatan ',
+            //     'value' => function($model) {
+            //         return \app\models\Jabatan::findOne($model->id_jabatan_asal)->jabatan;
+            //     }
+            // ],
             [
-                // 'attribute' => 'id_jabatan_asal',
-                'label' => 'Unjuran Jabatan ',
-                'value' => function($model) {
-                    return \app\models\Jabatan::findOne($model->id_jabatan_asal)->jabatan;
-                }
-            ],
-            [
-                // 'attribute' => 'id_unit',
+                'attribute' => 'id_unit',
                 'label' => 'Unit',
                 'value' => function($model) {
-                    return \app\models\Unit::findOne($model->id_unit)->unit;
-                }
+                    return Unit::findOne($model->id_unit)->unit;
+                },
+                'filter' => ArrayHelper::map(Unit::findAll(['id_jabatan' => isset($_GET['PerjalananSearch']['id_jabatan']) ? $_GET['PerjalananSearch']['id_jabatan'] : '']), 'id', 'unit'),
             ],
             [
                 'label' => 'Bulan',
+                'attribute' => 'bulan',
                 'value' => function($model) {
                     return $model->bulan.'/'.$model->tahun;
                 }
@@ -261,12 +275,16 @@ Modal::end();
 
 <?php
     $this->registerJs('
+
+        $("input[name=\'PerjalananSearch[bulan]\'").hide();
+
         $("select option[value=\"\"]").append("Semua");
         $("select[name*=tahun] > option:first").hide();
 
         $(document).on("pjax:success", function() {
             $("select option[value=\"\"]").append("Semua");
             $("select[name*=tahun] > option:first").hide();
+            $("input[name=\'PerjalananSearch[bulan]\'").hide();
         });
 
         $(".finance").on("click", function(){

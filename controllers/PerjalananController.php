@@ -529,7 +529,7 @@ class PerjalananController extends Controller
         $os = $post['os'];
         $jenis = $post['jenis'];
 
-        return Perjalanan::find()->joinWith('kodUnjuran')->where(['no_kp' => $no_kp, 'bulan' => $bulan, 'perjalanan.tahun' => $tahun, 'unjuran.os' => $os, 'jenis' => $jenis])->count();
+        return Perjalanan::find()->joinWith('kodUnjuran')->where(['no_kp' => $no_kp, 'bulan' => $bulan, 'perjalanan.tahun' => $tahun, 'unjuran.os' => $os, 'jenis' => $jenis])->andWhere(['!=', 'perjalanan.status', 'C'])->count();
     }
 
     public function actionForm($id = 0)

@@ -101,18 +101,18 @@ $months = [
         </div>
 
     </div>
-    <div class="second" style="display: nonex;">
+    <div class="second" style="display: none;">
         <?= $form->field($model, 'kod_unjuran')->hiddenInput(['maxlength' => true])->label(false) ?>
 
         <?php //= $form->field($model, 'kod_id')->textInput(['maxlength' => true]) ?>
         
         <?php //= $form->field($model, 'id')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'bahagian')->hiddenInput(['maxlength' => true])->label(false) ?>
+        <?= $form->field($model, 'id_jabatan')->hiddenInput(['maxlength' => true])->label(false) ?>
 
-        <?= $form->field($model, 'bahagian_asal')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_jabatan])->label(false)?>
+        <?= $form->field($model, 'id_jabatan_asal')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_jabatan])->label(false)?>
 
-        <?= $form->field($model, 'unit')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_unit ])->label(false) ?>
+        <?= $form->field($model, 'id_unit')->hiddenInput(['maxlength' => true, 'value' => yii::$app->user->identity->id_unit ])->label(false) ?>
 
         <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>
 

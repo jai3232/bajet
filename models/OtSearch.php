@@ -15,11 +15,13 @@ class OtSearch extends Ot
     /**
      * {@inheritdoc}
      */
+    public $os;
+
     public function rules()
     {
         return [
             [['id', 'bulan', 'tahun', 'tanggung_kerja', 'status', 'user'], 'integer'],
-            [['kod_unjuran', 'kod_id', 'bahagian', 'bahagian_asal', 'unit', 'nama', 'no_kp', 'no_hp', 'email', 'gred_jawatan', 'jawatan', 'no_gaji', 'bank', 'akaun_bank', 'catatan', 'tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
+            [['kod_unjuran', 'kod_id', 'os', 'id_jabatan', 'id_jabatan_asal', 'id_unit', 'nama', 'no_kp', 'no_hp', 'email', 'gred_jawatan', 'jawatan', 'no_gaji', 'bank', 'akaun_bank', 'catatan', 'tarikh_jadi', 'tarikh_kemaskini'], 'safe'],
             [['gaji_asas', 'kadar_sejam', 'jumlah_OT', 'jumlah_kew'], 'number'],
         ];
     }
@@ -46,11 +48,24 @@ class OtSearch extends Ot
 
         // add conditions that should always apply here
 
+        $level = Yii::$app->user->identity->level;
+        $id_pengguna = Yii::$app->user->identity->id;
+        $id_jabatan = Yii::$app->user->identity->id_jabatan;
+        if($level == 5)
+            $query->where(['id_jabatan_asal' => $id_jabatan]);
+        if($level > 5)
+            $query->where(['user' => $id_pengguna]);
+
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            'query' => $query->joinWith(['kodUnjuran']),
         ]);
 
         $this->load($params);
+
+        $dataProvider->sort->attributes['os'] = [
+            'asc' => ['unjuran.os' => SORT_ASC],
+            'desc' => ['unjuran.os' => SORT_DESC],
+        ];
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -58,11 +73,14 @@ class OtSearch extends Ot
             return $dataProvider;
         }
 
+        $this->tahun = isset($this->tahun) ? $this->tahun : date("Y");
+        $this->bulan = isset($this->bulan) ? $this->bulan : date("m");
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'bulan' => $this->bulan,
-            'tahun' => $this->tahun,
+            'ot.bulan' => $this->bulan,
+            'ot.tahun' => $this->tahun,
             'tanggung_kerja' => $this->tanggung_kerja,
             'gaji_asas' => $this->gaji_asas,
             'kadar_sejam' => $this->kadar_sejam,
@@ -76,10 +94,10 @@ class OtSearch extends Ot
 
         $query->andFilterWhere(['like', 'kod_unjuran', $this->kod_unjuran])
             ->andFilterWhere(['like', 'kod_id', $this->kod_id])
-            //->andFilterWhere(['like', 'os', $this->os])
-            ->andFilterWhere(['like', 'bahagian', $this->bahagian])
-            ->andFilterWhere(['like', 'bahagian_asal', $this->bahagian_asal])
-            ->andFilterWhere(['like', 'unit', $this->unit])
+            ->andFilterWhere(['like', 'unjuran.os', $this->os])
+            ->andFilterWhere(['like', 'ot.id_jabatan', $this->id_jabatan])
+            ->andFilterWhere(['like', 'ot.id_jabatan_asal', $this->id_jabatan_asal])
+            ->andFilterWhere(['like', 'ot.id_unit', $this->id_unit])
             ->andFilterWhere(['like', 'nama', $this->nama])
             ->andFilterWhere(['like', 'no_kp', $this->no_kp])
             ->andFilterWhere(['like', 'no_hp', $this->no_hp])
