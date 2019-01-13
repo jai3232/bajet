@@ -10,6 +10,7 @@ use app\models\Agihan;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use yii\base\DynamicModel;
 
 /**
@@ -23,6 +24,16 @@ class WaranController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['*'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -76,6 +87,9 @@ class WaranController extends Controller
      */
     public function actionCreate()
     {
+        if(!Yii::$app->user->identity->accessLevel([0, 2, 3]))
+            throw new NotFoundHttpException('Laman ini tidak wujud untuk akses anda.');
+
         $model = new Waran();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -98,6 +112,8 @@ class WaranController extends Controller
      */
     public function actionUpdate($id)
     {
+        if(!Yii::$app->user->identity->accessLevel([0, 2, 3]))
+            throw new NotFoundHttpException('Laman ini tidak wujud untuk akses anda.');
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

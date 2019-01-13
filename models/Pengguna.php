@@ -24,6 +24,7 @@ class Pengguna extends \yii\db\ActiveRecord
      * @inheritdoc
      */
     public $password_ulang;
+    public $photo_file;
 
     public static function tableName()
     {
@@ -36,16 +37,17 @@ class Pengguna extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nama', 'password', 'id_jabatan', 'emel'], 'required'],
-            [['id_jabatan', 'id_unit', 'level', 'aktif'], 'integer'],
+            [['nama', 'no_kp', 'password', 'id_jabatan', 'id_unit', 'emel'], 'required'],
+            [['id_jabatan', 'id_unit', 'level', 'aktif', 'user'], 'integer'],
             [['date'], 'safe'],
             [['nama'], 'string', 'max' => 100],
             [['no_kp'], 'string', 'max' => 12],
             [['password'], 'string', 'min' => 6, 'max' => 32],
             [['password_ulang'], 'compare', 'compareAttribute'=>'password', 'skipOnEmpty' => true, 'message'=>"Katalaluan tidak sama"],
-            [['emel'], 'string', 'max' => 50],
+            [['emel', 'photo'], 'string', 'max' => 50],
             [['emel'], 'email'], 
             [['no_kp', 'emel'], 'unique'],
+            ['photo_file', 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg', 'mimeTypes' => 'image/jpeg, image/png']
         ];
     }
 

@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\JabatanSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Jabatan');
+$this->title = Yii::t('app', 'Bahagian');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="jabatan-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Tambah Jabatan'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Tambah Bahagian'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -26,7 +26,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             //'id',
-            'jabatan',
+            [
+                'label' => 'Bahagian',
+                'attribute' => 'jabatan',
+            ],
             'ringkasan',
             [
                 'label' => 'Unit',

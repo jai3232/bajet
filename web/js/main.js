@@ -1,0 +1,1 @@
+$('.dropdown-submenu').parent('ul').addClass('dropdown-menu');

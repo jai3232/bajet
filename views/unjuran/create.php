@@ -9,7 +9,7 @@ $id_jabatan_personal = Yii::$app->user->identity->id_jabatan;
 /* @var $this yii\web\View */
 /* @var $model app\models\Unjuran */
 
-$this->title = 'Tambah Unjuran Jabatan/Bahagian '.Jabatan::findOne(['id' => $id_jabatan_personal])->jabatan;
+$this->title = 'Tambah Unjuran Bahagian '.Jabatan::findOne(['id' => $id_jabatan_personal])->jabatan;
 $this->params['breadcrumbs'][] = ['label' => 'Unjuran', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

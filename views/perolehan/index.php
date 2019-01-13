@@ -57,7 +57,7 @@ echo Dialog::widget();
         <?= Html::a(Yii::t('app', 'Create Perolehan'), ['create'], ['class' => 'btn btn-success']) ?>
     </div>
     <div class="alert alert-info">
-        <strong>Petunjuk</strong> <p>A: Sedang diproses, B: Lulus, B+: Lulus dengan perubahan, C: Tolak </p>
+        <strong>Petunjuk</strong> <p>A: Sedang diproses, B: Lulus, C: Tolak </p>
     </div>
     <div class="form-group">
         <div class="row">

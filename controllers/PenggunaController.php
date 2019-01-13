@@ -8,6 +8,7 @@ use app\models\PenggunaSearch;
 use app\models\Unit;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
@@ -100,8 +101,18 @@ class PenggunaController extends Controller
         // }
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->photo_file = UploadedFile::getInstance($model, 'photo_file');
+            // return print_r($model->photo_file);
+            if($model->photo_file != null || $model->photo_file != '') {
+                $model->photo = $model->photo_file->baseName . '.' . $model->photo_file->extension;
+            }
+            $model->password = md5(Yii::$app->request->post('Pengguna')['password']);
+            $model->password_ulang = $model->password;
             if(!$model->save())
                 return print_r($model->getErrors());
+            if ($model->photo_file && $model->validate()) {                
+                $model->photo_file->saveAs('uploads/pengguna/' . $model->photo_file->baseName . '.' . $model->photo_file->extension);
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -122,7 +133,14 @@ class PenggunaController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $render = 'update';
+            $model->photo_file = UploadedFile::getInstance($model, 'photo_file');
+            if($model->photo_file != null || $model->photo_file != '') {
+                $model->photo = $model->photo_file->baseName . '.' . $model->photo_file->extension;
+                $model->save();
+            }
+            if ($model->photo_file && $model->validate()) {                
+                $model->photo_file->saveAs('uploads/pengguna/' . $model->photo_file->baseName . '.' . $model->photo_file->extension);
+            }
             if(yii::$app->user->identity->level != 0)
                 return $this->redirect(['profile', 'id' => $model->id]);
             return $this->redirect(['view', 'id' => $model->id]);
@@ -202,9 +220,10 @@ class PenggunaController extends Controller
 
     public function actionActivate($id)
     {
+
         $model = $this->findModel($id);
         $model->aktif = !$model->aktif ? 1: 0;
-        if(!$model->save())
+        if(!$model->save(false))
             return print_r($model->getErrors);
         return true;
     }
@@ -215,7 +234,7 @@ class PenggunaController extends Controller
         $val = $_POST['val'];
         $model = $this->findModel($id);
         $model->level = $val;
-        if(!$model->save())
+        if(!$model->save(false))
             return print_r($model->getErrors);
         return true;
     }

@@ -11,6 +11,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 
 /**
  * UnjuranController implements the CRUD actions for Unjuran model.
@@ -25,10 +26,10 @@ class UnjuranController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index'],
+                'only' => ['*'],
                 'rules' => [
                     [
-                        'actions' => ['index'],
+                        // 'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -96,6 +97,8 @@ class UnjuranController extends Controller
      */
     public function actionCreate()
     {
+        if(!Yii::$app->user->identity->accessLevel([0, 1, 2, 3, 5, 6, 7]))
+            throw new ForbiddenHttpException('Anda tidak dibenarkan mengakses ruangan ini.');
         $model = new Unjuran();
 
         if ($model->load(Yii::$app->request->post())) {

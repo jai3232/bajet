@@ -52,7 +52,7 @@ Modal::end();
 
     <h2><?= Html::encode($this->title) ?></h2>
     <div class="alert alert-info">
-        <h5>Petunjuk: A: Sedang diproses, B: Lulus, C: Tolak, X: Tidak Lengkap (belum dihantar)</h5>
+        <h5>Petunjuk: A: Sedang diproses, B: Lulus, C: Tolak</h5>
     </div>
     <?php Pjax::begin(); ?>
     <div class="form-group">

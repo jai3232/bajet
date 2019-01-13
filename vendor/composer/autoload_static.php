@@ -287,6 +287,13 @@ class ComposerStaticInit7b1b3caab82c15bfbb902c3aa1cab7cb
     );
 
     public static $prefixesPsr0 = array (
+        'V' => 
+        array (
+            'VIPSoft\\Unzip' => 
+            array (
+                0 => __DIR__ . '/..' . '/vipsoft/unzip/src',
+            ),
+        ),
         'P' => 
         array (
             'Prophecy\\' => 

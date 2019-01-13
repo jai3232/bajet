@@ -55,12 +55,12 @@ array_push($agihan_column, ['id' => -4, 'jabatan' => 'Jumlah Waran', 'ringkasan'
 
 <div class="output" style="overflow-y: auto">
 <div class="grid-view">
-	<table class="table table-condensed table-striped table-bordered table-hover table-responsive">
+	<table id="agihan-jabatan" class="table table-condensed table-striped table-bordered table-hover table-responsive">
 		<thead class="thead-dark">
 			<tr><th>#</th>
 				<?php 
 					foreach ($agihan_column as $key => $value) {
-						echo "<th>".$value['ringkasan']."</th>";
+						echo '<th><label title="'.$value['jabatan'].'">'.$value['ringkasan'].'<label></th>';
 					}
 				?>
 			</tr>
@@ -123,6 +123,7 @@ array_push($agihan_column, ['id' => -4, 'jabatan' => 'Jumlah Waran', 'ringkasan'
 							    'value' => $input_value,
 							    'options' => [
 							    	'class' => 'form-control input-agihan column'.$value2['id'].' row-'.$value1['os'],
+							    	'readonly' => !Yii::$app->user->identity->accessLevel([2])
 							    ],
 							    'clientOptions' => [
 							        'alias' => 'decimal',
@@ -133,7 +134,7 @@ array_push($agihan_column, ['id' => -4, 'jabatan' => 'Jumlah Waran', 'ringkasan'
 							        'autoGroup' => true,
 							        'removeMaskOnSubmit' => true,
 							    ],
-							]).'</td>';
+							]).'<label>'.number_format($input_value, 2).'</label></td>';
 						}
 					}
 					echo '</tr>';
@@ -153,6 +154,10 @@ array_push($agihan_column, ['id' => -4, 'jabatan' => 'Jumlah Waran', 'ringkasan'
 			</tr>
 		</tfoot>
 	</table>
+	<div class="form-group">
+		<!-- <button id="excel_btn" class="btn btn-primary btn-kemaskini">Eksport ke Excel</button> -->
+		<a id="excel-export" class="btn btn-primary">Eksport ke Excel</a>
+	</div>
 	<!-- <div class="form-group">
 		<button class="btn btn-primary btn-kemaskini">Kemaskini Agihan</button>
 	</div> -->
@@ -179,6 +184,9 @@ array_push($agihan_column, ['id' => -4, 'jabatan' => 'Jumlah Waran', 'ringkasan'
 	$this->registerCss('
 		.input_agihan {
 			text-align: right;
+		}
+		td label {
+			display: none;
 		}
 	');
 
@@ -311,6 +319,20 @@ array_push($agihan_column, ['id' => -4, 'jabatan' => 'Jumlah Waran', 'ringkasan'
 		}
 		$("#footer-4").html(jumlah_waran.currency());
 
+		var year = $("#select-year").val();
+
+		$("#excel-export").click(function(e){
+			var uri = $("#agihan-jabatan").excelexportjs({
+	            containerid: "agihan-jabatan", 
+	            datatype: "table",
+	            worksheetName: "agihan-jabatan " + year,
+	            returnUri: true,
+	        });
+	        $(this).attr("download", "Agihan-Jabatan-" + year + ".xls") 
+	               .attr("href", uri)                    
+	               .attr("target", "_blank") 
+		});
+
 
 		// $(".input-agihan").inputmask("numeric", {
 		//     radixPoint: ".",
@@ -323,4 +345,7 @@ array_push($agihan_column, ['id' => -4, 'jabatan' => 'Jumlah Waran', 'ringkasan'
 		// });
 		
 	');
+
+$this->registerJsFile('@web/js/excelexportjs.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+
 ?>

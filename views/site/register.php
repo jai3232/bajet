@@ -30,9 +30,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model, 'id_jabatan')->dropdownList(ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'), 
                                             ['prompt' => '- Sila Pilih -', 
-                                            'onchange' => '$.get("'.Url::to(['pengguna/unit-list']).'", {id: this.value}, function(data){$("#register-id_unit").html(data);});'])->label('Jabatan'); ?>
+                                            'onchange' => '$.get("'.Url::to(['pengguna/unit-list']).'", {id: this.value}, function(data){$("#register-id_unit").html(data);});'])->label('Bahagian'); ?>
 
-    <?= $form->field($model, 'id_unit')->dropdownList([], [])->label('Unit') ?>
+    <?php //= $form->field($model, 'id_unit')->dropdownList([], [])->label('Unit') ?>
+
+    <?= $form->field($model, 'id_unit')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'emel')->textInput(['maxlength' => true]) ?>
 
@@ -45,3 +47,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php 
+
+    $this->registerCss('
+        div.required label.control-label:after {
+            content: " *";
+        }
+    ');
+
+    $this->registerJs('
+        // $("#register-id_unit").parent().addClass("required");
+    ');
+
+?>

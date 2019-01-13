@@ -39,13 +39,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'id_jabatan',
                 'value' => 'jabatan.jabatan',
                 //'filter' => ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'),
-                'filter' => Html::textInput('PenggunaSearch[jabatan]', null, ['class' => 'form-control']),
+                'filter' => Html::textInput('PenggunaSearch[jabatan]', $searchModel->jabatan, ['class' => 'form-control']),
             ],
             [
                 'label' => 'Unit',
                 'attribute' => 'id_unit',
                 'value' => 'unit.unit',
-                'filter' => Html::textInput('PenggunaSearch[unit]', null, ['class' => 'form-control']),
+                'filter' => Html::textInput('PenggunaSearch[unit]', $searchModel->unit, ['class' => 'form-control']),
             ],
             'emel',
             [
@@ -87,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Tindakan',
                 'contentOptions' => ['class' => 'text-center'],
-                'template' => '{update} {delete}',
+                'template' => '{view} {update} {delete}',
                 'buttons' => [
                     'delete' => function($url, $model){
                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [

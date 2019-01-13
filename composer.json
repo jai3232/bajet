@@ -28,7 +28,8 @@
         "yii2tech/html2pdf": "^1.0",
         "kartik-v/yii2-dialog": "*",
         "2amigos/yii2-date-time-picker-widget": "~1.0",
-        "kartik-v/yii2-widget-timepicker": "*"
+        "kartik-v/yii2-widget-timepicker": "*",
+        "vipsoft/unzip": "^1.2"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

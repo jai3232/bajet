@@ -269,7 +269,7 @@
         "version_normalized": "1.3.2.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/bestiejs/punycode.js.git",
+            "url": "git@github.com:bestiejs/punycode.js.git",
             "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
         },
         "dist": {
@@ -287,7 +287,7 @@
         "version_normalized": "2.4.4.0",
         "source": {
             "type": "git",
-            "url": "git@github.com:smalot/bootstrap-datetimepicker.git",
+            "url": "https://github.com/smalot/bootstrap-datetimepicker.git",
             "reference": "32143c8b45575e51c92a8e29997cbe556d1bbba3"
         },
         "dist": {
@@ -3536,6 +3536,53 @@
         ],
         "description": "Symfony Yaml Component",
         "homepage": "https://symfony.com"
+    },
+    {
+        "name": "vipsoft/unzip",
+        "version": "1.2.1",
+        "version_normalized": "1.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/vipsoft/Unzip.git",
+            "reference": "657cda91648db84b8882e6ac881e2fd439bbe82c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/vipsoft/Unzip/zipball/657cda91648db84b8882e6ac881e2fd439bbe82c",
+            "reference": "657cda91648db84b8882e6ac881e2fd439bbe82c",
+            "shasum": ""
+        },
+        "require": {
+            "ext-zip": "*",
+            "php": ">=5.3.6"
+        },
+        "time": "2016-02-16T04:29:22+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "VIPSoft\\Unzip": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Anthon Pang",
+                "email": "apang@softwaredevelopment.ca",
+                "role": "developer"
+            }
+        ],
+        "description": "Unzip library - a ZipArchive wrapper",
+        "homepage": "http://github.com/vipsoft/",
+        "keywords": [
+            "pclzip",
+            "unzip",
+            "zip",
+            "ziparchive"
+        ]
     },
     {
         "name": "webmozart/assert",

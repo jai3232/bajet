@@ -44,6 +44,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'aktif',
                 'value' => !$model->aktif ? 'Tidak' : 'Ya',
             ],
+            [
+                'attribute' => 'photo',
+                'format' => 'raw',
+                'value' => Html::img('uploads/pengguna/'.$model->photo, 
+                            [
+                                'width' => 100, 
+                                'height' => 100, 
+                                'style' => 'border: 1px solid; border-radius: 10px;',
+                            ]),
+            ]
             //'date',
         ],
     ]) ?>

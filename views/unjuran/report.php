@@ -25,13 +25,13 @@ $unjurans = \app\models\Unjuran::find()->select(['os', 'SUM(jumlah_unjuran) AS t
 $report_column = [0 => ['id' => -1, 'jabatan' => 'OS', 'ringkasan' => 'OS']];
 $report_column = array_merge($report_column, $jabatans);
 array_push($report_column, ['id' => -2, 'jabatan' => 'Jumlah', 'ringkasan' => 'Jumlah Unjuran']);
-//array_push($report_column, ['id' => -3, 'jabatan' => 'Mohon Bajet', 'ringkasan' => 'Mohon Bajet']);
+// array_push($report_column, ['id' => -3, 'jabatan' => 'Mohon Bajet', 'ringkasan' => 'Mohon Bajet']);
 array_push($report_column, ['id' => -3, 'jabatan' => 'Jumlah Waran', 'ringkasan' => 'Jumlah Waran']);
-array_push($report_column, ['id' => -4, 'jabatan' => 'Perbezaan', 'ringkasan' => 'Perbezaan']);
+array_push($report_column, ['id' => -4, 'jabatan' => 'Perbezaan', 'ringkasan' => 'Perbezaan <br> (Waran - Unjuran)']);
 
 //$reports = Agihan::find()->leftJoin('jabatan', 'agihan.id_jabatan = jabatan.id')->where(['tahun' => $year])->asArray()->orderby('os, jabatan.ringkasan')->all();
 //echo json_encode($agihans);
-
+// print_r($report_column);
 ?>
 <h2><?= Html::encode($this->title) ?></h2>
 <div class="form-group row year">
@@ -63,7 +63,7 @@ array_push($report_column, ['id' => -4, 'jabatan' => 'Perbezaan', 'ringkasan' =>
 			<tr><th>#</th>
 				<?php 
 					foreach ($report_column as $key => $value) {
-						echo "<th>".$value['ringkasan']."</th>";
+						echo '<th><label title="'.$value['jabatan'].'">'.$value['ringkasan'].'</label></th>';
 					}
 				?>
 			</tr>
@@ -83,12 +83,14 @@ array_push($report_column, ['id' => -4, 'jabatan' => 'Perbezaan', 'ringkasan' =>
 							$value2['jabatan'] = $value1['os'];
 						}
 						if($value2['jabatan'] == 'Jumlah Waran'){
-							$value2['jabatan'] = number_format($value1['total'], 2); 
+							$sql = "SELECT SUM(jumlah_waran) AS jumlah_waran FROM waran WHERE tahun = '$year' AND os = '".$value1['os']."'";
+							$jumlah_waran = Yii::$app->db->createCommand($sql)->queryScalar();
+							$value2['jabatan'] = number_format($jumlah_waran, 2); 
 							$class = 'class="text-right waran" id="waran-'.$value1['os'].'"';
 						}
 						if($value2['jabatan'] == 'Perbezaan') {
 							$jumlah_unjuran_os = $unjuran->where(['os' => $value1['os'], 'tahun' => $year])->sum('jumlah_unjuran');
-							$value2['jabatan'] = number_format($value1['total'] - $jumlah_unjuran_os, 2); 
+							$value2['jabatan'] = number_format($jumlah_waran - $value1['total'], 2); 
 							$class = 'class="text-right perbezaan" id="perbezaan-'.$value1['os'].'"';	
 						}
 						if($value2['id'] <= 0) {

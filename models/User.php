@@ -20,6 +20,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $level;
     public $jenis;
     public $aktif;
+    public $photo;
     public $date;
     public $user;
 

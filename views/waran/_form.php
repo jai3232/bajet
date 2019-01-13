@@ -94,4 +94,10 @@ $this->registerJs('
     });
 ');
 
+$this->registerCss('
+    div.required label.control-label:after {
+        content: " *";
+    }
+');
+
 ?>

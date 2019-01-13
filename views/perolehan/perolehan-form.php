@@ -55,7 +55,7 @@ if(isset($error)) {
 					foreach ($model_pembekal as $key => $value) {
 				?>
 				<tr class="<?= $value->utama ? "success" : ""; ?>">
-					<td><?= $i++; ?><?=  $value->utama ? "<span class=\"glyphicon glyphicon-asterisk\"></span>" : ""; ?></td>
+					<td><?= $i++; ?><?=  $value->utama ? "<span style=\"font-weight: bold;\">*</span>" : ""; ?></td>
 					<td><?= $value->pembekal ?></td>
 					<td><?= $value->nama_pembekal ?><br><span class="glyphicon glyphicon-phone-alt">Tel: </span><?= $value->no_telefon ?>, <span class="glyphicon glyphicon-envelope">Email:</span> <?= $value->email ?></td>
 					<td class="text-right"><?= number_format($value->harga, 2) ?> </td>
@@ -147,6 +147,12 @@ $this->registerCss('
 	z-index: 3;
 	border-radius: 10px;
 }
+.success td{
+        /*background-color: rgba(247, 202, 24, 0.3) !important; */
+        -webkit-print-color-adjust: exact !important;
+        color-adjust: exact;
+        font-weight: bold !important;
+ }
 
 @media print{
 	script, style { 
@@ -162,6 +168,7 @@ $this->registerCss('
         background: green !important;
         -webkit-print-color-adjust: exact !important;
         color-adjust: exact;
+        font-weight: bold !important;
     }
 
 

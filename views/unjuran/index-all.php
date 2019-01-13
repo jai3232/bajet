@@ -24,7 +24,7 @@ else
 
 //print_r(Yii::$app->request->get('UnjuranSearch')['tahun']);
 
-$this->title = 'Unjuran Semua Jabatan/Bahagian ' . (isset($_GET['id']) ? Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan : ''). ' '.$selectedYear;;
+$this->title = 'Unjuran Semua Bahagian ' . (isset($_GET['id']) ? Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan : ''). ' '.$selectedYear;;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="unjuran-index">
@@ -134,7 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Jabatan',
                 'attribute' => 'id_jabatan',
                 'value' => 'jabatan.jabatan',
-                'visible' => Yii::$app->user->identity->accessLevel([1, 3, 4, 5]),
+                'visible' => Yii::$app->user->identity->accessLevel([0, 1, 2, 3, 4]),
                 'filter' => Html::textInput('UnjuranSearch[jabatan]', $searchModel->jabatan, ['class' => 'form-control']),
             ],
             [

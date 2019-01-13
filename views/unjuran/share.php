@@ -12,7 +12,7 @@ use kartik\select2\Select2;
 
     <?php $form = ActiveForm::begin(['id' => 'kongsi']); ?>
     <div class="form-group">
-    <?= '<label class="control-label">Provinces</label>'; ?>
+    <?= '<label class="control-label">Bahagian</label>'; ?>
 
     <?php echo Select2::widget([
             'name' => 'kongsi-jabatan',

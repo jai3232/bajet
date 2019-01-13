@@ -124,3 +124,49 @@ a.desc:after {
     background-color: #bc8332/*#550055*/;
     color:#eeeeee;
 }
+
+.marginBottom-0 {margin-bottom:0;}
+
+.dropdown-submenu{position:relative;}
+.dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
+.dropdown-submenu:hover>.dropdown-menu{display:block;}
+.dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#999999;margin-top:5px;margin-right:-10px;}
+.dropdown-submenu:hover>a:after{border-left-color:#cccccc;}
+.dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
+.dropdown-submenu.end>a:after{content:"" !important; border-width: 0 !important; margin-right: -100px !important;}
+
+.navbar .container-fluid, .navbar-collapse {
+    padding-left:0;
+}
+
+@media(min-width:767px) {
+    .navbar-header {
+        display: none; 
+    }
+}
+
+#stellaris {
+        width: 301px;
+        height: 100px;
+        background: url("images/stellaris3.png");
+        background-size: 100%;
+        position: absolute;
+        bottom: -10px;
+        right: 0px;
+        border-top-left-radius: 25px;
+        border-bottom-left-radius: 25px;
+    }
+#text-stellaris {
+    color: red;
+    font-style: italic;
+    font-weight: bold;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+div.required label.control-label:after {
+    content: " *";
+}
+
+
+

@@ -39,10 +39,10 @@ $id_jabatan_personal = Yii::$app->user->identity->id_jabatan;
             'pluginOptions' => [
                 'allowClear' => true
             ],
-        ])->label('OS');
+        ])->label('Objek Sebagai');
     ?>
 
-    <?= $form->field($model, 'ol')->textInput(['maxlength' => true])->label('OL') ?>
+    <?= $form->field($model, 'ol')->textInput(['maxlength' => true])->label('Objek Lanjut') ?>
 
     <?php //= $form->field($model, 'id_jabatan')->dropdownList(ArrayHelper::map(Jabatan::find()->all(), 'id', 'jabatan'), ['prompt' => '- Sila Pilih -', 'onchange' => '$.get("'.Url::to(['pengguna/unit-list']).'", {id: this.value}, function(data){$("#unjuran-id_unit").html(data); $("#unjuran-id_unit").val('.$model->id_unit.');});'])->label('Jabatan'); ?>
 
@@ -93,7 +93,13 @@ $id_jabatan_personal = Yii::$app->user->identity->id_jabatan;
 </div>
 
 <?php 
-     $this->registerJs('
-        $("#unjuran-id_jabatan").trigger("change");
-        ', \yii\web\View::POS_READY);
+ $this->registerJs('
+    $("#unjuran-id_jabatan").trigger("change");
+    ', \yii\web\View::POS_READY);
+
+$this->registerCss('
+    div.required label.control-label:after {
+        content: " *";
+    }
+');
 ?>

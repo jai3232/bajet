@@ -40,7 +40,7 @@ $id_pengguna = Yii::$app->user->identity->id;
 
 Pjax::begin(['id' => 'unjuran-grid']);
 
-$this->title = 'Unjuran Jabatan/Bahagian '.Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan.' '.$selectedYear;
+$this->title = 'Unjuran Bahagian '.Jabatan::findOne(Yii::$app->user->identity->id_jabatan)->jabatan.' '.$selectedYear;
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

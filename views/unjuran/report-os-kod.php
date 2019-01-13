@@ -118,7 +118,9 @@ $sub_header = [' ', 1, 2, 3, 4, 5, 6, 7, '8=6-7-4-5', '9=6-7-5', '10=6-7'];
 						}
 						elseif ($key == 6) {
 							$value7 = $value1['total'];
-							echo '<td class="text-right jumlah-waran">'.number_format($value1['total'], 2).'</td>';
+							$sql = "SELECT SUM(jumlah_waran) AS jumlah_waran FROM waran WHERE tahun = '$year' AND os = '".$value1['os']."'";
+							$jumlah_waran = Yii::$app->db->createCommand($sql)->queryScalar();
+							echo '<td class="text-right jumlah-waran">'.number_format($jumlah_waran, 2).'</td>';
 						}
 						elseif ($key == 7) {
 							$value8 = $value6 - $value7 - $value4 - $value5;

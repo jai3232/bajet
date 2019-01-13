@@ -125,12 +125,14 @@ class PerolehanController extends Controller
             $model->kaedah_pembayaran = $perolehan['kaedah_pembayaran'];
             $model->kontrak_pusat = $perolehan['kontrak_pusat'];
             $model->tahun = $year;
+            $model->id_syarikat = (isset($perolehan['id_syarikat']) && $perolehan['id_syarikat'] != '' ) ? $perolehan['id_syarikat'] : 0;
             $model->user = Yii::$app->user->identity->id;
 
             if($model->save()) {
                 $id_perolehan = $model->id;
                 if(!empty($barangans['justifikasi'][1])) {
-                    array_splice($barangans['justifikasi'], 0, 0); // rearrange from 0
+                    // array_splice($barangans['justifikasi'], 0, 0); // rearrange from 0
+                    // return print_r($barangans);
                     for($i = 1; $i <= count($barangans['justifikasi']); $i++) 
                     {
                         $model_barangan = new Barangan();
@@ -144,7 +146,6 @@ class PerolehanController extends Controller
                     }
                 }
                 if(!empty($pembekals['pembekal'][1])) {
-                    array_splice($pembekals['pembekal'], 0, 0);
                     for($i = 1; $i <= count($pembekals['pembekal']); $i++) {
                         $model_pembekal = new Pembekal();
                         $model_pembekal->id_perolehan = $id_perolehan;
@@ -288,6 +289,19 @@ class PerolehanController extends Controller
                 color: red;
 
             }
+            #no {
+                position:absolute;
+                width: 180px;
+                left: 40px;
+                top: 130px;
+                color:red;
+                font-weight:bold;
+                text-align:center;
+                border: 2px solid red;
+                padding: 1px 3px;
+                z-index: 3;
+                border-radius: 10px;
+            }
             .btn {
                 display: none;
             }
@@ -305,6 +319,13 @@ class PerolehanController extends Controller
             }
             .glyphicon-phone-alt:before {
                 content: "\e183";
+            }
+
+            .success td{
+                /*background-color: rgba(247, 202, 24, 0.3) !important; */
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact;
+                font-weight: bold !important;
             }
         ';
         

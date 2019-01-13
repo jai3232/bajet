@@ -27,33 +27,36 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div class="wrap">
+    <div class="header-login"><div id="logo"></div></div>
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => false,//Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
+        'options' => ['class' => 'navbar-nav navbar-left'],
+        'encodeLabels' => false,
         'items' => [
-            ['label' => 'Laman Utama', 'url' => ['/site/index']],
+            ['label' => '<span class="glyphicon glyphicon-home" title="Laman Utama"></span>', 'url' => ['/site/index'], 'visible' => !Yii::$app->user->isGuest ],
             ['label' => 'Admin', 'items' => [
                     ['label' => 'Pengguna', 'url' => ['/pengguna/index']],
-                    ['label' => 'Jabatan', 'url' => ['/jabatan/index']],
+                    ['label' => 'Bahagian', 'url' => ['/jabatan/index']],
                     ['label' => 'OS (Objek Sebagai)', 'url' => ['/os/index']],
+                    ['label' => 'Konfigurasi', 'url' => ['/site/configuration']],
                 ],
                 'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([0]) : false,
             ],
-            ['label' => 'Daftar', 'url' => ['/site/register'], 'visible' => Yii::$app->user->isGuest],
+            // ['label' => 'Daftar', 'url' => ['/site/register'], 'visible' => Yii::$app->user->isGuest],
             ['label' => 'Unjuran', 'items' => [
                     [
                         'label' => 'Masukan Unjuran',
                         'url' => ['/unjuran/create'],
                     ],
                     [
-                        'label' => 'Unjuran Jabatan/Bahagian',
+                        'label' => 'Unjuran Bahagian',
                         'url' => ['/unjuran/index', 'id' => Yii::$app->user->isGuest ? '' : Yii::$app->user->identity->id_jabatan]
                     ],
                     [
@@ -62,7 +65,7 @@ AppAsset::register($this);
                         'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([0, 2, 3, 4]) : false,
                     ],
                     [
-                        'label' => 'Laporan Unjuran Jabatan/OS',
+                        'label' => 'Laporan Unjuran Bahagian/OS',
                         'url' => ['/unjuran/report'],   
                     ],
                     [
@@ -70,18 +73,23 @@ AppAsset::register($this);
                         'url' => ['/unjuran/report-os-kod'],   
                     ],
                 ], 
-                'visible' => !Yii::$app->user->isGuest
+                'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([0, 2, 3, 4, 5, 6, 7]) : false,
             ],
             ['label' => 'Waran', 'items' => [
                     ['label' => 'Senarai Waran', 'url' => ['/waran/index']],
-                    ['label' => 'Tambah Waran', 'url' => ['/waran/create']],
+                    [
+                        'label' => 'Tambah Waran', 
+                        'url' => ['/waran/create'],
+                        'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([0, 2, 3]) : false,
+
+                    ],
                     ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
                 ],
-                'visible' => !Yii::$app->user->isGuest,
+                'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([0, 2, 3, 4, 5, 6, 7]) : false,
             ],
             ['label' => 'Perolehan', 'items' => [
                     ['label' => 'Borang Perolehan', 'url' => ['/perolehan/create']],
-                    ['label' => 'Senarai Perolehan Jabatan', 'url' => ['/perolehan/index']],
+                    ['label' => 'Senarai Perolehan Bahagian', 'url' => ['/perolehan/index']],
                     [
                         'label' => 'Senarai Perolehan Semua', 
                         'url' => ['/perolehan/index-all'], 
@@ -90,7 +98,7 @@ AppAsset::register($this);
                     ['label' => 'Kelulusan Kewangan', 'url' => ['/perolehan/finance']],
                     ['label' => 'Perbelanjaan Lain', 'url' => ['/perbelanjaan/index']]
                 ],
-                'visible' => !Yii::$app->user->isGuest,
+                'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([0, 2, 3, 4, 5, 6, 7]) : false,
             ],
             ['label' => 'Tuntutan', 'items' => [
                     ['label' => 'Perjalanan Dalam Negeri', 'url' => ['/perjalanan/create']],
@@ -105,27 +113,51 @@ AppAsset::register($this);
                 ],
                 'visible' => !Yii::$app->user->isGuest,
             ],
-            ['label' => 'Laporan', 'items' => [
-                    ['label' => 'Senarai Waran', 'url' => ['/waran/index']],
-                    ['label' => 'Tambah Waran', 'url' => ['/waran/create']],
-                    ['label' => 'Agihan Waran', 'url' => ['/waran/agihan']]
+            [
+                'label' => 'Syarikat', 
+                'items' => [
+                    ['label' => 'Daftar Syarikat', 'url' => ['/syarikat/create']],
+                    ['label' => 'Senarai Syarikat', 'url' => ['/syarikat/index']],
+                    ['label' => 'Kajian Pasaran', 'url' => ['/syarikat/survey']],
+                    ['label' => 'Prestasi Pembekal', 'url' => ['/syarikat/performance']],
                 ],
-                'visible' => !Yii::$app->user->isGuest, 
+                'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([0, 6]) : false,
+            ],
+            ['label' => 'Laporan', 'items' => [
+                    ['label' => 'Dashboard Unjuran', 'url' => ['/laporan/dashboard-unjuran']],
+                    ['label' => 'Dashboard Agihan', 'url' => ['/laporan/dashboard-agihan']],
+                    ['label' => 'Dashboard Perbelanjaan', 'url' => ['/laporan/dashboard-belanja']],
+                    ['label' => 'Dashboard Prestasi OS', 'url' => ['/laporan/dashboard-prestasi-os']],
+                    ['label' => 'Perbelanjaan', 'url' => ['/laporan/belanja']],
+                    ['label' => 'Prestasi Perbelanjaan', 'url' => ['/laporan/belanja-jabatan']],
+                    ['label' => 'Baki Perbelanjaan', 'url' => ['/laporan/baki-belanja']]
+                ],
+                 'visible' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->accessLevel([0, 2, 3, 4, 5, 6, 7]) : false,
             ],
             ['label' => 'Bantuan', 'items' => [
                     ['label' => 'Profail', 'url' => ['/pengguna/profile', 'id' => Yii::$app->user->isGuest ? 0 : yii::$app->user->identity->id], 'visible' => !Yii::$app->user->isGuest],
                     ['label' => 'Tukar Katalaluan', 'url' => ['/pengguna/password', 'id' => Yii::$app->user->isGuest ? 0 : yii::$app->user->identity->id], 'visible' => !Yii::$app->user->isGuest],
-                    ['label' => 'About', 'url' => ['/site/about']],
-                ]
+                    // ['label' => 'About', 'url' => ['/site/about']],
+                    // [
+                    //     'label' => 'Bantuan2', 'items' => [
+                    //         ['label' => 'Sub Bantuan', 'options' => ['class' => 'dropdown-submenu end'], 'url' => ['site']],
+                    //     ]
+                    // ]
+                ],
+                'visible' => !Yii::$app->user->isGuest,
             ],
             //['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
+            Yii::$app->user->isGuest ? (''
+                // ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
+                // . Html::submitButton(
+                //     'Logout (' . Yii::$app->user->identity->no_kp . ')',
+                //     ['class' => 'btn btn-link logout']
+                // )
                 . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->no_kp . ')',
+                    '<span class="glyphicon glyphicon-log-out" title="Keluar"></span>',
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()
@@ -135,7 +167,13 @@ AppAsset::register($this);
     ]);
     NavBar::end();
     ?>
-
+    <?php
+        // if(Yii::$app->controller->action->id == 'login') {
+    ?>
+    
+    <?php 
+        // }
+    ?>
     <div class="container">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
@@ -145,16 +183,15 @@ AppAsset::register($this);
         <?= $content ?>
     </div>
 </div>
-
-<footer class="footer">
+<footer class="footer" style="background: #222; color: white; font-weight: bold;">
     <div class="container">
-        <p class="pull-left">&copy; IntraBudget <?= date('Y') ?></p>
-
-        <p class="pull-right"><?php //= Yii::powered() ?></p>
-    </div>
+        <p class="pull-left">&copy; IntraBajet 2.0 <?= date('Y') ?></p>
+        <p class="pull-right"><label style="font-size: 1.1em; color: red">Powered by:</label> <img src="images/stellaris4-footer.png" width="200" height="30"></p>
+    </div>    
 </footer>
 
 <?php $this->endBody() ?>
 </body>
 </html>
 <?php $this->endPage() ?>
+

@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\OsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'OS';
+$this->title = 'Objek Sebagai';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="os-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Tambah OS', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tambah Objek Sebagai', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([

@@ -9,6 +9,8 @@ use app\models\RefJenisPerolehan;
 use app\models\RefKaedahPerolehan;
 use yii\bootstrap\Modal;
 use kartik\dialog\Dialog;
+use yii\jui\AutoComplete;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Perolehan */
@@ -153,6 +155,7 @@ echo Dialog::widget();
     </div>
     <div class="form-group" id="pembekal">
         <h3>Pengesyoran Kontraktor / Pembekal </h3>
+        <input type="hidden" id="id_syarikat" name="Perolehan[id_syarikat]" >
         <table id="unjuran-carian" class="table table-condensed table-striped table-bordered table-hover table-responsive">
             <thead class="thead-dark">
                 <tr>
@@ -162,7 +165,20 @@ echo Dialog::widget();
             <tbody id="pembekal_body">
                 <tr>
                     <td class="text-center">1</td><td class="text-center"><?= Html::radio('Pembekal[keutamaan]', false, ['class' => 'keutamaan form-check-input', 'value' => 1]) ?></td>
-                    <td><?= Html::textInput('Pembekal[pembekal][1]', '', ['class' => 'pembekal form-control must']) ?></td>
+                    <!-- <td><?= Html::textInput('Pembekal[pembekal][1]', '', ['class' => 'pembekal form-control must']) ?></td> -->
+                    <td>
+                    <?= Html::hiddenInput('id_syarikat[1]', null, ['class' => 'id_syarikat']) ?>
+                    <?= AutoComplete::widget([
+                            'name' => 'Pembekal[pembekal][1]',
+                            'clientOptions' => [
+                                'source' => Url::to(['syarikat/search']),
+                            ],
+                            'options' => [
+                                'class' => 'form-control pembekal must',
+                            ]
+                        ]);
+                    ?>
+                    </td>
                     <td><?= Html::textInput('Pembekal[nama_pembekal][1]', '', ['class' => 'nama_pembekal form-control']) ?></td>
                     <td><?= Html::textInput('Pembekal[telefon][1]', '', ['class' => 'telefon form-control']) ?></td>
                     <td><?= Html::textInput('Pembekal[emel][1]', '', ['class' => 'emel form-control']) ?></td>
@@ -195,7 +211,7 @@ echo Dialog::widget();
         </div>
         <div class="form-group">
             <label>Jumlah</label>
-            <?= Html::textInput('Panjar[jumlah_panjar]', yii::$app->user->identity->nama, ['class' => 'harga form-control must', 'size' => '1', 'type' => 'number', 'step' => '0.01']); ?>
+            <?= Html::textInput('Panjar[jumlah_panjar]', '', ['class' => 'harga form-control must', 'size' => '1', 'type' => 'number', 'step' => '0.01']); ?>
         </div>
     </div>
 
@@ -213,6 +229,32 @@ $this->registerJs('
     var i = 1, j = 1;
     var row = "";
 
+    var senarai_syarikat = "'.Url::to(['syarikat/search']).'";
+
+    $(document).on("focus", ".pembekal", function(){
+        $(this).autocomplete(
+            {
+                "source": senarai_syarikat,
+                "select": function(e, ui){ 
+                    if($(this).index(".pembekal") == 0)
+                        $("#id_syarikat").val(ui.item.id);
+                    $(".id_syarikat").eq($(this).index(".pembekal")).val(ui.item.id);
+  
+                    if($(".keutamaan:checked").index(".keutamaan") == $(this).index(".pembekal")) {
+                        $("#id_syarikat").val($(".id_syarikat").eq($(this).index(".pembekal")).val());
+                    }
+
+                }
+            }
+        );//.on("blur", function(){$(this).autocomplete("destroy")});
+        //$(this).on("autocompleteselect", function( event, ui ) { alert("X")} );
+    });
+    // $( ".pembekal" ).on( "autocompleteselect", function( event, ui ) { alert("X")} );
+
+    $(document).on("click", ".keutamaan", function(){
+        $("#id_syarikat").val($(".id_syarikat").eq($(this).index(".keutamaan")).val());
+    });
+
     $("#pilih-unjuran").on("click", function(){
         $("#modal").modal("show").find("#modalContent").load("'.Url::to(['perolehan/unjuran-list']).'");
         //$("#modal-header").html("Penukaran Kod A");
@@ -222,6 +264,7 @@ $this->registerJs('
     $("#pembekal").hide();
     $("#barangan").hide();
     $("#panjar").hide();
+    $("#simpan").hide();
 
     $("#perolehan-kaedah_pembayaran").change(function(){
         if($(this).val() == 3) {
@@ -236,6 +279,7 @@ $this->registerJs('
             $("#panjar").hide();
             keutamaan = false;
         }
+        $("#simpan").show();
     });
 
     $("#btn-barangan").on("click", function(e){
@@ -253,7 +297,8 @@ $this->registerJs('
         j++;
         row = "<tr><td class=\"text-center\">" + j + "</td>" +
               "<td class=\"text-center\"><input type=\"radio\" class=\"keutamaan form-check-input\" name=\"Pembekal[keutamaan]\" value=\"" + j + "\"></td>" +
-              "<td><input class=\"pembekal form-control must\" name=\"Pembekal[pembekal][" + j + "]\"></td>" +
+              //"<td><input class=\"pembekal form-control must\" name=\"Pembekal[pembekal][" + j + "]\"></td>" +
+              "<td><input type=\"hidden\" name=\"id_syarikat[" + j + "]\" class=\"id_syarikat\"><input type=\"text\" id=\"w" + j + "\" class=\"form-control pembekal must ui-autocomplete-input\" name=\"Pembekal[pembekal][" + j + "]\" autocomplete=\"off\"></td>" +
               "<td><input class=\"nama_pembekal form-control\" name=\"Pembekal[nama_pembekal][" + j + "]\"></td>" +
               "<td><input class=\"telefon form-control\" name=\"Pembekal[telefon][" + j + "]\"></td>" +
               "<td><input class=\"emel form-control\" name=\"Pembekal[emel][" + j + "]\"></td>" +
@@ -322,6 +367,12 @@ $this->registerCss('
     @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
+    }
+');
+
+$this->registerCss('
+    div.required label.control-label:after {
+        content: " *";
     }
 ');
 ?>

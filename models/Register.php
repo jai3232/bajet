@@ -39,7 +39,7 @@ class Register extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nama', 'password', 'password_ulang', 'id_jabatan', 'emel', 'no_kp', 'captcha'], 'required'],
+            [['nama', 'password', 'password_ulang', 'id_jabatan', 'id_unit', 'emel', 'no_kp', 'captcha'], 'required'],
             [['id_jabatan', 'id_unit', 'level', 'aktif'], 'integer'],
             [['date'], 'safe'],
             [['nama'], 'string', 'max' => 100],
